@@ -1,0 +1,38 @@
+
+Changes in version 0.2-6
+BUG FIXES
+    o   fixed a bug in bio.merge(). 
+
+Changes in version 0.2-4
+NEW FEATURES
+	o    The old tcltk GUI has been replaced with a GUI based on shiny.
+		
+Changes in version 0.2-3
+NEW FEATURES
+	o   method assemblageFetch() to extract species sets (species assemblages) & 
+		the associated life history data 
+
+Changes in version 0.1-7
+NEW FEATURES
+	o   method metadataUpdate() to compute taxa-level metadata  once a project is set.
+	o   A new utility function, rangeFetch(), to fetch a range from a rangeMapper project.
+
+Changes in version 0.1-5
+
+BUG FIXES
+    o   fixed a bug in vertices(). 
+
+NEW FEATURES
+	o   vertices is a new method of general use. Extract vertices from a 
+		SpatialPolygonsDataFrame and optionally applies an aggregating function 
+		to each Polygon. 
+    o   rangeTraits() & processRanges () changed to work with vertices().
+
+Changes in version 0.1-3
+
+NEW FEATURES
+    o   rangeMapProcess-methods. Small-range polygons (i.e. smaller than a canvas cell)
+		will return as many cells as there are 'Polygon'- s(e.g. each polygon will snap
+		to the nearest canvas cell).
+
+

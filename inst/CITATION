@@ -1,0 +1,20 @@
+citHeader("To cite", sQuote("rangeMapper"), "in publications, please use:")
+
+citEntry(entry = "article",
+         title = "rangeMapper: A platform for the study of macroecology of life history traits",
+         author = personList(
+           as.person("Mihai Valcu"), 
+           as.person("James Dale"), 
+           as.person("Bart Kempenaers")
+           ),
+         journal = "Global Ecology and Biogeography",
+		 volume = 21,
+		number = 9,
+         year= 2012,
+		 
+	 textVersion = "Valcu, M., et al (2012). rangeMapper: a platform for the study of macroecology of life-history traits. Global Ecology and Biogeography 21, 945-951."
+         )
+
+
+
+

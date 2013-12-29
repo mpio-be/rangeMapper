@@ -1,0 +1,14 @@
+Package: rangeMapper
+Version: 0.2-6
+Date: 2013-Jul-24
+Title: A platform for the study of macroecology of life history traits
+Author: Mihai Valcu  <valcu@orn.mpg.de>, James Dale  <J.Dale@massey.ac.nz> 
+Maintainer: Mihai Valcu  <valcu@orn.mpg.de>
+Depends: R (>= 2.15.0), methods, utils, RSQLite, rgdal
+Imports:  sp, raster, maptools, RSQLite.extfuns, lattice, RColorBrewer, classInt
+Suggests: rgeos, shiny
+LinkingTo: rgdal
+Description: A package to manipulate species range (extent-of-occurrence) maps, mainly tools for easy generation of species richness and (life-history) traits maps. 
+License: GPL (>= 2)
+URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/package=rangeMapper
+	

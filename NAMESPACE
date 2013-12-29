@@ -1,0 +1,104 @@
+import(methods, utils, graphics, sp)
+
+importFrom("raster", raster, rasterToPolygons, projection)
+importFrom("maptools", getinfo.shape)
+importFrom("RSQLite.extfuns", init_extensions)
+importFrom("RColorBrewer", brewer.pal, brewer.pal.info)
+importFrom("lattice", trellis.par.set)
+importFrom("classInt", classIntervals)
+
+##########################################################	
+	
+exportClasses(
+	rangeMapStart, 
+	rangeMap,
+	SpatialPixelsRangeMap)
+
+exportMethods(
+	assemblageFetch,
+	bioSave, 
+	canvasFetch, 
+	canvasSave, 
+	gridSizeFetch, 
+	gridSizeSave, 
+	metadataUpdate, 
+	plot, 
+	rangeFiles, 
+	rangeMapBboxFetch, 
+	rangeMapBboxSave, 
+	rangeMapExport, 
+	rangeMapFetch, 
+	rangeMapProcess,
+	rangeMapRemove, 
+	rangeMapSave, 
+	rangeMapStart, 
+	summary, 
+	vertices)
+
+export(
+	bio.merge, 
+	bio.save, 
+	bioSave, 
+	brewer.pal.get,
+	canvas.fetch, 
+	canvasFetch, 
+	canvas.save, 
+	canvasSave, 
+	global.bbox.fetch, 
+	global.bbox.save, 
+	gridSize.fetch, 
+	gridSizeFetch, 
+	gridSize.save ,
+	gridSizeSave, 
+	metadata.update,
+	metadata2bio, 
+	processRanges, 
+	rangeFetch, 
+	rangeFiles, 
+	rangeMap,
+	rangeMap.export,
+	rangeMap.fetch, 
+	rangeMap.open, 
+	rangeMap.save, 
+	rangeMap.start, 
+	rangeMapBboxFetch, 
+	rangeMapBboxSave, 
+	rangeMapExport, 
+	rangeMapFetch, 
+	rangeMapper, 
+	rangeMapProcess,
+	rangeMapRemove, 
+	rangeMapSave, 
+	rangeMapStart, 
+	rangeTraits, 
+	rm.rangeMapper,  
+	RMQuery, 
+	selectShpFiles, 
+	vertices)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
