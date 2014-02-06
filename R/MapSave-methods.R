@@ -213,7 +213,7 @@ setMethod("rangeMapImport",
 	rstp@data$ptid = as.numeric(rownames(rstp@data)) # add point id
 	
 	message(paste("Performing overlay: canvas polygons over", filenam, "...") )	
-	o = overlay(cnv, rstp) # #TODO change with over
+	o = over(rstp, cnv) 
 	o$ptid = as.numeric(rownames(o))
 
 	o = merge(o, rstp@data, by = "ptid")

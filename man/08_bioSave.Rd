@@ -41,7 +41,9 @@ A \sQuote{BIO} table is created in the corresponding \code{rangeMapper} project.
 }
 
 \references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012)  rangeMapper: A platform for the study of macroecology of life history traits. 21(9). (DOI: 10.1111/j.1466-8238.2011.00739.x)
+Valcu, M., Dale, J. and Kempenaers, B. (2012)  
+rangeMapper: A platform for the study of macroecology of life history traits. 21(9). 
+(DOI: 10.1111/j.1466-8238.2011.00739.x)
 }
 
 
@@ -61,13 +63,34 @@ processRanges(spdf = r, con =  dbcon, ID = "sci_name" )
 data(wrens)
 Troglodytes  = wrens[grep("Troglodytes", wrens$sci_name), c(2, 5)]
 bio.save(con = dbcon, loc = Troglodytes,  ID = "sci_name")
-#wrensPath = system.file(package = "rangeMapper", "data", "wrens.csv")
-#bio.save(con = dbcon, loc = wrensPath,  ID = "sci_name")
-#bio.merge(dbcon, "wrensNew")
-#metadata2bio(dbcon)
 
 summary(rangeMap("wrens.sqlite"))$BIO_tables
 setwd(wd)
+
+
+\dontrun{
+require(rangeMapper)
+wd = setwd(tempdir())
+r = readOGR(system.file(package = "rangeMapper", 
+  "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, 
+	dir = tempdir() )
+global.bbox.save(con = dbcon, bbox = r)
+gridSize.save(dbcon, gridSize = 2)  
+canvas.save(dbcon) 
+processRanges(spdf = r, con =  dbcon, ID = "sci_name", metadata = rangeTraits() )
+
+wrensPath = system.file(package = "rangeMapper", "data", "wrens.csv")
+bio.save(con = dbcon, loc = wrensPath,  ID = "sci_name")
+bio.merge(dbcon, "wrensNew")
+metadata2bio(dbcon)
+
+summary(rangeMap("wrens.sqlite"))
+setwd(wd)
+
+}
+
+
 
 }
 

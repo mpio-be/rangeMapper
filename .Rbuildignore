@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-TODO
+TODO.md
+TODO.html
+_TESTS.R

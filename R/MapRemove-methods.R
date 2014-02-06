@@ -5,7 +5,7 @@ setGeneric("rangeMapRemove", function(object, ...)   		     	standardGeneric("ra
 setMethod("rangeMapRemove",  
 		signature = "rangeMapRemove", 
 		definition = function(object){
-		
+      
 		if(length(object@tableName) == 0 ) 
 			object@tableName = RMQuery(object@CON, 
 				'select name from sqlite_master where type = "table" and 
@@ -13,14 +13,18 @@ setMethod("rangeMapRemove",
 
 		if( length(object@tablePrefix) > 0 )
 		object@tableName = object@tableName[grep(object@tablePrefix, object@tableName)]		
-				
-			sql = paste("DROP TABLE ", object@tableName )
-			
-		for (i in 1:length(sql)) RMQuery(object@CON , sql[i]) 
 		
-	message(paste( paste(object@tableName, collapse = "; "), "removed" , collapse = " ") )
-
-		
+    if(length(object@tableName) > 0) {
+      
+      sql = paste("DROP TABLE IF EXISTS", object@tableName )
+  			
+  		for (i in 1:length(sql)) { 
+          message("SQLITE:", sql[i])
+          RMQuery(object@CON , sql[i])
+  		  }
+  		
+      }
+    
 		}
 )
 

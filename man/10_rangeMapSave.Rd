@@ -109,6 +109,25 @@ rangeMap.save(dbcon, FUN = "median" , biotab = "wrens",
 summary(rangeMap.fetch(dbcon) )
  
  
+\dontrun{
+# import raster maps the current project
+require(rangeMapper)
+dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
+global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
+gridSize.save(dbcon)
+canvas.save(dbcon)
+
+r = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
+rangeMap.save(dbcon, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
+
+m = rangeMap.fetch(dbcon)
+plot(m)
+
+} 
+ 
+ 
+ 
 # more examples at: http://rangemapper.orn.mpg.de/
 
 

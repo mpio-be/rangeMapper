@@ -1,4 +1,4 @@
-import(methods, utils, graphics, sp)
+import(methods, utils, graphics, sp, RSQLite, rgdal)
 
 importFrom("raster", raster, rasterToPolygons, projection)
 importFrom("maptools", getinfo.shape)
