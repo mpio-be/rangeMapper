@@ -32,7 +32,7 @@ setMethod("assemblageFetch",
 		biotabs = RMQuery(object@CON, "SELECT * FROM sqlite_master WHERE type='table' and name like 'BIO_%' ")$name
 		if(BIO%in%biotabs) stop(paste(dQuote(BIO), "is not a BIO_table"))
 		BIO = paste("BIO", BIO, sep = "_") 
-		biotab_id = rangeMapper:::.extract.indexed(object@CON, BIO)
+		biotab_id = .extract.indexed(object@CON, BIO)
 
 		#Assembladge IDs
 		assembl_id = over(xy, cnv)$id
