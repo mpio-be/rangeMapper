@@ -1,4 +1,9 @@
 
+Changes in version 0.2-7
+NEW FEATURES
+    o   WKT2SpatialPolygonsDataFrame() 
+
+
 Changes in version 0.2-6
 BUG FIXES
     o   fixed a bug in bio.merge(). 
