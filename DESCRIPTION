@@ -7,8 +7,7 @@ Maintainer: Mihai Valcu  <valcu@orn.mpg.de>
 Depends: R (>= 3.0.0), methods, utils, RSQLite, rgdal
 Imports:  sp, raster, maptools, RSQLite.extfuns, lattice, RColorBrewer, classInt
 Suggests: rgeos, shiny (>= 0.8.0)
-Description: Tools for easy generation of (life-history) traits maps based on species range (extent-of-occurrence) maps. 
-The link between species-level trait and map cell is kept troughout the process.
+Description: Tools for easy generation of (life-history) traits maps based on species range (extent-of-occurrence) maps.The link between species-level trait and map cell is kept troughout the process.
 License: GPL(>= 2)
 URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/package=rangeMapper
 	
