@@ -1,11 +1,10 @@
 
 
-	WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {	
-	
+	WKT2SpatialPolygonsDataFrame <- function(dat, geom, id, p4s = NULL) {	
+	  require(rgeos)
 		dl = split(dat, dat[, id])	
 		o = lapply(dl, function(x) { 
-      print(x$scinam[1]) 
-      p = mapply(readWKT, text = x[, geom], id = 1:nrow(x), USE.NAMES = FALSE )
+      p = mapply(readWKT, text = x[, geom], id = 1:nrow(x), ps4 = p4s, USE.NAMES = FALSE )
       if(length(p) == 1) {
         p = p[[1]]
         p = spChFIDs(p, as.character(x[1, id]))
@@ -21,6 +20,7 @@
     X = do.call(rbind, o)
 		dat = data.frame(id = sapply(slot(X, "polygons"), function(x) slot(x, "ID")) )
 		row.names(dat ) = dat$id
+    names(dat) = id
 		SpatialPolygonsDataFrame(X, data =  dat)
 	
 	}
