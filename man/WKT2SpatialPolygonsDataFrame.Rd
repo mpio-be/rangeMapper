@@ -16,12 +16,17 @@ Convert a data.frame containing WKT polygons to a SpatialPolygonsDataFrame.
   \item{dat}{ \code{data.frame}
 }
   \item{geom}{
-  is the name (character vector) of the column in the \code{data.frame} which contains the geometry.
+  is the name (character vector) of the column in the \code{data.frame} containing the geometry.
 }
   \item{id}{
-  is the name (character vector) of the column in the \code{data.frame} which identifies the polygon.
+  is the name (character vector) of the column in the \code{data.frame} identifying the polygon.
  when \code{id} is not unique then polygons are combined using \code{rgeos::gUnionCascaded}.
 }
+
+  \item{p4s}{
+  projection attributes as character string or an CRS object to pass to \code{rgeos::readWKT}.
+ }
+
 }
 
 \value{
@@ -41,19 +46,19 @@ randPoly = function(mean, sd) {
              paste, collapse = ' '), collapse = ","), ")")))) 
 }
 n = 50
-d = data.frame( id = sample(letters, n, TRUE), 
+d = data.frame( nam = sample(letters, n, TRUE), 
                range = mapply(randPoly, mean = sample(1:2, n, TRUE), 
                sd = sample(1:2/5, n, TRUE) ))
 
   
-X = WKT2SpatialPolygonsDataFrame(d, 'range', 'id')
+X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
 
 
 dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 global.bbox.save(con = dbcon, bbox = X) 
 gridSize.save(dbcon)
 canvas.save(dbcon)
-processRanges(spdf = X, con =  dbcon, ID = "id" )
+processRanges(spdf = X, con =  dbcon, ID = "nam" )
 rangeMap.save(dbcon)
 plot(rangeMap.fetch(dbcon))
 }
