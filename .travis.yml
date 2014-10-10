@@ -7,7 +7,9 @@ before_install:
 
 install:
 # - ./travis-tool.sh install_github rstats-db/RSQLite
-- ./travis-tool.sh install_deps
+
+# DEPENDS
+- ./travis-tool.sh install_r_binary sp raster rgeos rgdal RSQLite maptools RSQLite.extfuns RColorBrewer classInt
 
 script: ./travis-tool.sh run_tests
 
