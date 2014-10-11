@@ -23,10 +23,6 @@ Convert a data.frame containing WKT polygons to a SpatialPolygonsDataFrame.
  when \code{id} is not unique then polygons are combined using \code{rgeos::gUnionCascaded}.
 }
 
-  \item{p4s}{
-  projection attributes as character string or an CRS object to pass to \code{rgeos::readWKT}.
- }
-
 }
 
 \value{
@@ -61,6 +57,7 @@ canvas.save(dbcon)
 processRanges(spdf = X, con =  dbcon, ID = "nam" )
 rangeMap.save(dbcon)
 plot(rangeMap.fetch(dbcon))
+
 }
 
 
