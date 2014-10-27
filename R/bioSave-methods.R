@@ -12,14 +12,14 @@ setMethod("bioSave",
 		
 		nam = d[, object@ID]
 		
-		ranges.nam = RMQuery(object@CON, "select distinct bioid from ranges")$bioid
+		ranges.nam = dbGetQuery(object@CON, "select distinct bioid from ranges")$bioid
 
 		d$has_range= is.element(nam, ranges.nam)
 		
 		res = dbWriteTable(object@CON ,tableName , d, row.names = FALSE)
 
 		if(res) {
-			RMQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
+			dbGetQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
 			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			}
 		}
@@ -35,14 +35,14 @@ setMethod("bioSave",
 		
 		nam = d[, object@ID]
 		
-		ranges.nam = RMQuery(object@CON, "select distinct bioid from ranges")$bioid
+		ranges.nam = dbGetQuery(object@CON, "select distinct bioid from ranges")$bioid
 
 		d$has_range = is.element(nam, ranges.nam)
 		
 		res = dbWriteTable(object@CON ,tableName , d, row.names = FALSE)
 
 		if(res) {
-			RMQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
+			dbGetQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
 			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			} else 
 				message( paste("Error in saving", object@tableName) )
@@ -77,7 +77,7 @@ bio.merge <-  function(con, tableName, ...) {
 
 	if(length(dots) > 0) 
 	 btabs = paste(r@BIO, dots, sep = "") else
-	 btabs = RMQuery(con, paste("select name from sqlite_master where type = 'table' and tbl_name like '", r@BIO,"%'", sep = ""))$name
+	 btabs = dbGetQuery(con, paste("select name from sqlite_master where type = 'table' and tbl_name like '", r@BIO,"%'", sep = ""))$name
 
 	ok = sapply(btabs, function(x) .dbtable.exists(con, x) )
 
@@ -90,7 +90,7 @@ bio.merge <-  function(con, tableName, ...) {
 
 	colnames = unlist(lapply(btabs, 
 		function(x) { 
-			a = RMQuery(con, paste("pragma table_info(" , shQuote(x),")" ))$name
+			a = dbGetQuery(con, paste("pragma table_info(" , shQuote(x),")" ))$name
 			alias = paste(a, gsub(r@BIO, "", x) , sep = "_" )
 			nm = paste(x, a,sep = "." )
 			paste(nm, alias, sep = " as ")		
@@ -105,10 +105,10 @@ bio.merge <-  function(con, tableName, ...) {
 
 	sqls = paste("create table", tableName,  "as", colnames, "FROM", head,  paste(joins, collapse = " " ))
 	# make table
-	res = RMQuery(con, sqls)
+	res = dbGetQuery(con, sqls)
 	
 	# add index
-	RMQuery(r@CON,( paste("CREATE  INDEX", paste(tableName, r@BIOID, sep = "_") , "ON", tableName ,  "(", r@BIOID ,")") ) )
+	dbGetQuery(r@CON,( paste("CREATE  INDEX", paste(tableName, r@BIOID, sep = "_") , "ON", tableName ,  "(", r@BIOID ,")") ) )
 
 
 }
@@ -117,7 +117,7 @@ metadata2bio <-function(con, ...) {
 
 	r = new("rangeMap", CON = con)
 
-	dat = RMQuery(r@CON, paste("select * from",  r@METADATA_RANGES) )
+	dat = dbGetQuery(r@CON, paste("select * from",  r@METADATA_RANGES) )
 
 	if(nrow(dat) == 0) stop( paste("Empty", r@METADATA_RANGES, "table"))
 	

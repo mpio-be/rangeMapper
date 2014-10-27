@@ -12,14 +12,14 @@ summary.rangeMap <- function(object, ...) {
 	out[["Project_location"]] = dbinfo$dbname
 	out[["SQLite_version"]] = dbinfo$serverVersion
 
-	if( nrow(RMQuery(object@CON, paste("select", object@ID, "from", object@CANVAS, "limit 1") )) == 0)
+	if( nrow(dbGetQuery(object@CON, paste("select", object@ID, "from", object@CANVAS, "limit 1") )) == 0)
 	out[["empty_project"]] = "Empty rangeMapper project." else {
 	
 		out[["Proj4"]]    = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 		out[["CellSize"]] = dbReadTable(object@CON, object@GRIDSIZE)[1,1]
 		out[["Extent"]]   = dbReadTable(object@CON, object@BBOX)
 		
-		tbs = RMQuery(object@CON, "select name from sqlite_master where type = 'table' ")$name
+		tbs = dbGetQuery(object@CON, "select name from sqlite_master where type = 'table' ")$name
 		
 		out[["BIO_tables"]] = paste(  gsub(object@BIO, "", tbs[grep(object@BIO, tbs)]), collapse = ";" )
 		out[["MAP_tables"]] = paste(  gsub(object@MAP, "", tbs[grep(object@MAP, tbs)]), collapse = ";" )

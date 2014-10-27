@@ -7,7 +7,7 @@ setMethod("rangeMapRemove",
 		definition = function(object){
       
 		if(length(object@tableName) == 0 ) 
-			object@tableName = RMQuery(object@CON, 
+			object@tableName = dbGetQuery(object@CON, 
 				'select name from sqlite_master where type = "table" and 
 				(tbl_name like "MAP_%" OR tbl_name like "BIO_%")')$name
 
@@ -20,7 +20,7 @@ setMethod("rangeMapRemove",
   			
   		for (i in 1:length(sql)) { 
           message("SQLITE:", sql[i])
-          RMQuery(object@CON , sql[i])
+          dbGetQuery(object@CON , sql[i])
   		  }
   		
       }

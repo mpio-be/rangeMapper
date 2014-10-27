@@ -30,8 +30,8 @@ BioFieldNames <- function(input) {
 	
 		dbcon = rangeMap.open(path)
 		
-		tabs = RMQuery(dbcon, paste('SELECT name FROM  sqlite_master where type = "table" and name like', shQuote(paste(prefix,"%", sep = '') )))$name
-		cols = lapply(tabs, function(x) RMQuery(dbcon, paste("PRAGMA table_info(", x, ")"))[, 'name', FALSE] )
+		tabs = dbGetQuery(dbcon, paste('SELECT name FROM  sqlite_master where type = "table" and name like', shQuote(paste(prefix,"%", sep = '') )))$name
+		cols = lapply(tabs, function(x) dbGetQuery(dbcon, paste("PRAGMA table_info(", x, ")"))[, 'name', FALSE] )
 		if(length(cols) > 0) for(i in 1:length(cols)) cols[[i]]$table = tabs[[i]] else
 		cols = list(data.frame(name = "N/A", table = "N/A"))
 		cols = do.call(rbind, cols)
@@ -44,7 +44,7 @@ BioFieldNames <- function(input) {
 MapNames <- function(input) { 
 		path = getPath(input)
 		dbcon = rangeMap.open(path)
-		res = RMQuery(dbcon, 'SELECT name FROM  sqlite_master where type = "table" and name like "MAP_%"')$name
+		res = dbGetQuery(dbcon, 'SELECT name FROM  sqlite_master where type = "table" and name like "MAP_%"')$name
 		res = gsub("MAP_", "", res)
 		dbDisconnect(dbcon)
 		res

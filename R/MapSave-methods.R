@@ -41,9 +41,9 @@ setMethod("rangeMapSave",
 							if(!is.null(sset)) paste("WHERE", sset), "group by r.id")
 			
 			# build table and index	
-			RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC)"))
-			RMQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
-			RMQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
+			dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC)"))
+			dbGetQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
+			dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
 
 		 return(.dbtable.exists(object@CON, tableName))
 			} 
@@ -61,6 +61,9 @@ setMethod("rangeMapSave",
 		# object@biotrait should exist as a field in biotab
 		if(!.dbfield.exists(object@CON,biotab, object@biotrait) ) 
 			stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
+		
+		initExtension(object@CON)
+
 		# fun should  be known by sqlite	
 		.sqlAggregate(FUN)
 				
@@ -79,9 +82,9 @@ setMethod("rangeMapSave",
 		sql = paste("SELECT id,", FUN ,"(", object@biotrait, ") as", object@biotrait, "from (",sql,") group by id")	
 
 		# build table and index
-		RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
-		RMQuery(object@CON, paste("INSERT INTO" ,tableName, sql) )
+		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, sql) )
 		
 	
 		return(.dbtable.exists(object@CON, tableName))
@@ -111,7 +114,7 @@ setMethod("rangeMapSave",
 				  if(!is.null(sset)) paste("AND", sset) )
 
 		# fetch table
-		d = RMQuery(object@CON, sql)
+		d = dbGetQuery(object@CON, sql)
 		
 		if(nrow(d) == 0) {
 			stop( paste("The map is going to be empty! Maybe the bioid in", sQuote(object@biotab), " BIO table was wrongly set.") ) }
@@ -141,8 +144,8 @@ setMethod("rangeMapSave",
 		row.names(X) = NULL
 				
 		# build table and index
-		RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 		
 
@@ -170,8 +173,8 @@ setMethod("rangeMapSave",
 		row.names(X) = NULL
 				
 		# build table and index
-		RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 		
 
@@ -191,7 +194,7 @@ setMethod("rangeMapImport",
 
 	filenam = basename(object@path)
 	
-	if(length(object@tableName)== 0) tableName = make.db.names.default(filenam)
+	if(length(object@tableName)== 0) tableName = RSQLite::make.db.names(filenam)
 	
 	tableName = paste(object@MAP, object@tableName, sep = "")		
 		
@@ -226,8 +229,8 @@ setMethod("rangeMapImport",
 
 	# build table and index
 	message("Creating table and indexes...")
-	RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "FLOAT)"))
-	RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+	dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "FLOAT)"))
+	dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 	dbWriteTable(object@CON, tableName, o, row.names = FALSE, append = TRUE)
 	
 	
@@ -246,7 +249,7 @@ setMethod("rangeMapImport",
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, ...) {
 	
 	if(overwrite) 
-	try(RMQuery(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
+	try(dbGetQuery(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
 		
 	if(!missing(path)) { #  external map
 			if(missing(tableName))

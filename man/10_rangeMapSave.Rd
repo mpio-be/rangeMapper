@@ -63,7 +63,6 @@ Any valid SQL expression can be used to build up a subset. See \url{http://www.s
 
 
 \seealso{
-\code{\link[RSQLite.extfuns]{RSQLite.extfuns} } for a list of additional SQL aggregate functions.
 \code{\link[rangeMapper]{metadataUpdate}}.
 }
 

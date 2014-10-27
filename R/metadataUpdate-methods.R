@@ -16,18 +16,18 @@ setMethod("metadataUpdate",
 			}
 			
 			# check if metadata_ranges is populated
-			empty = RMQuery(object@CON, "SELECT count(bioid) from metadata_ranges") == 0
+			empty = dbGetQuery(object@CON, "SELECT count(bioid) from metadata_ranges") == 0
 			if(empty)
-				RMQuery(object@CON, "INSERT INTO metadata_ranges SELECT distinct bioid from ranges") 
+				dbGetQuery(object@CON, "INSERT INTO metadata_ranges SELECT distinct bioid from ranges") 
 			
 			# add new column
-			if( is.element(name, c(names(RMQuery(object@CON, 'SELECT * FROM metadata_ranges limit 1')), SQLKeywords(object@CON) ) ) )
+			if( is.element(name, c(names(dbGetQuery(object@CON, 'SELECT * FROM metadata_ranges limit 1')), SQLKeywords(object@CON) ) ) )
 				stop(paste(dQuote(name), "allready exists or is not a valid SQL name!") )
-			name = make.db.names(object@CON, name)
-			RMQuery(object@CON, paste("ALTER TABLE metadata_ranges ADD COLUMN", name ,"NUMERIC;") )
+			name = RSQLite::make.db.names(object@CON, name)
+			dbGetQuery(object@CON, paste("ALTER TABLE metadata_ranges ADD COLUMN", name ,"NUMERIC;") )
 			
 			# get ranges listing
-			mr = RMQuery(object@CON, "SELECT bioid from metadata_ranges")$bioid
+			mr = dbGetQuery(object@CON, "SELECT bioid from metadata_ranges")$bioid
 						
 			# loop through ranges,  apply FUN and update metadata_ranges
 			
@@ -47,7 +47,7 @@ setMethod("metadataUpdate",
 				}
 				
 				if(!is.na(res)) 
-					RMQuery(object@CON, paste('UPDATE metadata_ranges SET' ,name, '=' ,res, 'WHERE bioid =' ,shQuote(idi) ))
+					dbGetQuery(object@CON, paste('UPDATE metadata_ranges SET' ,name, '=' ,res, 'WHERE bioid =' ,shQuote(idi) ))
 				setTxtProgressBar(pb, i)
 			}
 			

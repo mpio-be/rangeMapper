@@ -15,7 +15,7 @@ setMethod("assemblageFetch",
 		sql = paste("SELECT * FROM ranges WHERE id in(",	paste(assembl_id, collapse = ",")  ,")")
 
 		#fetch assambladges
-		A = RMQuery(object@CON, sql)
+		A = dbGetQuery(object@CON, sql)
 		
 		return(A)
 		}
@@ -29,7 +29,7 @@ setMethod("assemblageFetch",
 		cnv = canvas.fetch(object@CON)
 
 		# BIO_table
-		biotabs = RMQuery(object@CON, "SELECT * FROM sqlite_master WHERE type='table' and name like 'BIO_%' ")$name
+		biotabs = dbGetQuery(object@CON, "SELECT * FROM sqlite_master WHERE type='table' and name like 'BIO_%' ")$name
 		if(BIO%in%biotabs) stop(paste(dQuote(BIO), "is not a BIO_table"))
 		BIO = paste("BIO", BIO, sep = "_") 
 		biotab_id = .extract.indexed(object@CON, BIO)
@@ -41,7 +41,7 @@ setMethod("assemblageFetch",
 		sql = paste("SELECT * FROM ranges r LEFT JOIN", BIO, "ON", paste(BIO,biotab_id, sep = ".") , "= r.bioid", "WHERE r.id in(",	paste(assembl_id, collapse = ",")  ,")")
 
 		#fetch assambladges
-		A = RMQuery(object@CON, sql)
+		A = dbGetQuery(object@CON, sql)
 		A$bioid = NULL
 		
 		return(A)

@@ -8,7 +8,7 @@ setMethod("rangeMapExport",
 	signature  = c(object = "rangeMap", dirName = "character"),
 		definition = function(object, dirName, ...) {
 
-		mapnams = RMQuery(object@CON, 
+		mapnams = dbGetQuery(object@CON, 
 					'select name from sqlite_master where type = "table" and 
 						(tbl_name like "MAP_%")')$name
 		

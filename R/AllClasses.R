@@ -45,9 +45,7 @@ setClass("rangeMapStart",
 		
 		validity = function(object) {
 		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
-		}
-	)
-	
+		} )
 
 setClass("rangeMap", 
 		representation(
@@ -80,8 +78,6 @@ setClass("rangeMap",
 		
 		validity = function(object) {
 		
-		if ( ! init_extensions(object@CON)) warning("Aggregate functions provided by RSQLite.extfuns packages not available!")
-		
 		if ( ! all( .dbtable.exists(object@CON, object@PROJ4STRING),
 				  .dbtable.exists(object@CON, object@METADATA_RANGES),
 				  .dbtable.exists(object@CON, object@GRIDSIZE),
@@ -89,15 +85,9 @@ setClass("rangeMap",
 				  .dbtable.exists(object@CON, object@CANVAS),
 				  .dbtable.exists(object@CON, object@RANGES) ) ) stop ("Corrupt rangeMapper project!")
 		
-		# projVer = try(sqliteQuickSQL(object@CON, paste("SELECT * FROM", object@VERSION) )$ver, silent = TRUE)
-		# if(inherits(projVer, "try-error")) projVer = "0.0-0"
+
 		
-		# curVer  = packageDescription("rangeMapper")$Version 		
-		# if(compareVersion(curVer,  projVer) == 1)
-			# message("This project was created with rangeMapper ", projVer)
-		
-		}	
-	)
+		})
 
 setClass("rangeFiles", 
 		representation(
@@ -111,9 +101,7 @@ setClass("rangeFiles",
 		validity = function(object) {
 		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
 		
-		}
-	)
-	
+		})
 	
 setClass("gridSize", 
 		representation(
@@ -126,17 +114,16 @@ setClass("gridSize",
 			if(!.is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was allready set!")
 			if(.is.empty(object@CON, object@BBOX)) stop("There is no bouding box!")
 
-		},
-	)
+		})
 	
-# class only used for validity checks
 setClass("rangeMapProcess", 
+	# this class is only used  for validity checks
 		contains = "rangeMap", 
 		
 		validity = function(object)	{
-					if(!.is.empty(object@CON, object@RANGES)) stop(paste(dQuote(object@RANGES), "table is not empty!"))
-		}
-)	
+					if(!.is.empty(object@CON, object@RANGES)) 
+						stop(paste(dQuote(object@RANGES), "table is not empty!"))
+		})	
 
 setClass("rangeMapSave", 
 		representation(
@@ -155,35 +142,22 @@ setClass("rangeMapSave",
 			if(.dbtable.exists(object@CON, paste(object@BIO, object@tableName, sep = "") ) ) 
 				stop( paste(sQuote(object@tableName), " already exists."))	
 			
-		}
-	)
-
+		})
 	
-	
-setClass("bioSaveFile", representation(loc = "character", sep = "character"), 
+setClass("bioSaveFile",
+	representation(loc = "character", sep = "character"), 
 							contains = "rangeMapSave", 
-							prototype( sep = ";", 
-									  tableName = "unknown"
-							
-							), 
-							validity = function(object) {
-							if(!file.exists(object@loc)) stop(paste(sQuote(object@loc), "is not a valid file"))
-
-
-							}
-		)	
-	
+	prototype( sep = ";", tableName = "unknown"), 
+	validity = function(object) {
+					if(!file.exists(object@loc))
+					stop(paste(sQuote(object@loc), "is not a valid file"))
+							})	
 	
 setClass("bioSaveDataFrame", representation(loc = "data.frame"), 
 							contains = "rangeMapSave", 
 							validity = function(object) {
-
-							}
-		)	
-	
-	
-	
-	
+							})	
+		
 setClass("MapImport", representation(path = "character"), 
 							contains = "rangeMapSave", 
  
@@ -192,33 +166,30 @@ setClass("MapImport", representation(path = "character"),
 							if(!file.exists(object@path)) stop(paste(sQuote(object@path), "is not a valid path.") ) 	
 							if(!require("raster")) stop("package raster is not available")
 
-							} 
-
-		)
+							})
 
 setClass("rangeMapFetch", representation(
-					tableName    = "character"), 
-				    contains = "rangeMap", 
-	
-					validity = function(object)	{
-						mapNam =paste(object@MAP, object@tableName, sep = "") 
-						
-						invalidNam = sapply(mapNam, FUN = function(x) !.dbtable.exists(object@CON, x) )
-						
-						if( any(invalidNam) )
-						  stop(paste(sQuote(names(invalidNam[invalidNam] )), "is not a valid MAP!\n"))
-						
-						# check if empty map
-						mapvar = sapply(mapNam, function(x)
-									setdiff(sqliteQuickSQL(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
-						
-						sql = paste("select count (", mapvar, ") FROM", mapNam)
-						isempty = sapply(sql, function(x) sqliteQuickSQL(object@CON,  x)[, 1] ) < 1
-						
-						if(any(isempty))
-						 stop(paste(sQuote(mapNam[isempty]), "is an empty MAP!\n"))
-			}
-	)
+	tableName    = "character"), 
+	contains = "rangeMap", 
+
+	validity = function(object)	{
+	mapNam =paste(object@MAP, object@tableName, sep = "") 
+
+	invalidNam = sapply(mapNam, FUN = function(x) !.dbtable.exists(object@CON, x) )
+
+	if( any(invalidNam) )
+	  stop(paste(sQuote(names(invalidNam[invalidNam] )), "is not a valid MAP!\n"))
+
+	# check if empty map
+	mapvar = sapply(mapNam, function(x)
+				setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
+
+	sql = paste("select count (", mapvar, ") FROM", mapNam)
+	isempty = sapply(sql, function(x) dbGetQuery(object@CON,  x)[, 1] ) < 1
+
+	if(any(isempty))
+	 stop(paste(sQuote(mapNam[isempty]), "is an empty MAP!\n"))
+	})
 
 setClass("SpatialPixelsRangeMap", representation(
 					mapvar    = "character"), 
@@ -226,28 +197,25 @@ setClass("SpatialPixelsRangeMap", representation(
 	
 					validity = function(object)	{
 					return(TRUE)
-					}
-	)
+					})
 
 setClass("rangeMapRemove", representation(
-						tableName = "character", 
-						tablePrefix = "character"						 
-						), 
-						 contains = "rangeMap",
-						 
-						validity = function(object)	{
-									if(object@PROJ4STRING%in%object@tableName |
-									   object@BBOX%in%object@tableName|
-									   object@GRIDSIZE%in%object@tableName|
-									   object@CANVAS%in%object@tableName|
-									   object@CANVAS%in%object@tableName)
-						stop( paste(object@PROJ4STRING,",", object@BBOX, ",",object@GRIDSIZE,",",
-										object@CANVAS, "or", 
-										object@RANGES, "table(s) cannot be removed!"))
+	tableName = "character", 
+	tablePrefix = "character"						 
+	), 
+	 contains = "rangeMap",
+	 
+	validity = function(object)	{
+				if(object@PROJ4STRING%in%object@tableName |
+				   object@BBOX%in%object@tableName|
+				   object@GRIDSIZE%in%object@tableName|
+				   object@CANVAS%in%object@tableName|
+				   object@CANVAS%in%object@tableName)
+	stop( paste(object@PROJ4STRING,",", object@BBOX, ",",object@GRIDSIZE,",",
+					object@CANVAS, "or", 
+					object@RANGES, "table(s) cannot be removed!"))
+	})
 
-			}
-	)
-		
 	
 	
 	

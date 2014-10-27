@@ -288,7 +288,7 @@ setMethod("canvasFetch",
 	signature  = "rangeMap", 
 		definition = function(object) {
 		
-		cnv = RMQuery(object@CON, 'SELECT * FROM canvas' )
+		cnv = dbGetQuery(object@CON, 'SELECT * FROM canvas' )
 
 		if(nrow(cnv) == 0) stop("The canvas is empty, did you run canvas.save()?")
 

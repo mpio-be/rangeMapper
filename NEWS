@@ -1,4 +1,10 @@
 
+
+Changes in version 0.2-8
+BUG FIXES
+    o   The package works now with RSQLite (>= 1.0.0)
+
+
 Changes in version 0.2-7
 NEW FEATURES
     o   WKT2SpatialPolygonsDataFrame() 

@@ -14,7 +14,7 @@ setMethod("rangeMapFetch",
 
 		# map variable
 		mapvar = sapply(mapNam, function(x)
-					setdiff(RMQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )		
+					setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )		
 		# sql string
 		dotid = paste('x', 1:length(mapNam), sep = "")
 		mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
@@ -23,7 +23,7 @@ setMethod("rangeMapFetch",
 		"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
 
 		
-		map = RMQuery(object@CON, sql)
+		map = dbGetQuery(object@CON, sql)
 	
 		coordinates(map) = ~ x + y
 
@@ -41,7 +41,7 @@ setMethod("rangeMapFetch",
 # user level functions 
 rangeMap.fetch <- function(con, maps) { 
 	
-	if(missing(maps)) maps = RMQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
+	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
 
 	maps = gsub("MAP_", "", maps)
 	
@@ -52,13 +52,13 @@ rangeMap.fetch <- function(con, maps) {
 
 rangeFetch <- function(rangeMap, bioid) {
 				
-		if( nrow(RMQuery(rangeMap@CON, paste("SELECT * from canvas limit 1"))) == 0)
+		if( nrow(dbGetQuery(rangeMap@CON, paste("SELECT * from canvas limit 1"))) == 0)
 			stop('Empty project!')
 		
 		p4s = CRS(dbReadTable(rangeMap@CON, rangeMap@PROJ4STRING)[1,1]) 	# proj4string
-		cs2 = RMQuery(rangeMap@CON, "select * from gridsize")[1,1]/2 		# 1/2 grid size
+		cs2 = dbGetQuery(rangeMap@CON, "select * from gridsize")[1,1]/2 		# 1/2 grid size
 		
-		d = RMQuery(rangeMap@CON, paste("SELECT c.id, c.x, c.y from canvas c join ranges r on c.id = r.id where r.bioid = ", shQuote(bioid) ) )
+		d = dbGetQuery(rangeMap@CON, paste("SELECT c.id, c.x, c.y from canvas c join ranges r on c.id = r.id where r.bioid = ", shQuote(bioid) ) )
 		if(nrow(d) == 0)	
 			stop(paste(dQuote(bioid), 'is not a valid name!'))		
 		
@@ -74,10 +74,8 @@ rangeFetch <- function(rangeMap, bioid) {
 		
 		res = SpatialPolygons(d, proj4string= p4s)
 
-		if(require(rgeos)) {
-			res = rgeos::gUnionCascaded(res)
-			} else
-			 warning('rgeos is not available, adjacent SpatialPolygons cannot be dissolved!')
+		res = gUnionCascaded(res)
+
 		res	
 }
 

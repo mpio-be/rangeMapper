@@ -2,10 +2,11 @@ import(methods, utils, graphics, sp, RSQLite, rgdal)
 
 importFrom("raster", raster, rasterToPolygons, projection)
 importFrom("maptools", getinfo.shape)
-importFrom("RSQLite.extfuns", init_extensions)
 importFrom("RColorBrewer", brewer.pal, brewer.pal.info)
 importFrom("lattice", trellis.par.set)
 importFrom("classInt", classIntervals)
+importFrom("rgeos", readWKT)
+importFrom("rgeos", gUnionCascaded)
 
 ##########################################################	
 	
@@ -72,10 +73,10 @@ export(
 	rangeMapStart, 
 	rangeTraits, 
 	rm.rangeMapper,  
-	RMQuery, 
+	dbGetQuery, 
 	selectShpFiles, 
 	vertices, 
-  WKT2SpatialPolygonsDataFrame
+  	WKT2SpatialPolygonsDataFrame
   )
 
 
