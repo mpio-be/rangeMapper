@@ -1,8 +1,11 @@
+
 ^.*\.Rproj$
-^.*\.sublime-project$
 ^\.Rproj\.user$
-TODO.md
-TODO.html
-_TESTS.R
+
 .travis.yml
+
+TODO.md
+README.md
+_TESTS.R
+
 
