@@ -183,6 +183,13 @@ setMethod("rangeMapProcess",
 
 	Startprocess = Sys.time()
 
+	if(parallel) {
+		library(doParallel)
+		cl = makePSOCKcluster(detectCores())
+		registerDoParallel(cl)
+		on.exit( stopCluster(cl) )
+		}
+
 	message("Processsing ranges, please wait!...")
 
 	cnv = as(canvasFetch(object), "SpatialPointsDataFrame")
@@ -200,7 +207,6 @@ setMethod("rangeMapProcess",
 	message( paste(length(spdf), " ranges found.") )
 
 	rnames = names(spdf)
-	pb = txtProgressBar(min = 0, max = length(rnames), char = ".", style = 3)
 
 	message( "Processing ranges...")
 	.processRange = function(x) {
@@ -211,22 +217,15 @@ setMethod("rangeMapProcess",
 		}
 
 
-	if(!parallel)
+	if(!parallel) {
+		pb = txtProgressBar(min = 0, max = length(rnames), char = ".", style = 3)
 		overlayRes = lapply(spdf, .processRange)
-
-	if(parallel) {
-		library(doParallel)
-		cl = makePSOCKcluster(detectCores())
-		registerDoParallel(cl)
-
-		overlayRes = foreach(i = 1:length(spdf), .packages = 'rangeMapper') %dopar%  .processRange(spdf[[i]])
-		stopCluster(cl)
+		close(pb)
 		}
 
+	if(parallel)
+		overlayRes = foreach(i = 1:length(spdf), .packages = 'rangeMapper') %dopar%  .processRange(spdf[[i]])
 
-
-
-	close(pb)
 
 	overlayRes = do.call(rbind, overlayRes)
 
@@ -245,10 +244,17 @@ setMethod("rangeMapProcess",
 
 # Method 2.2:  One shp file containing all ranges, ID is required.  Metadata are computed
 setMethod("rangeMapProcess",
-	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "list", parallel = "missing"),
-	definition = function(object, spdf, ID,  metadata){
+	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "list", parallel = "logical"),
+	definition = function(object, spdf, ID,  metadata, parallel){
 
 	Startprocess = Sys.time()
+
+	if(parallel) {
+		library(doParallel)
+		cl = makePSOCKcluster(detectCores())
+		registerDoParallel(cl)
+		on.exit( stopCluster(cl) )
+		}
 
 	message("Processsing ranges, please wait!...")
 
@@ -267,19 +273,23 @@ setMethod("rangeMapProcess",
 	message( paste(length(spdf), " ranges found.") )
 
 	rnames = names(spdf)
-	pb = txtProgressBar(min = 0, max = length(rnames), char = ".", style = 3)
 
 	message( "Processing ranges...")
 	.processRange = function(x) {
 			name = x@data[1, ID]
 			pos = which(rnames%in%name)
-			setTxtProgressBar(pb, pos)
+			if(!parallel) setTxtProgressBar(pb, pos)
 			.rangeOverlay(x,  cnv, name)
 		}
 
-	overlayRes = lapply(spdf, .processRange)
+	if(!parallel) {
+		pb = txtProgressBar(min = 0, max = length(rnames), char = ".", style = 3)
+		overlayRes = lapply(spdf, .processRange)
+		close(pb)
+		}
 
-	close(pb)
+	if(parallel)
+		overlayRes = foreach(i = 1:length(spdf), .packages = 'rangeMapper') %dopar%  .processRange(spdf[[i]])
 
 	overlayRes = do.call(rbind, overlayRes)
 
@@ -297,7 +307,12 @@ setMethod("rangeMapProcess",
 
 	# save  to @METADATA_RANGES
 	message("Extracting metadata..")
-	rtr = lapply( spdf, function(R) sapply(metadata, function(x) x(R) ) )
+	if(!parallel)
+		rtr = lapply( spdf, function(R) sapply(metadata, function(x) x(R) ) )
+
+	if(parallel)
+		rtr = foreach(i = 1:length(spdf), .packages = 'rangeMapper') %dopar%  { sapply(metadata, function(x) x(spdf[[i]] ) )  }
+
 	rtr = data.frame(do.call(rbind, rtr))
 
 	  lapply(
