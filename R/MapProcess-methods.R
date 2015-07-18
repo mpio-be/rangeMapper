@@ -178,8 +178,8 @@ setMethod("rangeMapProcess",
 
 # Method 2.1:  One shp file containing all ranges, ID is required. No metadata
 setMethod("rangeMapProcess",
-	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "missing", parallel = "missing"),
-	definition = function(object, spdf, ID,  metadata){
+	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "missing", parallel = "logical"),
+	definition = function(object, spdf, ID,  metadata, parallel){
 
 	Startprocess = Sys.time()
 
@@ -206,11 +206,25 @@ setMethod("rangeMapProcess",
 	.processRange = function(x) {
 		name = x@data[1, ID]
 		pos = which(rnames%in%name)
-		setTxtProgressBar(pb, pos)
-		.rangeOverlay(x,  cnv, name)
+		if(!parallel) setTxtProgressBar(pb, pos)
+		rangeMapper:::.rangeOverlay(x,  cnv, name)
 		}
 
-	overlayRes = lapply(spdf, .processRange)
+
+	if(!parallel)
+		overlayRes = lapply(spdf, .processRange)
+
+	if(parallel) {
+		library(doParallel)
+		cl = makePSOCKcluster(detectCores())
+		registerDoParallel(cl)
+
+		overlayRes = foreach(i = 1:length(spdf), .packages = 'rangeMapper') %dopar%  .processRange(spdf[[i]])
+		stopCluster(cl)
+		}
+
+
+
 
 	close(pb)
 
