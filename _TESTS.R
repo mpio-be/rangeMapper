@@ -6,7 +6,7 @@
 	global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
 	gridSize.save(dbcon, gridSize = 250000)
 	canvas.save(dbcon)
-	
+
 	r = readOGR(f, "wrens", verbose = FALSE)
 	processRanges(spdf = r, con = dbcon, ID = "sci_name")
 
