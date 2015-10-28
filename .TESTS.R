@@ -9,8 +9,8 @@
 	canvas.save(dbcon)
 
 	r = readOGR(f, "wrens", verbose = FALSE)
-	processRanges(spdf = r, con = dbcon, ID = "sci_name", parallel = TRUE, metadata = rangeTraits())
 	processRanges(spdf = r, con = dbcon, ID = "sci_name", parallel = TRUE)
+	processRanges(spdf = r, con = dbcon, ID = "sci_name", parallel = TRUE, metadata = rangeTraits())
 
 	#richness
 	m = rangeMap.save(dbcon)
@@ -36,3 +36,5 @@
 	spdf = r
 	ID = "sci_name"
 	metadata = rangeTraits()
+
+	object =  new("rangeMapFetch", CON = dbcon, tableName = 'species_richness')

@@ -1,6 +1,7 @@
 
 
-setGeneric("rangeMapFetch", function(object, ...) 					standardGeneric("rangeMapFetch") )
+setGeneric("rangeMapFetchRaw", function(object, ...) 	standardGeneric("rangeMapFetchRaw") )
+setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )
 
 setMethod("rangeMapFetch",
 	signature  = "rangeMapFetch",
@@ -19,31 +20,50 @@ setMethod("rangeMapFetch",
 		sql = paste("SELECT c.x, c.y,", mapdat,
 		"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
 
-
 		map = dbGetQuery(object@CON, sql)
 
-		coordinates(map) = ~ x + y
+		attr(map, 'p4s') = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 
-		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
+		map
 
-		proj4string(map) = CRS(p4s)
 
-		gridded(map) = TRUE
 
-		map = new("SpatialPixelsRangeMap", map, mapvar    = mapvar)
-		return(map)
 		}
 	)
 
 # user level functions
-rangeMap.fetch <- function(con, maps) {
+rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
 
 	maps = gsub("MAP_", "", maps)
 
 	x = new("rangeMapFetch", CON = con, tableName = maps)
-	rangeMapFetch(x)
+
+	map = rangeMapFetch(x)
+	p4s = attr(map, 'p4s')
+
+	if(spatial) {
+		coordinates(map) = ~ x + y
+		proj4string(map) = CRS(p4s)
+		gridded(map) = TRUE
+		map = new("SpatialPixelsRangeMap", map, mapvar = maps)
+		return(map)
+		}
+
+	if(!spatial) {
+	return(data.table(map))
+	}
+
+
+
   }
+
+
+
+
+
+
+
 
 rangeFetch <- function(rangeMap, bioid) {
 	if( nrow(dbGetQuery(rangeMap@CON, paste("SELECT * from canvas limit 1"))) == 0)

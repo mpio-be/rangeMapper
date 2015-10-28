@@ -1,4 +1,11 @@
 
+
+TODO
+----
+* move to roxigen2
+* write help to refleect changes in rangeMap.fetch
+
+
 NEW FEATURES
 ------------
   * Write methods for hexagonal canvas
@@ -6,7 +13,6 @@ NEW FEATURES
   * polygon overlap on spatialPolygonsRangeMapper()
   * add match.call() to rangeMap.save()  and save to project
   * rangeMap.save() if FUN returns two values than two maps should be saved.
-  * new method for processRanges() based on the doMC package.
   * write a few 'as' methods (e.g. for raster).
   * define operations in maps (e.g. map1 + map2) both wrapper for raster and direct sql methods
   * improve summary() rangeMapper* objects. 
@@ -17,6 +23,7 @@ BUGS, FIXES
 -----------
   * rangeMap.save() should return TRUE if a (non-empty) MAP_ is saved to the project or FALSE
   if an empty map was created.
+
 
 
 
