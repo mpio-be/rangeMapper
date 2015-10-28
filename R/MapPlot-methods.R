@@ -11,7 +11,7 @@ setMethod("plot",
 	function(x, colorpalette = brewer.pal.get('Spectral')[11:1],
 		ncols = 20, scales = FALSE, style = "equal",  ...) {
 
-	trellis.par.set("regions", list(col= colorRampPalette(colorpalette, space = "Lab")(ncols) ) , warn = FALSE)
+	colPal= colorRampPalette(colorpalette, space = "Lab")(ncols)
 
 	mapVars = names(x)
 
@@ -27,9 +27,11 @@ setMethod("plot",
 	Int = classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
 	printMore = if(i<length(mapVars)) TRUE else FALSE
 
-	print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE,
+	print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE, col.regions = colPal,
 		 at = Int$brks, main = if(length(mapVars) > 1) mapVars[i] else "", ...),
 			split=layout[i, ], more=printMore)
+
+
 	}})
 
 
