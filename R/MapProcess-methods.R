@@ -90,7 +90,7 @@ setMethod("rangeMapProcess",
 				)
 
 
-	o = rangeOverlay(r,  cnv, name)
+	o = rangeMapper::rangeOverlay(r,  cnv, name)
 
 	names(o) = c(object@ID, object@BIOID)
 
@@ -142,10 +142,12 @@ setMethod("rangeMapProcess",
 	#  reproject
 	p4s =  dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 	if(!identical(gsub(" ", "", proj4string(spdf)), gsub(" ", "", p4s) ) ) {
-	warning( paste("Reprojecting to", dQuote(p4s)), keep = FALSE)
-	spdf = spTransform( spdf , CRS(p4s) )
-	}
+  	warning( paste("Reprojecting to", dQuote(p4s)), keep = FALSE)
+  	spdf = spTransform( spdf , CRS(p4s) )
+  	}
 
+	# TODO: change to foreach. subset range instead of split.
+	
 	# split by range
 	message( "Identifing ranges...")
 	spdf = split(spdf, spdf@data[, ID])
@@ -319,7 +321,7 @@ setMethod("rangeMapProcess",
 #' gridSize.save(dbcon, gridSize = 2)
 #' canvas.save(dbcon)
 #'
-#' system.time(processRanges(spdf = r, con =  dbcon, ID = "sci_name" ))
+#' system.time(processRanges(spdf = r, con =  dbcon, ID = "sci_name", parallel = FALSE))
 #' # ~ 18 times faster than processing individual ranges.
 #'
 #'
