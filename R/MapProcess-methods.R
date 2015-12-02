@@ -1,80 +1,23 @@
+#TODO: document parallel
+#TODO replace .processRange with visible function
 
-setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
-
-setMethod("vertices", "SpatialPolygonsDataFrame",
-	function(object, FUN) {
-		d = lapply( unlist(lapply(slot(object, "polygons"), function(P) slot(P, "Polygons"))), function(cr) slot(cr, "coords") )
-		d = lapply(d, function(x) { dimnames(x)[[2]] = c('x', 'y'); x} )
-		d = lapply(d, function(x) x[-nrow(x), , drop = FALSE])
-		d = mapply("cbind", 1:length(d), d, SIMPLIFY = FALSE)
-		if(!missing(FUN))
-			d = lapply(d, function(x) apply(x ,2, FUN) )
-
-		d = data.frame(do.call("rbind", d))
-
-		coordinates(d) = ~ x+y
-		proj4string(d) = CRS(proj4string(object))
-		names(d) = "id"
-		d
-	})
-
-rangeTraits <- function(..., use.default = TRUE) {
-
-	Area     = function(spdf) sum(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
-	Median_x = function(spdf) median(coordinates(vertices(spdf))[, 1])
-	Median_y = function(spdf) median(coordinates(vertices(spdf))[, 2])
-	Min_x    = function(spdf) min(coordinates(vertices(spdf))[, 1])
-	Min_y    = function(spdf) min(coordinates(vertices(spdf))[, 2])
-	Max_x    = function(spdf) max(coordinates(vertices(spdf))[, 1])
-	Max_y    = function(spdf) max(coordinates(vertices(spdf))[, 2])
-
-
-	res = list(Area = Area, Median_x = Median_x, Median_y = Median_y, Min_x = Min_x, Min_y = Min_y, Max_x = Max_x, Max_y = Max_y)
-
-	x = list(...)
-	if(length(x) > 0) {
-		 if(length(names(x)) != length(x)) stop (dQuote("..."), " elements should be named, e.g. myFun = abc")
-		 if( !all(sapply(x, is.function))) stop (dQuote("..."), " elements should be functions.")
-		 if(use.default) res = c(res, x)
-	}
-	res
-	}
-
-.rangeOverlay <- function(spdf, canvas, name) {
-	#SpatialPolygonsDataFrame
-	# canvas 	SpatialPointsDataFrame
-	# name character, length 2
-
-	overlayRes = which(!is.na(over(canvas, spdf)[, 1]))
-
-	if(length(overlayRes) > 0) { 	# do grid interpolation
-		sp = canvas[overlayRes, ]
-		o = data.frame(id = sp$id, bioid = rep(name, nrow(sp)) )
-		}
-
-	if(length(overlayRes) == 0) { 	# the polygons are smaller than the grid cells:  snap to the nearest points
-			xy = vertices(spdf, FUN = mean)
-			nn = spDists(canvas, xy)
-			mins = apply(nn, 2, min)
-			res = vector(mode = 'numeric', length = length(mins))
-			for(i in 1:length(res)) {
-				res[i] = which(nn[,i] == mins[i])
-				}
-			res = unique(res)
-
-			sp = canvas[res, ]
-
-			o = data.frame(id = sp$id, bioid = rep(name, nrow(sp@coords)) )
-		}
-
-	return(o)
-	}
+#' rangeMapProcess
+#'
+#' @param object   a \code{rangeMapProcess} object.
+#' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
+#' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
+#' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
+#' @param metadata 	a named list of functions. See \code{\link[rangeMapper]{rangeTraits}} and \code{\link[rangeMapper]{metadataUpdate}}
+#' @param parallel 	logical, default to false.
+#'
+#' @seealso \code{\link[rangeMapper]{processRanges}}
 
 setGeneric("rangeMapProcess",
 	function(object,spdf, dir, ID,metadata, parallel)
 	standardGeneric("rangeMapProcess") )
 
-# Method 1.1 :  Each range file is a separate shp file. No metadata
+#' @rdname rangeMapProcess
+#' @description Method 1: each range file is a separate shp file. No metadata
 setMethod("rangeMapProcess",
 	signature = c(object = "rangeMapProcess",spdf = "missing", dir = "character", ID = "missing", metadata = "missing", parallel = "missing"),
 	definition = function(object, dir){
@@ -99,7 +42,7 @@ setMethod("rangeMapProcess",
 					   paste("Elapsed time:",round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins"), sep = "\n")
 					 )
 
-		o = .rangeOverlay(r,  cnv, name)
+		o = rangeOverlay(r,  cnv, name)
 
 		names(o) = c(object@ID, object@BIOID)
 
@@ -115,7 +58,8 @@ setMethod("rangeMapProcess",
 	message(paste(nrow(Files), "ranges updated to database; Elapsed time:",round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins") )
 	})
 
-#  Method 1.2 :  Each range file is a separate shp file. Metadata are computed
+#' @rdname rangeMapProcess
+#' @description Method 2: Each range file is a separate shp file. Metadata are computed
 setMethod("rangeMapProcess",
 	signature = c(object = "rangeMapProcess",spdf = "missing", dir = "character", ID = "missing", metadata = "list", parallel = "missing"),
 	definition = function(object, dir, metadata){
@@ -146,7 +90,7 @@ setMethod("rangeMapProcess",
 				)
 
 
-	o = .rangeOverlay(r,  cnv, name)
+	o = rangeOverlay(r,  cnv, name)
 
 	names(o) = c(object@ID, object@BIOID)
 
@@ -176,7 +120,8 @@ setMethod("rangeMapProcess",
 					round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins"), keep = TRUE )
 	})
 
-# Method 2.1:  One shp file containing all ranges, ID is required. No metadata
+#' @rdname rangeMapProcess
+#' @description Method 3: One shp file containing all ranges, ID is required. No metadata
 setMethod("rangeMapProcess",
 	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "missing", parallel = "logical"),
 	definition = function(object, spdf, ID,  metadata, parallel){
@@ -192,7 +137,7 @@ setMethod("rangeMapProcess",
 
 	message("Processsing ranges, please wait!...")
 
-	cnv = as(canvasFetch(object), "SpatialPointsDataFrame")
+	cnv = as( canvasFetch(object), "SpatialPointsDataFrame")
 
 	#  reproject
 	p4s =  dbReadTable(object@CON, object@PROJ4STRING)[1,1]
@@ -213,7 +158,7 @@ setMethod("rangeMapProcess",
 		name = x@data[1, ID]
 		pos = which(rnames%in%name)
 		if(!parallel) setTxtProgressBar(pb, pos)
-		rangeMapper:::.rangeOverlay(x,  cnv, name)
+		 rangeOverlay(x,  cnv, name)
 		}
 
 
@@ -242,7 +187,8 @@ setMethod("rangeMapProcess",
 
 	})
 
-# Method 2.2:  One shp file containing all ranges, ID is required.  Metadata are computed
+#' @rdname rangeMapProcess
+#' @description Method 4: One shp file containing all ranges, ID is required.  Metadata are computed
 setMethod("rangeMapProcess",
 	signature = c(object = "rangeMapProcess",spdf = "SpatialPolygonsDataFrame", dir = "missing", ID = "character", metadata = "list", parallel = "logical"),
 	definition = function(object, spdf, ID,  metadata, parallel){
@@ -279,7 +225,7 @@ setMethod("rangeMapProcess",
 			name = x@data[1, ID]
 			pos = which(rnames%in%name)
 			if(!parallel) setTxtProgressBar(pb, pos)
-			.rangeOverlay(x,  cnv, name)
+			rangeOverlay(x,  cnv, name)
 		}
 
 	if(!parallel) {
@@ -327,7 +273,56 @@ setMethod("rangeMapProcess",
 
 	})
 
-# user level function
+
+#' Process ranges
+#'
+#' Each polygon range is overlayed on the canvas and the results are saved to
+#' the active project file.
+#'
+#' The overlay is performed using \code{\link[sp]{overlay}}. If the overlay
+#' returns no results (i.e. the polygon is smaller than a grid cell) then the
+#' centroid of the range will snap to the nearest point and only one grid cell
+#' will be returned for that range.
+#'
+#' @name processRanges
+#' @param con An sqlite connection pointing to a valid \code{rangeMapper} project.
+#' @param \dots see \code{\link[rangeMapper]{rangeMapProcess}}
+#'
+#' @note If thousands of individual range map polygons are processed, their
+#' geometries are complex and/or the canvas resolution is relatively high this
+#' step can be time consuming.
+#' @seealso \code{\link[rangeMapper]{rangeMapper}}
+#' \code{\link[rangeMapper]{rangeTraits}}
+#' \code{\link[rangeMapper]{metadataUpdate}}.
+#' @export
+#' @keywords spatial
+#' @examples
+#'
+#' require(rangeMapper)
+#' wd = tempdir()
+#'
+#' \dontrun{
+#' # Multiple files (one file per range)
+#' rdr= system.file(package = "rangeMapper", "extdata", "wrens", "vector")
+#' dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = wd)
+#' global.bbox.save(con = dbcon, bbox = rdr)
+#' gridSize.save(dbcon, gridSize = 2) ; canvas.save(dbcon)
+#' system.time(processRanges(dir = rdr, con =  dbcon))
+#' }
+#'
+#' # One file containing all the ranges
+#' r = readOGR(system.file(package = "rangeMapper", "extdata",
+#' 	"wrens", "vector_combined"), "wrens", verbose = FALSE)
+#'
+#' dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = wd )
+#' global.bbox.save(con = dbcon, bbox = r)
+#' gridSize.save(dbcon, gridSize = 2)
+#' canvas.save(dbcon)
+#'
+#' system.time(processRanges(spdf = r, con =  dbcon, ID = "sci_name" ))
+#' # ~ 18 times faster than processing individual ranges.
+#'
+#'
 processRanges <- function(con, ...) {
 	x = new("rangeMapProcess", CON = con)
 	rangeMapProcess(x, ... )

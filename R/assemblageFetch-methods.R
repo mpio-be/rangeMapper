@@ -1,6 +1,51 @@
 
+#' \code{assemblageFetch} retrieves the species set of an arbitrary canvas cell
+#'
+#' Function \code{assemblageFetch} retrieves the species set, and the data
+#' associated with it, of an arbitrary canvas cell optionally with the
+#' associated life history data
+#'
+#' @examples
+#'
+#' require(rangeMapper)
+#'
+#' projName = "wrens.sqlite"
+#' projLoc = paste(tempdir(), projName, sep = .Platform$file.sep)
+#'
+#' dbcon = rangeMap.start(file = projName,dir = tempdir() , overwrite = TRUE)
+#' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
+#' global.bbox.save(con = dbcon, bbox = f)
+#' gridSize.save(dbcon, gridSize = 3)
+#' canvas.save(dbcon)
+#' data(wrens)
+#' bio.save(con = dbcon, loc = wrens ,  ID = "sci_name")
+#' r = readOGR(f, "wrens", verbose = FALSE)
+#' processRanges(spdf = r, con =  dbcon, ID = "sci_name")
+#' rangeMap.save(dbcon)
+#'
+#' sr = rangeMap.fetch(dbcon)
+#' image(sr, axes = TRUE); grid()
+#'
+#' p = list(x = -76.39, y = 9.26)
+#' # or use locator:  p =  locator(1)
+#'
+#' xy = SpatialPoints( do.call(cbind, p), proj4string = CRS("+proj=longlat +datum=NAD83 +no_defs ") )
+#' af = assemblageFetch(rangeMap(projLoc) , xy)
+#' points(p, col = 4, cex = 2)
+#' print(af)
+#'
+#' af = assemblageFetch(rangeMap(projLoc) , xy, "wrens")
+#' print(af[, c(1, 4, 6:8)])
+#'
+#'
 setGeneric("assemblageFetch", function(object, xy, BIO)		standardGeneric("assemblageFetch") )
 
+
+#' @rdname assemblageFetch
+#' @section Methods:\describe{
+#' 		\item{list(signature(object = rangeMap, xy = SpatialPoints, BIO = missing))}
+#'	{assemblageFetch(rangeMap, xy) returns only a data.frame containing two columns:
+#' the bioid (e.g. speciesnames) and the canvas id.} }
 setMethod("assemblageFetch",
 	signature  = c(object = "rangeMap", xy = "SpatialPoints", BIO = "missing"),
 	definition = function(object, xy) {
@@ -21,6 +66,12 @@ setMethod("assemblageFetch",
 		}
    )
 
+#' @rdname assemblageFetch
+#' @section Methods:\describe{
+#' 		\item{list(signature(object = rangeMap, xy = SpatialPoints, BIO = character))}
+#'		{ assemblageFetch(rangeMap, xy, BIO) returns a data.frame
+#' 		containing the bioid (e.g. species names), canvas id and any associated life
+#' 		history data contained in the BIO table. } }
 setMethod("assemblageFetch",
 	signature  = c(object = "rangeMap", xy = "SpatialPoints", BIO = "character"),
 	definition = function(object, xy, BIO) {
@@ -32,13 +83,14 @@ setMethod("assemblageFetch",
 		biotabs = dbGetQuery(object@CON, "SELECT * FROM sqlite_master WHERE type='table' and name like 'BIO_%' ")$name
 		if(BIO%in%biotabs) stop(paste(dQuote(BIO), "is not a BIO_table"))
 		BIO = paste("BIO", BIO, sep = "_")
-		biotab_id = .extract.indexed(object@CON, BIO)
+		biotab_id = extract.indexed(object@CON, BIO)
 
 		#Assembladge IDs
 		assembl_id = over(xy, cnv)$id
 
 		# buid sql
-		sql = paste("SELECT * FROM ranges r LEFT JOIN", BIO, "ON", paste(BIO,biotab_id, sep = ".") , "= r.bioid", "WHERE r.id in(",	paste(assembl_id, collapse = ",")  ,")")
+		sql = paste("SELECT * FROM ranges r LEFT JOIN", BIO, "ON", paste(BIO,biotab_id, sep = ".") , "= r.bioid",
+						"WHERE r.id in(",	paste(assembl_id, collapse = ",")  ,")")
 
 		#fetch assambladges
 		A = dbGetQuery(object@CON, sql)

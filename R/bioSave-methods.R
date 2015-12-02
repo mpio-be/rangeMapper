@@ -1,5 +1,3 @@
-
-
 setGeneric("bioSave", function(object, ...)  	standardGeneric("bioSave") )
 
 setMethod("bioSave",
@@ -50,7 +48,77 @@ setMethod("bioSave",
 	)
 
 
-# user level functions
+#' Import \sQuote{BIO} tables to a \code{rangeMapper} project.
+#'
+#' Import tables (e.g. life history data) to an active \code{rangeMapper}
+#' project.
+#'
+#'
+#' @aliases bioSave bio.save metadata2bio bio.merge bioSave-methods
+#' bioSave,bioSaveDataFrame-method bioSave,bioSaveFile-method
+#' @param con An sqlite connection pointing to a valid \code{rangeMapper}
+#' project.
+#' @param loc file location or \code{data.frame} name
+#' @param tableName if missing, the name of the file or data.frame is used
+#' @param \dots Arguments to pass to the corresponding methods: e.g. the ID,
+#' the column corresponding to the names of the range files
+#' @return A \sQuote{BIO} table is created in the corresponding
+#' \code{rangeMapper} project.
+#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @seealso \code{\link{rangeMap.save}}. \code{\link{wrens}}
+#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
+#' platform for the study of macroecology of life history traits. 21(9).  (DOI:
+#' 10.1111/j.1466-8238.2011.00739.x)
+#' @keywords import
+#' @export
+#' @examples
+#'
+#' require(rangeMapper)
+#' wd = setwd(tempdir())
+#' r = readOGR(system.file(package = "rangeMapper",
+#' 	"extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+#' dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE,
+#' 	dir = tempdir() )
+#' global.bbox.save(con = dbcon, bbox = r)
+#' gridSize.save(dbcon, gridSize = 2)
+#' canvas.save(dbcon)
+#' processRanges(spdf = r, con =  dbcon, ID = "sci_name" )
+#'
+#' # Upload BIO tables
+#' data(wrens)
+#' Troglodytes  = wrens[grep("Troglodytes", wrens$sci_name), c(2, 5)]
+#' bio.save(con = dbcon, loc = Troglodytes,  ID = "sci_name")
+#'
+#' summary(rangeMap("wrens.sqlite"))$BIO_tables
+#' setwd(wd)
+#'
+#'
+#' \dontrun{
+#' require(rangeMapper)
+#' wd = setwd(tempdir())
+#' r = readOGR(system.file(package = "rangeMapper",
+#'   "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+#' dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE,
+#' 	dir = tempdir() )
+#' global.bbox.save(con = dbcon, bbox = r)
+#' gridSize.save(dbcon, gridSize = 2)
+#' canvas.save(dbcon)
+#' processRanges(spdf = r, con =  dbcon, ID = "sci_name", metadata = rangeTraits() )
+#'
+#' wrensPath = system.file(package = "rangeMapper", "data", "wrens.csv")
+#' bio.save(con = dbcon, loc = wrensPath,  ID = "sci_name")
+#' bio.merge(dbcon, "wrensNew")
+#' metadata2bio(dbcon)
+#'
+#' summary(rangeMap("wrens.sqlite"))
+#' setwd(wd)
+#'
+#' }
+#'
+#'
+#'
+#'
+#' @export bio.save
 bio.save   <- function(con, loc, tableName, ...) {
 	if(is.character(loc)) {
 		if(missing(tableName)) tableName = gsub("\\.", "_", basename(loc))
@@ -64,8 +132,8 @@ bio.save   <- function(con, loc, tableName, ...) {
 
 	}
 
-# merge 2 or more BIO tables, default is merge all
 bio.merge <-  function(con, tableName, ...) {
+	# merge 2 or more BIO tables, default is merge all
 
 	r = new("rangeMap", CON = con)
 	tableName = paste(r@BIO, tableName, sep = "")
@@ -75,12 +143,12 @@ bio.merge <-  function(con, tableName, ...) {
 	 btabs = paste(r@BIO, dots, sep = "") else
 	 btabs = dbGetQuery(con, paste("select name from sqlite_master where type = 'table' and tbl_name like '", r@BIO,"%'", sep = ""))$name
 
-	ok = sapply(btabs, function(x) .dbtable.exists(con, x) )
+	ok = sapply(btabs, function(x) dbtable.exists(con, x) )
 
 	if(!all(ok))
 		stop(paste( dQuote(names(ok[!ok])), "is not a table of this rangeMapper project"))
 
-	ids = sapply(btabs, function(x) .extract.indexed(con, x) )
+	ids = sapply(btabs, function(x) extract.indexed(con, x) )
 
 	head = paste("(", paste(paste("SELECT DISTINCT",ids,"as", r@BIOID , "FROM",  names(ids)), collapse = " UNION "), ") as x")
 

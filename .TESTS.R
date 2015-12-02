@@ -25,6 +25,9 @@
 	m = rangeMap.fetch(dbcon)
 	plot(m)
 
+	m = rangeMap.fetch(dbcon, spatial = FALSE)
+
+
 	rm.rangeMapper(dbcon)
 
 
@@ -36,5 +39,10 @@
 	spdf = r
 	ID = "sci_name"
 	metadata = rangeTraits()
+
+
+	rangeMapProcess(object, spdf, dir, ID, metadata, parallel)
+
+
 
 	object =  new("rangeMapFetch", CON = dbcon, tableName = 'species_richness')

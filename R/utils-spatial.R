@@ -1,10 +1,52 @@
+#' Convert WKT polygons to SpatialPolygonsDataFrame
+#'
+#' Convert a data.frame containing WKT polygons to a SpatialPolygonsDataFrame.
+#'
+#'
+#' @param dat \code{data.frame}
+#' @param geom is the name (character vector) of the column in the
+#' \code{data.frame} containing the geometry.
+#' @param id is the name (character vector) of the column in the
+#' \code{data.frame} identifying the polygon.  when \code{id} is not unique
+#' then polygons are combined using \code{rgeos::gUnionCascaded}.
+#' @return a \code{SpatialPolygonsDataFrame} object.
+#' @keywords spatial
+#' @export
+#' @examples
+#'
+#' require(rangeMapper)
+#' require(rgeos)
+#'
+#' # generate a few random polygons
+#' randPoly = function(mean, sd) {
+#'   writeWKT(
+#'     gConvexHull(
+#'      readWKT(paste("MULTIPOINT (",
+#'              paste(apply(matrix(rnorm(n= 100, mean, sd), ncol = 2), 1,
+#'              paste, collapse = ' '), collapse = ","), ")"))))
+#' }
+#' n = 50
+#' d = data.frame( nam = sample(letters, n, TRUE),
+#'                range = mapply(randPoly, mean = sample(1:2, n, TRUE),
+#'                sd = sample(1:2/5, n, TRUE) ))
+#'
+#'
+#' X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
+#'
+#'
+#' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
+#' global.bbox.save(con = dbcon, bbox = X)
+#' gridSize.save(dbcon)
+#' canvas.save(dbcon)
+#' processRanges(spdf = X, con =  dbcon, ID = "nam" )
+#' rangeMap.save(dbcon)
+#' plot(rangeMap.fetch(dbcon))
+#'
+WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
+	dl = split(dat, dat[, id])
 
+	o = lapply(dl, function(x) {
 
-WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {	
-	dl = split(dat, dat[, id])	
-	
-	o = lapply(dl, function(x) { 
-		
 		p = mapply(readWKT, text = x[, geom], id = 1:nrow(x), USE.NAMES = FALSE )
 			if(length(p) == 1) {
 				p = p[[1]]
@@ -27,5 +69,170 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 
 	}
 
-	
+#' Vertices of a SpatialPolygonsDataFrame
+#'
+#' Extract vertices from a \link[sp]{SpatialPolygonsDataFrame} and optionally
+#' applies an aggregating function to each Polygon.
+#'
+#' @name vertices-methods
+#' @aliases vertices vertices-methods vertices,SpatialPolygonsDataFrame-method
+#' vertices.SpatialPolygonsDataFrame
+#' @docType methods
+#' @return A \link[sp]{SpatialPointsDataFrame} containing an id column
+#' corresponding to each extracted Polygon.
+#' @section Methods: \describe{ \item{"SpatialPolygonsDataFrame", FUN =
+#' function}{Extract Polygon vertices and remove the last (repeated line) of
+#' each Polygon.}
+#'
+#' }
+#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @seealso \code{\link[sp]{coordinates}}.
+#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
+#' platform for the study of macroecology of life history traits. 21(9). (DOI:
+#' 10.1111/j.1466-8238.2011.00739.x)
+#' @keywords spatial
+#' @examples
+#'
+#' require(rangeMapper)
+#' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
+#' # path to Campylorhynchus_gularis breeding range:
+#' camgul = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)[6, ]
+#' r = readOGR(camgul$dsn, camgul$layer)
+#' mp = vertices(r, mean)
+#' v = vertices(r)
+#'
+#' plot(r)
+#' points(mp, col = 2, pch = 3, cex = 2)
+#' points(v, pch = 3, cex = .5)
+#'
+NULL
 
+setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
+setMethod("vertices", "SpatialPolygonsDataFrame",
+	function(object, FUN) {
+		d = lapply( unlist(lapply(slot(object, "polygons"), function(P) slot(P, "Polygons"))), function(cr) slot(cr, "coords") )
+		d = lapply(d, function(x) { dimnames(x)[[2]] = c('x', 'y'); x} )
+		d = lapply(d, function(x) x[-nrow(x), , drop = FALSE])
+		d = mapply("cbind", 1:length(d), d, SIMPLIFY = FALSE)
+		if(!missing(FUN))
+			d = lapply(d, function(x) apply(x ,2, FUN) )
+
+		d = data.frame(do.call("rbind", d))
+
+		coordinates(d) = ~ x+y
+		proj4string(d) = CRS(proj4string(object))
+		names(d) = "id"
+		d
+	})
+
+
+#' A container of functions to apply on a \code{\link{SpatialPolygons} object}
+#'
+#' This is a convenience function returning a named \code{\link{list}} of
+#' functions.
+#'
+#' The function returns a named list so any additional functions should be
+#' given as rangeTraits(funName1 = FUN1, funName2 = FUN2) where FUN1, FUN2 are
+#' \code{\link{SpatialPolygons}} extractor functions.
+#'
+#' @param \dots functions, given as myfun = FUN, to apply on a
+#' \code{\link{SpatialPolygons}} object
+#' @param use.default If \code{TRUE}, the default, the output list contains
+#' functions to extract Area, Median, Min and Max extent of the
+#' \code{\link{SpatialPolygons}} object. This option is ignored if no functions
+#' are given.
+#' @return Returns a named list containing extractor functions to apply on
+#' \code{\link{SpatialPolygons}} objects.
+#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @seealso \code{\link{processRanges}} \code{\link{rangeMapper}}.
+#' @keywords SpatialPolygons
+#' @examples
+#'
+#'
+#' summary(rangeTraits(use.default = F))
+#'
+#' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
+#' troaed = selectShpFiles(f, ogr = TRUE,
+#' 	polygons.only = TRUE)[71, ] # path to Troglodytes_aedon
+#'
+#' r = readOGR(troaed$dsn, troaed$layer)
+#'
+#' # Beware of the value returned for Area!
+#' sapply(rangeTraits(), function(x) x(r) )
+#'
+#' # Define an extra function to compute correct Area
+#' Area2 = function(x) {
+#' x = spTransform(x,
+#' CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs")
+#' 	)
+#'
+#' sum(sapply(slot(x, "polygons"), function(x) slot(x, "area") ))
+#' }
+#'
+#' sapply(rangeTraits(Area_sqm = Area2), function(x) x(r) )
+#'
+#'
+#' @export rangeTraits
+rangeTraits <- function(..., use.default = TRUE) {
+
+	Area     = function(spdf) sum(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
+	Median_x = function(spdf) median(coordinates(vertices(spdf))[, 1])
+	Median_y = function(spdf) median(coordinates(vertices(spdf))[, 2])
+	Min_x    = function(spdf) min(coordinates(vertices(spdf))[, 1])
+	Min_y    = function(spdf) min(coordinates(vertices(spdf))[, 2])
+	Max_x    = function(spdf) max(coordinates(vertices(spdf))[, 1])
+	Max_y    = function(spdf) max(coordinates(vertices(spdf))[, 2])
+
+
+	res = list(Area = Area, Median_x = Median_x, Median_y = Median_y, Min_x = Min_x, Min_y = Min_y, Max_x = Max_x, Max_y = Max_y)
+
+	x = list(...)
+	if(length(x) > 0) {
+		 if(length(names(x)) != length(x)) stop (dQuote("..."), " elements should be named, e.g. myFun = abc")
+		 if( !all(sapply(x, is.function))) stop (dQuote("..."), " elements should be functions.")
+		 if(use.default) res = c(res, x)
+	}
+	res
+	}
+
+extract.p4s <- function(ShpFiles) {
+	#ShpFiles = selectShpFiles(paste(system.file(package="rangeMapper"), "extdata", "wrens", "vector", sep = .Platform$file.sep))
+		fl = split(ShpFiles, ShpFiles$layer)
+		unlist(lapply(fl, FUN = function(x) OGRSpatialRef(x[,1], x[,2])  ))
+	}
+
+rect2spp <- function(xmin, xmax, ymin, ymax) {
+	bb = cbind(c(xmin, xmax, xmax, xmin, xmin), c(ymin, ymin, ymax, ymax, ymin) )
+	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")) )
+	}
+
+
+rangeOverlay <- function(spdf, canvas, name) {
+	#SpatialPolygonsDataFrame
+	# canvas 	SpatialPointsDataFrame
+	# name character, length 2
+
+	overlayRes = which(!is.na(over(canvas, spdf)[, 1]))
+
+	if(length(overlayRes) > 0) { 	# do grid interpolation
+		sp = canvas[overlayRes, ]
+		o = data.frame(id = sp$id, bioid = rep(name, nrow(sp)) )
+		}
+
+	if(length(overlayRes) == 0) { 	# the polygons are smaller than the grid cells:  snap to the nearest points
+			xy = vertices(spdf, FUN = mean)
+			nn = spDists(canvas, xy)
+			mins = apply(nn, 2, min)
+			res = vector(mode = 'numeric', length = length(mins))
+			for(i in 1:length(res)) {
+				res[i] = which(nn[,i] == mins[i])
+				}
+			res = unique(res)
+
+			sp = canvas[res, ]
+
+			o = data.frame(id = sp$id, bioid = rep(name, nrow(sp@coords)) )
+		}
+
+	return(o)
+	}

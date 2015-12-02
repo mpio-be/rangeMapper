@@ -24,7 +24,7 @@ summary.rangeMap <- function(object, ...) {
 		out[["BIO_tables"]] = paste(  gsub(object@BIO, "", tbs[grep(object@BIO, tbs)]), collapse = ";" )
 		out[["MAP_tables"]] = paste(  gsub(object@MAP, "", tbs[grep(object@MAP, tbs)]), collapse = ";" )
 
-		mtd =.is.empty(object@CON, object@METADATA_RANGES)
+		mtd =is.empty(object@CON, object@METADATA_RANGES)
 		out[[object@METADATA_RANGES]]= paste(object@METADATA_RANGES, "is empty:", mtd, collapse = ";" )
 
 	}

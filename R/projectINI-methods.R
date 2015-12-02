@@ -1,4 +1,3 @@
-
 setGeneric("rangeMapStart", function(object, ...)	standardGeneric("rangeMapStart") )
 
 setMethod("rangeMapStart",
@@ -33,11 +32,37 @@ setMethod("rangeMapStart",
 
 	})
 
-# user level functions
-rangeMap <- function(path){
-	new("rangeMap", CON = dbConnect(RSQLite::SQLite(), dbname= path) )
-	}
-
+#' Initiate/open a new rangeMapper project
+#'
+#' Initiate/open a new rangeMapper project using a
+#' \code{\link{rangeMapStart-class} object}
+#'
+#'
+#' @aliases rangeMap.start rangeMapStart rangeMap.open rangeMap
+#' @param path Character vector; a path to a valid rangeMapper project
+#' @param verbose Character vector; if \code{TRUE} the project's summary is
+#' printed
+#' @param \dots Arguments to be passed to \code{\link{rangeMapStart-class}}
+#' @return rangeMap.start() and rangeMap.open() returns an sqlite connection.
+#' rangeMap() returns a \code{\link{rangeMap-class}} object.
+#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @seealso \code{\link{rangeMap.save}}.\cr \code{\link{rangeMapStart-class}}
+#' @keywords spatial
+#' @examples
+#'
+#' td = setwd(tempdir())
+#'
+#' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
+#' summary(dbcon)
+#'
+#' summary(rangeMap("test.sqlite"))
+#'
+#' dbcon = rangeMap.open(path = "test.sqlite")
+#' summary(dbcon)
+#' setwd(td)
+#'
+#'
+#' @export rangeMap.start
 rangeMap.start <- function(...) {
 
 	obj = new("rangeMapStart", ... )

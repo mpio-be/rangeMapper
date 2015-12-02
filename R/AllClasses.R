@@ -1,148 +1,133 @@
 
-# Class definitions
-	# rangeMapStart
-	# rangeMap
-	# rangeFiles
-	# gridSize
-	# rangeMapProcess
-	# rangeMapSave
-	# bioSaveFile
-	# bioSaveDataFrame
-	# MapImport
-	# rangeMapFetch
-	# SpatialPixelsRangeMap
-	# rangeMapRemove
-
-
 setClass("rangeMapStart",
-		representation(
-			dir = "character",
-			file = "character",
-			skeleton = "list",
-			overwrite = "logical"
-			),
-		prototype(
-			file = paste("rangeMapperProj",format(Sys.time(), "%Y-%m-%d_%H-%M-%S.sqlite"), sep = "_"),
-			skeleton = 	list(
-		create =
-		c(	"CREATE TABLE version (ver CHAR)",
-			"CREATE TABLE proj4string (p4s CHAR)",
-			"CREATE TABLE gridSize(gridSize FLOAT)",
-			"CREATE TABLE bbox(xmin FLOAT,xmax FLOAT,ymin FLOAT,ymax FLOAT)",
-			"CREATE TABLE canvas (x FLOAT,y FLOAT,id INT)",
-			"CREATE TABLE ranges (id INT,bioid CHAR)",
-			"CREATE TABLE metadata_ranges (bioid CHAR)"
+	representation(
+		dir = "character",
+		file = "character",
+		skeleton = "list",
+		overwrite = "logical"
+		),
+	prototype(
+		file = paste("rangeMapperProj",format(Sys.time(), "%Y-%m-%d_%H-%M-%S.sqlite"), sep = "_"),
+		skeleton = 	list(
+	create =
+	c(	"CREATE TABLE version (ver CHAR)",
+		"CREATE TABLE proj4string (p4s CHAR)",
+		"CREATE TABLE gridSize(gridSize FLOAT)",
+		"CREATE TABLE bbox(xmin FLOAT,xmax FLOAT,ymin FLOAT,ymax FLOAT)",
+		"CREATE TABLE canvas (x FLOAT,y FLOAT,id INT)",
+		"CREATE TABLE ranges (id INT,bioid CHAR)",
+		"CREATE TABLE metadata_ranges (bioid CHAR)"
 
-		),
-		index =
-		c(  "CREATE INDEX IF NOT EXISTS   id_canvas ON canvas (id)",
-			"CREATE INDEX IF NOT EXISTS   id_ranges ON ranges (id)",
-			"CREATE INDEX IF NOT EXISTS   bioid_ranges ON ranges (bioid)",
-			"CREATE INDEX IF NOT EXISTS   bioid_metadata_ranges ON metadata_ranges (bioid)")
-		),
-		overwrite = FALSE
-		),
+	),
+	index =
+	c(  "CREATE INDEX IF NOT EXISTS   id_canvas ON canvas (id)",
+		"CREATE INDEX IF NOT EXISTS   id_ranges ON ranges (id)",
+		"CREATE INDEX IF NOT EXISTS   bioid_ranges ON ranges (bioid)",
+		"CREATE INDEX IF NOT EXISTS   bioid_metadata_ranges ON metadata_ranges (bioid)")
+	),
+	overwrite = FALSE
+	),
 
-		validity = function(object) {
-		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
-		} )
+	validity = function(object) {
+	if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
+	} )
 
 setClass("rangeMap",
-		representation(
-			CON = "SQLiteConnection",
-			VERSION = "character",
-			ID = "character",
-			BIOID = "character",
-			PROJ4STRING = "character",
-			GRIDSIZE = "character",
-			BBOX = "character",
-			METADATA_RANGES = "character",
-			CANVAS = "character",
-			RANGES = "character",
-			BIO = "character",
-			MAP = "character"
-			),
-		prototype(
-			VERSION = "version",
-			ID = "id",
-			BIOID = "bioid",
-			PROJ4STRING = "proj4string",
-			GRIDSIZE = "gridsize",
-			BBOX = "bbox",
-			METADATA_RANGES = "metadata_ranges",
-			CANVAS = "canvas",
-			RANGES = "ranges",
-			BIO = "BIO_",
-			MAP = "MAP_"
-			),
+	representation(
+		CON = "SQLiteConnection",
+		VERSION = "character",
+		ID = "character",
+		BIOID = "character",
+		PROJ4STRING = "character",
+		GRIDSIZE = "character",
+		BBOX = "character",
+		METADATA_RANGES = "character",
+		CANVAS = "character",
+		RANGES = "character",
+		BIO = "character",
+		MAP = "character"
+		),
+	prototype(
+		VERSION = "version",
+		ID = "id",
+		BIOID = "bioid",
+		PROJ4STRING = "proj4string",
+		GRIDSIZE = "gridsize",
+		BBOX = "bbox",
+		METADATA_RANGES = "metadata_ranges",
+		CANVAS = "canvas",
+		RANGES = "ranges",
+		BIO = "BIO_",
+		MAP = "MAP_"
+		),
 
-		validity = function(object) {
+	validity = function(object) {
 
-		if ( ! all( .dbtable.exists(object@CON, object@PROJ4STRING),
-				  .dbtable.exists(object@CON, object@METADATA_RANGES),
-				  .dbtable.exists(object@CON, object@GRIDSIZE),
-				  .dbtable.exists(object@CON, object@BBOX),
-				  .dbtable.exists(object@CON, object@CANVAS),
-				  .dbtable.exists(object@CON, object@RANGES) ) ) stop ("Corrupt rangeMapper project!")
+	if ( ! all( dbtable.exists(object@CON, object@PROJ4STRING),
+			  dbtable.exists(object@CON, object@METADATA_RANGES),
+			  dbtable.exists(object@CON, object@GRIDSIZE),
+			  dbtable.exists(object@CON, object@BBOX),
+			  dbtable.exists(object@CON, object@CANVAS),
+			  dbtable.exists(object@CON, object@RANGES) ) ) stop ("Corrupt rangeMapper project!")
 
 
 
-		})
+	})
 
 setClass("rangeFiles",
-		representation(
-		dir = "character",
-		ogr = "logical",
-		polygons.only = "logical") ,
-		prototype(
-		dir = "",
-		ogr = TRUE,
-		polygons.only = TRUE),
-		validity = function(object) {
-		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
+	representation(
+	dir = "character",
+	ogr = "logical",
+	polygons.only = "logical") ,
+	prototype(
+	dir = "",
+	ogr = TRUE,
+	polygons.only = TRUE),
+	validity = function(object) {
+	if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
 
-		})
+	})
 
 setClass("gridSize",
-		representation(
-		gridSize = "numeric"
-			),
+	representation(
+	gridSize = "numeric"
+		),
 
-		contains = "rangeMap",
+	contains = "rangeMap",
 
-		validity = function(object)	{
-			if(!.is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was allready set!")
-			if(.is.empty(object@CON, object@BBOX)) stop("There is no bouding box!")
+	validity = function(object)	{
+		if(!is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was allready set!")
+		if(is.empty(object@CON, object@BBOX)) stop("There is no bouding box!")
 
-		})
+	})
 
 setClass("rangeMapProcess",
 	# this class is only used  for validity checks
-		contains = "rangeMap",
+	contains = "rangeMap",
 
-		validity = function(object)	{
-					if(!.is.empty(object@CON, object@RANGES))
-						stop(paste(dQuote(object@RANGES), "table is not empty!"))
-		})
+	validity = function(object)	{
+				if(!is.empty(object@CON, object@RANGES))
+					stop(paste(dQuote(object@RANGES), "table is not empty!"))
+	})
 
 setClass("rangeMapSave",
-		representation(
-			biotab    = "character",
-			biotrait  = "character",
-			tableName = "character",
-			subset    = "list"),
+	representation(
+		biotab    = "character",
+		biotrait  = "character",
+		tableName = "character",
+		subset    = "list"),
 
-		contains = "rangeMap",
+	contains = "rangeMap",
 
-		validity = function(object)	{
-		# the new table should not exist
-			if(.dbtable.exists(object@CON, paste(object@MAP, object@tableName, sep = "") ) )
-				stop(paste(sQuote(object@tableName), " already exists."))
+	validity = function(object)	{
+	# the new table should not exist
+		if(dbtable.exists(object@CON, paste(object@MAP, object@tableName, sep = "") ) )
+			stop(paste(sQuote(object@tableName), " already exists."))
 
-			if(.dbtable.exists(object@CON, paste(object@BIO, object@tableName, sep = "") ) )
-				stop( paste(sQuote(object@tableName), " already exists."))
+		if(dbtable.exists(object@CON, paste(object@BIO, object@tableName, sep = "") ) )
+			stop( paste(sQuote(object@tableName), " already exists."))
 
-		})
+	})
 
 setClass("bioSaveFile",
 	representation(loc = "character", sep = "character"),
@@ -154,19 +139,19 @@ setClass("bioSaveFile",
 							})
 
 setClass("bioSaveDataFrame", representation(loc = "data.frame"),
-							contains = "rangeMapSave",
-							validity = function(object) {
-							})
+	contains = "rangeMapSave",
+	validity = function(object) {
+	})
 
 setClass("MapImport", representation(path = "character"),
-							contains = "rangeMapSave",
+	contains = "rangeMapSave",
 
-							validity = function(object) {
+	validity = function(object) {
 
-							if(!file.exists(object@path)) stop(paste(sQuote(object@path), "is not a valid path.") )
-							if(!require("raster")) stop("package raster is not available")
+	if(!file.exists(object@path)) stop(paste(sQuote(object@path), "is not a valid path.") )
+	if(!require("raster")) stop("package raster is not available")
 
-							})
+	})
 
 setClass("rangeMapFetch", representation(
 	tableName    = "character"),
@@ -175,7 +160,7 @@ setClass("rangeMapFetch", representation(
 	validity = function(object)	{
 	mapNam =paste(object@MAP, object@tableName, sep = "")
 
-	invalidNam = sapply(mapNam, FUN = function(x) !.dbtable.exists(object@CON, x) )
+	invalidNam = sapply(mapNam, FUN = function(x) !dbtable.exists(object@CON, x) )
 
 	if( any(invalidNam) )
 	  stop(paste(sQuote(names(invalidNam[invalidNam] )), "is not a valid MAP!\n"))
@@ -192,12 +177,12 @@ setClass("rangeMapFetch", representation(
 	})
 
 setClass("SpatialPixelsRangeMap", representation(
-					mapvar    = "character"),
-				    contains  = "SpatialPixelsDataFrame",
+	mapvar    = "character"),
+    contains  = "SpatialPixelsDataFrame",
 
-					validity = function(object)	{
-					return(TRUE)
-					})
+	validity = function(object)	{
+	return(TRUE)
+	})
 
 setClass("rangeMapRemove", representation(
 	tableName = "character",
@@ -215,24 +200,4 @@ setClass("rangeMapRemove", representation(
 					object@CANVAS, "or",
 					object@RANGES, "table(s) cannot be removed!"))
 	})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

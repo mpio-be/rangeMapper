@@ -1,4 +1,3 @@
-
 setGeneric("rangeMapRemove", function(object, ...)   		     	standardGeneric("rangeMapRemove") )
 
 
@@ -25,7 +24,19 @@ setMethod("rangeMapRemove",
 	   }
 	})
 
-# user level
+#' Remove tables from a give project
+#'
+#' Remove tables given prefix attribute or by name
+#'
+#' @aliases rm.rangeMapper
+#' @param con A valid sqlite connection.
+#' @param \dots Arguments passed to the corresponding methods specifically
+#' \sQuote{tablePrefix} or \sQuote{tableName}
+#' @note The default \sQuote{rm.rangeMapper(con)} will remove all \sQuote{MAP}
+#' and \sQuote{BIO} tables.
+#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @export
+#'
 rm.rangeMapper <- function(con, ...) {
 	 x =  new("rangeMapRemove", CON = con, ...)
 	 rangeMapRemove(x)

@@ -1,12 +1,38 @@
 Package: rangeMapper
-Version: 0.2-91
-Date: 2015-07-18
+Version: 0.2-92
+Authors@R: c(
+    person("Mihai", "Valcu", , "valcu@orn.mpg.de", c("aut", "cre")),
+    person("James", "Dale", , "J.Dale@massey.ac.nz", "aut")
+    )
 Title: A platform for the study of macroecology of life history traits
-Author: Mihai Valcu  <valcu@orn.mpg.de>, James Dale  <J.Dale@massey.ac.nz>
-Maintainer: Mihai Valcu  <valcu@orn.mpg.de>
-Depends: R (>= 3.0.0), methods, utils, RSQLite (>= 1.0.0), rgdal, data.table
-Imports:  sp, rgeos, raster, maptools, lattice, RColorBrewer, classInt
-Suggests: shiny (>= 0.8.0), doParallel
-Description: Tools for easy generation of (life-history) traits maps based on species range (extent-of-occurrence) maps.
+Date: 2015-09-15
+Depends:
+    R (>= 3.0.0),
+    methods,
+    utils,
+    RSQLite (>= 1.0.0),
+    rgdal,
+    rgeos,
+    data.table
+Imports:
+    RSQLite,
+    sp,
+    rgdal,
+    rgeos,
+    raster,
+    maptools,
+    lattice,
+    ggplot2,
+    RColorBrewer,
+    classInt
+Suggests:
+    shiny (>= 0.8.0),
+    doParallel
+Description: Tools for easy generation of (life-history) traits maps based on
+    species range (extent-of-occurrence) maps.
 License: GPL(>= 2)
-URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/package=rangeMapper
+URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/
+    package=rangeMapper
+RoxygenNote: 5.0.1
+
+
