@@ -28,6 +28,16 @@ setMethod("rangeMapFetch",
 	)
 
 # user level functions
+#' rangeMap.fetch
+#' rangeMap.fetch
+#' @param con
+#' @param maps
+#' @param spatial
+#'
+#' @return
+#' @export
+#'
+#' @examples
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
 
@@ -56,21 +66,11 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 #'
 #' Fetch an arbitrary range from a rangeMapper project.
 #'
-#'
 #' @param rangeMap A \code{\link{rangeMap}} object.
 #' @param bioid A character vector, usually a taxon name, which identifies a
 #' range within a given rangeMapper project.
 #' @return A \code{\link{SpatialPolygons}}.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link[rangeMapper]{rangeMapper}}.
-#' \code{\link[rangeMapper]{rangeMapFetch}}.
-#' \code{\link[rangeMapper]{rangeMapSave}}.
-#'
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits. 21(9). (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
 #' @export
-#' @keywords spatial
 #' @examples
 #'
 #' wd = setwd(tempdir())

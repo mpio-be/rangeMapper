@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.2-92
+Version: 0.2-93
 Authors@R: c(
     person("Mihai", "Valcu", , "valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut")
@@ -13,7 +13,9 @@ Depends:
     RSQLite (>= 1.0.0),
     rgdal,
     rgeos,
-    data.table
+    data.table,
+    magrittr,
+    foreach
 Imports:
     RSQLite,
     sp,

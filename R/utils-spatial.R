@@ -108,7 +108,7 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 NULL
 
 setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
-setMethod("vertices", "SpatialPolygonsDataFrame",
+setMethod("vertices", "SpatialPolygons",
 	function(object, FUN) {
 		d = lapply( unlist(lapply(slot(object, "polygons"), function(P) slot(P, "Polygons"))), function(cr) slot(cr, "coords") )
 		d = lapply(d, function(x) { dimnames(x)[[2]] = c('x', 'y'); x} )
@@ -206,13 +206,21 @@ rect2spp <- function(xmin, xmax, ymin, ymax) {
 	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")) )
 	}
 
+#' rangeOverlay
+#'
+#' @param spp
+#' @param canvas
+#' @param name
+#'
+#' @return
+#' @export
+#'
+#' @examples
+rangeOverlay <- function(spp, canvas, name) {
 
-rangeOverlay <- function(spdf, canvas, name) {
-	#SpatialPolygonsDataFrame
-	# canvas 	SpatialPointsDataFrame
-	# name character, length 2
 
-	overlayRes = which(!is.na(over(canvas, spdf)[, 1]))
+	overlayRes = which(!is.na(over(canvas, spp)))
+
 
 	if(length(overlayRes) > 0) { 	# do grid interpolation
 		sp = canvas[overlayRes, ]
@@ -220,7 +228,7 @@ rangeOverlay <- function(spdf, canvas, name) {
 		}
 
 	if(length(overlayRes) == 0) { 	# the polygons are smaller than the grid cells:  snap to the nearest points
-			xy = vertices(spdf, FUN = mean)
+			xy = vertices(spp, FUN = mean)
 			nn = spDists(canvas, xy)
 			mins = apply(nn, 2, min)
 			res = vector(mode = 'numeric', length = length(mins))
@@ -235,4 +243,10 @@ rangeOverlay <- function(spdf, canvas, name) {
 		}
 
 	return(o)
+	}
+
+# undocumented functions
+
+proj4string_is_identical <- function(a, b){
+	identical(gsub(" ", "", a), gsub(" ", "", b) )
 	}

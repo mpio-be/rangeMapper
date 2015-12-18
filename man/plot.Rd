@@ -8,7 +8,7 @@
 \title{Plot a SpatialPixelsRangeMap}
 \usage{
 \S4method{plot}{SpatialPixelsRangeMap,missing}(x,
-  colorpalette = RColorBrewer::brewer.pal.get("Spectral")[11:1], ncols = 20,
+  colorpalette = brewer.pal.get("Spectral")[11:1], ncols = 20,
   scales = FALSE, style = "equal", ...)
 }
 \arguments{
@@ -31,12 +31,12 @@ scales = FALSE, style = "equal", \dots{})}
 
 \tabular{rl}{
   \code{x}              \tab a SpatialPixelsRangeMap object.\cr
-   \code{colorpalette} \tab A color palette. \cr 
+   \code{colorpalette} \tab A color palette. \cr
    \code{ncols}        \tab Number of color classes required, default to 20; argument to be passed to
-   \code{\link{classInt::classIntervals}}\cr 
-   \code{scales}       \tab If \sQuote{FALSE}, default, axes scale are not drawn.\cr 
-   \code{style}        \tab class interval style; see \code{\link{classInt::classIntervals}} for more details\cr 
-   \code{\dots{} }     \tab Any argument that can be passed to \code{\link{spplot}}\cr } 
+   \code{\link{classInt::classIntervals}}\cr
+   \code{scales}       \tab If \sQuote{FALSE}, default, axes scale are not drawn.\cr
+   \code{style}        \tab class interval style; see \code{\link{classInt::classIntervals}} for more details\cr
+   \code{\dots{} }     \tab Any argument that can be passed to \code{\link{spplot}}\cr }
 }}
 }
 \examples{
@@ -59,7 +59,7 @@ SR = rangeMap.fetch(dbcon, 'species_richness')
 plot(all)
 plot(SR, style = "fisher", sub = "Wrens species richness")
 
-pal = RColorBrewer::brewer.pal.get('RdYlGn')[11:1]
+pal =  brewer.pal(11, 'RdYlGn')[11:1]
 
 plot(SR, style = "fisher", colorpalette = pal)
 

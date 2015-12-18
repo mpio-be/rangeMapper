@@ -101,15 +101,6 @@ setClass("gridSize",
 
 	})
 
-setClass("rangeMapProcess",
-	# this class is only used  for validity checks
-	contains = "rangeMap",
-
-	validity = function(object)	{
-				if(!is.empty(object@CON, object@RANGES))
-					stop(paste(dQuote(object@RANGES), "table is not empty!"))
-	})
-
 setClass("rangeMapSave",
 	representation(
 		biotab    = "character",
