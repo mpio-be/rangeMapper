@@ -38,7 +38,7 @@
 #' global.bbox.save(con = dbcon, bbox = X)
 #' gridSize.save(dbcon)
 #' canvas.save(dbcon)
-#' processRanges(spdf = X, con =  dbcon, ID = "nam" )
+#' processRanges(spdf = X, con =  dbcon, ID = "nam", parallel = FALSE)
 #' rangeMap.save(dbcon)
 #' plot(rangeMap.fetch(dbcon))
 #'
