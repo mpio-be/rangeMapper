@@ -1,6 +1,6 @@
 #' processRanges
 #'
-#' @param sqlitecon a \code{connection} object.
+#' @param con a \code{connection} object.
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
 #' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
@@ -19,33 +19,33 @@
 #' canvas.save(dbcon)
 #'
 #' r = readOGR(f, "wrens", verbose = FALSE)
-#' processRanges(sqlitecon = dbcon, spdf = r, ID = "sci_name")
+#' processRanges(con = dbcon, spdf = r, ID = "sci_name")
 #' stopCluster(cl)
 
 setGeneric("processRanges",
-	function(sqlitecon,spdf, dir, ID,metadata)
+	function(con,spdf, dir, ID,metadata)
 	standardGeneric("processRanges") )
 
-#' @describeIn  processRanges One SpatialPolygonsDataFrame containing all the ranges, no metadata are not computed
+#' @describeIn  processRanges One SpatialPolygonsDataFrame containing all the ranges. No metadata.
 setMethod("processRanges",
-	signature = c(sqlitecon  = "SQLiteConnection",
+	signature = c(con        = "SQLiteConnection",
 				 spdf        = "SpatialPolygonsDataFrame",
 				 dir         = "missing",
 				 ID          = "character",
 				 metadata    = "missing"),
 
-	definition = function(sqlitecon, spdf, ID,  metadata){
+	definition = function(con, spdf, ID,  metadata){
 
 	Startprocess = Sys.time()
 
 	# ini
-		rmo = new("rangeMap", CON = sqlitecon)
+		rmo = new("rangeMap", CON = con)
 		if(!is.empty(rmo@CON, rmo@RANGES))
 			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
 
 	# Elements
-		cnv = canvas.fetch(sqlitecon) %>% as(., "SpatialPointsDataFrame")
-		p4s =  dbReadTable(sqlitecon, "proj4string")[1,1] # TODO: write get function
+		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
+		p4s =  dbReadTable(con, "proj4string")[1,1] # TODO: write get function
 		spdf = spdf[, ID]
 		names(spdf) = 'ID'
 
@@ -59,14 +59,12 @@ setMethod("processRanges",
 		roc = foreach(i = spdf$ID, .packages = c('sp'), .combine = rbind) %dopar% {
  			spi  = spdf[spdf$ID == i, ]
  			nami = spi$ID[1]
- 			spi = as(spi, 'SpatialPolygons')
-
  			rangeOverlay( spi , cnv, nami)
 			}
 
 	# db update
 		message("Writing to project.")
-		res = dbWriteTable(sqlitecon, "ranges", roc, append = TRUE, row.names = FALSE)
+		res = dbWriteTable(con, "ranges", roc, append = TRUE, row.names = FALSE)
 
 
 		if(res) message(paste(length(unique(spdf$ID)) , "ranges updated; Elapsed time:",
@@ -74,26 +72,26 @@ setMethod("processRanges",
 
 	})
 
-#' @describeIn  processRanges One SpatialPolygonsDataFrame containing all the ranges, metadata are computed
+#' @describeIn  processRanges One SpatialPolygonsDataFrame containing all the ranges. Metadata are computed.
 setMethod("processRanges",
-	signature = c(sqlitecon  = "SQLiteConnection",
+	signature = c(con  = "SQLiteConnection",
 				 spdf        = "SpatialPolygonsDataFrame",
 				 dir         = "missing",
 				 ID          = "character",
 				 metadata    = "list"),
 
-	definition = function(sqlitecon, spdf, ID,  metadata){
+	definition = function(con, spdf, ID,  metadata){
 
 	# ini
-		rmo = new("rangeMap", CON = sqlitecon)
+		rmo = new("rangeMap", CON = con)
 
 	# Elements
-		p4s =  dbReadTable(sqlitecon, "proj4string")[1,1]
+		p4s =  dbReadTable(con, "proj4string")[1,1]
 		ids = spdf@data[, ID]
 
 
 	# 1. process ranges
-		processRanges(sqlitecon = sqlitecon, spdf = spdf, ID = ID)
+		processRanges(con = con, spdf = spdf, ID = ID)
 
 	# 2. process metadata
 		Startprocess = Sys.time()
@@ -108,13 +106,56 @@ setMethod("processRanges",
 
 		  lapply(
 			paste("ALTER TABLE metadata_ranges ADD COLUMN", names(rtr)[-ncol(rtr)], "FLOAT"),
-				function(x)  dbGetQuery(sqlitecon, x))
+				function(x)  dbGetQuery(con, x))
 
 
-		res = dbWriteTable(sqlitecon, rmo@METADATA_RANGES, rtr, append = TRUE, row.names = FALSE)
+		res = dbWriteTable(con, rmo@METADATA_RANGES, rtr, append = TRUE, row.names = FALSE)
 
 
 
 
+	})
+
+#' @describeIn processRanges each range file is a separate shp file. No metadata.
+setMethod("processRanges",
+	signature = c(con  = "SQLiteConnection",
+				  spdf       = "missing",
+				  dir        = "character",
+				  ID         = "missing",
+				  metadata   = "missing"),
+	definition = function(con, dir){
+
+	Startprocess = Sys.time()
+
+
+	# ini
+		rmo = new("rangeMap", CON = con)
+		if(!is.empty(rmo@CON, rmo@RANGES))
+			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
+
+	# Elements
+		Files = rangeMapper:::rangeFiles(new("rangeFiles", dir = dir))
+		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
+		p4s =  dbReadTable(con, "proj4string")[1,1]
+
+	# Range over canvas
+		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %do% {
+				ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
+
+				if( ! rangeMapper:::proj4string_is_identical(proj4string(ri), p4s) ) {
+					ri = spTransform( ri , CRS(p4s) )
+					}
+
+				oi = rangeOverlay(ri,  cnv, Files[i,'layer'])
+
+				names(oi) = c(rmo@ID, rmo@BIOID)
+
+				# save  to db
+				res = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
+				}
+
+	# Msg
+		message(paste(  unlist(roc) %>% sum , "ranges updated to database; Elapsed time:",
+			round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins") )
 	})
 

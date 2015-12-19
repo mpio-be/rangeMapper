@@ -218,6 +218,8 @@ rect2spp <- function(xmin, xmax, ymin, ymax) {
 #' @examples
 rangeOverlay <- function(spp, canvas, name) {
 
+	if(inherits(spp, 'SpatialPolygonsDataFrame'))
+		spp = as(spp, 'SpatialPolygons')
 
 	overlayRes = which(!is.na(over(canvas, spp)))
 
