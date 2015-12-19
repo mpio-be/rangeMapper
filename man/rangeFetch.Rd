@@ -2,7 +2,8 @@
 % Please edit documentation in R/MapFetch-methods.R
 \name{rangeFetch}
 \alias{rangeFetch}
-\title{Range extractor}
+\title{rangeFetch
+Range extractor}
 \usage{
 rangeFetch(rangeMap, bioid)
 }

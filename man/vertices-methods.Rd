@@ -7,6 +7,9 @@
 \alias{vertices-methods}
 \alias{vertices.SpatialPolygonsDataFrame}
 \title{Vertices of a SpatialPolygonsDataFrame}
+\usage{
+vertices(object, FUN)
+}
 \value{
 A \link[sp]{SpatialPointsDataFrame} containing an id column
 corresponding to each extracted Polygon.

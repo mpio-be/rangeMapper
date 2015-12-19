@@ -38,7 +38,7 @@
 #' global.bbox.save(con = dbcon, bbox = X)
 #' gridSize.save(dbcon)
 #' canvas.save(dbcon)
-#' processRanges(spdf = X, con =  dbcon, ID = "nam", parallel = FALSE)
+#' processRanges(spdf = X, con =  dbcon, ID = "nam")
 #' rangeMap.save(dbcon)
 #' plot(rangeMap.fetch(dbcon))
 #'
@@ -105,8 +105,6 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 #' points(mp, col = 2, pch = 3, cex = 2)
 #' points(v, pch = 3, cex = .5)
 #'
-NULL
-
 setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
 setMethod("vertices", "SpatialPolygons",
 	function(object, FUN) {
@@ -125,7 +123,6 @@ setMethod("vertices", "SpatialPolygons",
 		d
 	})
 
-
 #' A container of functions to apply on a \code{\link{SpatialPolygons} object}
 #'
 #' This is a convenience function returning a named \code{\link{list}} of
@@ -143,12 +140,9 @@ setMethod("vertices", "SpatialPolygons",
 #' are given.
 #' @return Returns a named list containing extractor functions to apply on
 #' \code{\link{SpatialPolygons}} objects.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
 #' @seealso \code{\link{processRanges}} \code{\link{rangeMapper}}.
-#' @keywords SpatialPolygons
+#' @export
 #' @examples
-#'
-#'
 #' summary(rangeTraits(use.default = F))
 #'
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
@@ -172,7 +166,7 @@ setMethod("vertices", "SpatialPolygons",
 #' sapply(rangeTraits(Area_sqm = Area2), function(x) x(r) )
 #'
 #'
-#' @export rangeTraits
+#'
 rangeTraits <- function(..., use.default = TRUE) {
 
 	Area     = function(spdf) sum(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
@@ -208,14 +202,13 @@ rect2spp <- function(xmin, xmax, ymin, ymax) {
 
 #' rangeOverlay
 #'
-#' @param spp
-#' @param canvas
-#' @param name
+#' @param spp     a SpatialPolygons* object.
+#' @param canvas  a SpatialPointsDataFrame.
+#' @param name    a character vector (a bioid)
 #'
-#' @return
+#' @return        a data.frame with two columns: id (canvas id) and bioid.
 #' @export
 #'
-#' @examples
 rangeOverlay <- function(spp, canvas, name) {
 
 	if(inherits(spp, 'SpatialPolygonsDataFrame'))

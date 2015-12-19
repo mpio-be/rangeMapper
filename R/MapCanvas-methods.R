@@ -170,7 +170,7 @@ setMethod("rangeMapBboxFetch",
 #' retrieves the \emph{global bounding box} as a
 #' \code{\link{SpatialPolygonsDataFrame}}.
 #'
-#' @aliases global.bbox global.bbox.save global.bbox.fetch
+#' @aliases global.bbox
 #'
 #' @param con An \code{SQLiteConnection} object pointing to a
 #' \code{rangeMapper} project
@@ -186,16 +186,8 @@ setMethod("rangeMapBboxFetch",
 #' \emph{p4s} will be identical with the \emph{proj4} string of the range
 #' files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
 #' global bounding box is set.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link{rangeMapper}}\cr \code{\link{proj4string}}\cr
-#' \code{\link{bbox}}
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits. 21(9). (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
-#' @keywords spatial
-#' @export
+#' @export global.bbox.save global.bbox.fetch
 #' @examples
-#'
 #' require(rangeMapper)
 #' wd = tempdir()
 #'
@@ -212,6 +204,7 @@ global.bbox.save  <- function(con, ...) {
 	x = new("rangeMap", CON = con)
 	rangeMapBboxSave(x, ... ) }
 
+#' @rdname global.bbox.save
 global.bbox.fetch <- function(con) {
  x = new("rangeMap", CON = con)
  rangeMapBboxFetch(x) }
@@ -261,14 +254,8 @@ setMethod("gridSizeFetch",
 #' length containing the grid size previously saved by \code{gridSize.save}}
 #' @note If \code{gridSize} is not given the default grid size is computed
 #' based on the bounding box as the range of the smallest axis /100.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link[rangeMapper]{rangeMap.save}}.
-#' \code{\link[rangeMapper]{global.bbox}}
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits. 21(9). (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
 #' @keywords spatial sqlite
-#' @export
+#' @export gridSize.save gridSize.fetch
 #' @examples
 #'
 #' require(rangeMapper)
@@ -287,6 +274,7 @@ gridSize.save <- function(con,...) {
 	x = new("gridSize", CON = con,...)
 	gridSizeSave(x) }
 
+#' @rdname gridSize.save
 gridSize.fetch <- function(con) {
 	x = new("rangeMap", CON = con)
 	gridSizeFetch(x) }
@@ -344,8 +332,6 @@ setMethod("canvasFetch",
 #' The canvas is a regular grid of a given resolution. Each range map is
 #' overlayed onto the canvas and the results saved to project.
 #'
-#'
-#' @aliases canvas.save, canvas.fetch
 #' @param con An sqlite connection pointing to a valid \code{rangeMapper}
 #' project.
 #' @return \code{canvas.fetch} Returns a
@@ -371,7 +357,7 @@ canvas.save  <- function(con) {
 	x = new("rangeMap", CON = con)
 	canvasSave(x)
 	}
-
+#' @rdname canvas.save
 canvas.fetch <- function(con) {
 	x = new("rangeMap", CON = con)
 	canvasFetch(x)

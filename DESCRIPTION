@@ -29,7 +29,8 @@ Imports:
     classInt
 Suggests:
     shiny (>= 0.8.0),
-    doParallel
+    doParallel,
+    testthat
 Description: Tools for easy generation of (life-history) traits maps based on
     species range (extent-of-occurrence) maps.
 License: GPL(>= 2)

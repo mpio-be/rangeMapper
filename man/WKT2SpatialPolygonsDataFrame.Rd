@@ -48,7 +48,7 @@ dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 global.bbox.save(con = dbcon, bbox = X)
 gridSize.save(dbcon)
 canvas.save(dbcon)
-processRanges(spdf = X, con =  dbcon, ID = "nam", parallel = FALSE)
+processRanges(spdf = X, con =  dbcon, ID = "nam")
 rangeMap.save(dbcon)
 plot(rangeMap.fetch(dbcon))
 

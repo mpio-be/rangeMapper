@@ -2,16 +2,23 @@
 % Please edit documentation in R/MapFetch-methods.R
 \name{rangeMap.fetch}
 \alias{rangeMap.fetch}
-\title{rangeMap.fetch
-rangeMap.fetch}
+\title{rangeMap.fetch}
 \usage{
 rangeMap.fetch(con, maps, spatial = TRUE)
 }
 \arguments{
-\item{spatial}{}
+\item{con}{a connection to a valid rangeMapper project.}
+
+\item{maps}{map(s) name as character vector. If missing then all the maps are returned.}
+
+\item{spatial}{If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.}
+
+\item{bioid}{the name of the range to fetch (e.g. species name).}
+}
+\value{
+an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates and proj4 string as an atribute if spatial = FALSE.
 }
 \description{
-rangeMap.fetch
 rangeMap.fetch
 }
 

@@ -29,8 +29,6 @@ given as rangeTraits(funName1 = FUN1, funName2 = FUN2) where FUN1, FUN2 are
 \code{\link{SpatialPolygons}} extractor functions.
 }
 \examples{
-
-
 summary(rangeTraits(use.default = F))
 
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
@@ -54,12 +52,9 @@ sum(sapply(slot(x, "polygons"), function(x) slot(x, "area") ))
 sapply(rangeTraits(Area_sqm = Area2), function(x) x(r) )
 
 
-}
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
+
 }
 \seealso{
 \code{\link{processRanges}} \code{\link{rangeMapper}}.
 }
-\keyword{SpatialPolygons}
 

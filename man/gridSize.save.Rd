@@ -7,6 +7,8 @@
 \title{Save or retrieve the grid size from an \code{rangeMapper} project.}
 \usage{
 gridSize.save(con, ...)
+
+gridSize.fetch(con)
 }
 \arguments{
 \item{con}{A connection pointing to a valid \code{rangeMapper} project.}
@@ -38,18 +40,6 @@ global.bbox.save(con = dbcon)
 gridSize.save(dbcon)
 gridSize.fetch(dbcon) #default grid size value
 
-}
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
-\references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-platform for the study of macroecology of life history traits. 21(9). (DOI:
-10.1111/j.1466-8238.2011.00739.x)
-}
-\seealso{
-\code{\link[rangeMapper]{rangeMap.save}}.
-\code{\link[rangeMapper]{global.bbox}}
 }
 \keyword{spatial}
 \keyword{sqlite}

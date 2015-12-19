@@ -3,10 +3,11 @@
 \name{canvas.save}
 \alias{canvas.fetch}
 \alias{canvas.save}
-\alias{canvas.save,}
 \title{Project's canvas}
 \usage{
 canvas.save(con)
+
+canvas.fetch(con)
 }
 \arguments{
 \item{con}{An sqlite connection pointing to a valid \code{rangeMapper}

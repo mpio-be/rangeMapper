@@ -7,6 +7,8 @@
 \title{Global bounding box}
 \usage{
 global.bbox.save(con, ...)
+
+global.bbox.fetch(con)
 }
 \arguments{
 \item{con}{An \code{SQLiteConnection} object pointing to a
@@ -37,7 +39,6 @@ files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
 global bounding box is set.
 }
 \examples{
-
 require(rangeMapper)
 wd = tempdir()
 
@@ -51,17 +52,4 @@ bbox0 = global.bbox.fetch(dbcon)
 plot(bbox0, axes = TRUE)
 
 }
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
-\references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-platform for the study of macroecology of life history traits. 21(9). (DOI:
-10.1111/j.1466-8238.2011.00739.x)
-}
-\seealso{
-\code{\link{rangeMapper}}\cr \code{\link{proj4string}}\cr
-\code{\link{bbox}}
-}
-\keyword{spatial}
 

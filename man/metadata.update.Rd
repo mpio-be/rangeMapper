@@ -2,9 +2,6 @@
 % Please edit documentation in R/metadataUpdate-methods.R
 \name{metadata.update}
 \alias{metadata.update}
-\alias{metadataUpdate}
-\alias{metadataUpdate,rangeMap,function,character,SpatialGridDataFrame,missing-method}
-\alias{metadataUpdate-methods}
 \title{Updates metadata table}
 \usage{
 metadata.update(rangeMap, FUN, name, map, overwrite = FALSE, ...)
@@ -26,7 +23,7 @@ replaced}
 \item{\dots}{extra arguments (e.g. \code{na.rm = TRUE}) to be passed to FUN.}
 }
 \value{
-Nothing is returned.
+NULL.
 }
 \description{
 Updates \code{metadata_table} of a \code{rangeMapper} project \emph{after}
@@ -41,7 +38,6 @@ points) using overlaying functions in the package \code{raster} and
 \code{rgeos} respectively.
 }
 \examples{
-
 
 require(rangeMapper)
 
@@ -62,37 +58,24 @@ gridSize.save(dbcon, gridSize = 300000)
 canvas.save(dbcon)
 processRanges(spdf = spdf, con =  dbcon, ID = "sci_name" )
 
-# metadata.update
-metadata.update (rmap,
-			FUN = function(x, ...) {
-				res = diff(range(x, ...))
-				if( !is.finite(res)) res = 0
-				res
-				},
-	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
-
-# plot
-mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
-maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
-image(r)
-plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
-title(main = maxRangeSp)
+ #   # metadata.update
+ #   metadata.update (rmap,
+ #   			FUN = function(x, ...) {
+ #   				res = diff(range(x, ...))
+ #   				if( !is.finite(res)) res = 0
+ #   				res
+ #   				},
+ #   	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
+ #
+ #   # plot
+ #   mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
+ #   maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
+ #   image(r)
+ #   plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
+ #   title(main = maxRangeSp)
 
 
 
 
 }
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
-\references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-platform for the study of macroecology of life history traits. 21(9). (DOI:
-10.1111/j.1466-8238.2011.00739.x)
-}
-\seealso{
-\code{\link{processRanges}} \cr \code{\link{rangeTraits}}
-}
-\keyword{spatial}
-\keyword{sqlite}
 

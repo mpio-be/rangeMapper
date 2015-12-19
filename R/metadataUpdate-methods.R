@@ -30,7 +30,6 @@ setMethod("metadataUpdate",
 			# loop through ranges,  apply FUN and update metadata_ranges
 
 			message("Updating metadata_ranges ...")
-			pb = txtProgressBar(min = 0, max = length(mr), char = ".", style = 3)
 
 			for( i in 1:length(mr) ) {
 				idi = mr[i]
@@ -41,12 +40,12 @@ setMethod("metadataUpdate",
 
 				if( any(length(res) > 1 | res%in%c(-Inf, Inf)) ) {
 					dbRemoveField(object@CON, 'metadata_ranges', name)
-					stop( paste("FUN returned ", dQuote(res), ". It should only return a non-infinite numeric vector of length 1.", sep = '') )
+					stop( paste("FUN returned ", dQuote(res), ". It should only return a finite numeric vector of length 1.", sep = '') )
 				}
 
 				if(!is.na(res))
 					dbGetQuery(object@CON, paste('UPDATE metadata_ranges SET' ,name, '=' ,res, 'WHERE bioid =' ,shQuote(idi) ))
-				setTxtProgressBar(pb, i)
+
 			}
 
 		# last Msg
@@ -58,36 +57,24 @@ setMethod("metadataUpdate",
 #' Updates \code{metadata_table} of a \code{rangeMapper} project \emph{after}
 #' importing ranges with \code{\link{processRanges}}.
 #'
-#'
-#' @aliases metadata.update metadataUpdate metadataUpdate-methods
-#' metadataUpdate,rangeMap,function,character,SpatialGridDataFrame,missing-method
-#' metadataUpdate,rangeMap,function,character,SpatialGridDataFrame,missing-method
 #' @param rangeMap A \code{\link{rangeMap}} object.
-#' @param FUN Function used to aggregate the map values corresponding to each
-#' range
-#' @param name The name of the new \code{metadata_table} field containing the
-#' variable computed by \code{FUN}
-#' @param map Single-band \code{\link[sp]{SpatialGridDataFrame}} object
+#' @param FUN      Function used to aggregate the map values corresponding to each
+#'                 range
+#' @param name     The name of the new \code{metadata_table} field containing the
+#'                  variable computed by \code{FUN}
+#' @param map       Single-band \code{\link[sp]{SpatialGridDataFrame}} object
 #' @param overwrite If set to \code{TRUE} the the values of the field are
 #' replaced
-#' @param \dots extra arguments (e.g. \code{na.rm = TRUE}) to be passed to FUN.
-#' @return Nothing is returned.
+#' @param \dots     extra arguments (e.g. \code{na.rm = TRUE}) to be passed to FUN.
+#' @return          NULL.
 #' @note In order to compute taxa-level metadata which are not dependent on the
 #' project's resolution use \code{\link{processRanges}} with a \code{metadata}
 #' argument. See \code{\link{rangeTraits}} for more details. \cr The method can
 #' be extended to work with raster or vector objects (e.g. lines, polygons,
 #' points) using overlaying functions in the package \code{raster} and
 #' \code{rgeos} respectively.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link{processRanges}} \cr \code{\link{rangeTraits}}
-#'
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits. 21(9). (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
-#' @keywords spatial sqlite
 #' @export
 #' @examples
-#'
 #'
 #' require(rangeMapper)
 #'
@@ -108,21 +95,21 @@ setMethod("metadataUpdate",
 #' canvas.save(dbcon)
 #' processRanges(spdf = spdf, con =  dbcon, ID = "sci_name" )
 #'
-#' # metadata.update
-#' metadata.update (rmap,
-#' 			FUN = function(x, ...) {
-#' 				res = diff(range(x, ...))
-#' 				if( !is.finite(res)) res = 0
-#' 				res
-#' 				},
-#' 	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
-#'
-#' # plot
-#' mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
-#' maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
-#' image(r)
-#' plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
-#' title(main = maxRangeSp)
+#'  #   # metadata.update
+#'  #   metadata.update (rmap,
+#'  #   			FUN = function(x, ...) {
+#'  #   				res = diff(range(x, ...))
+#'  #   				if( !is.finite(res)) res = 0
+#'  #   				res
+#'  #   				},
+#'  #   	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
+#'  #
+#'  #   # plot
+#'  #   mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
+#'  #   maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
+#'  #   image(r)
+#'  #   plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
+#'  #   title(main = maxRangeSp)
 #'
 #'
 #'

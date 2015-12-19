@@ -45,9 +45,8 @@ setMethod("rangeMapStart",
 #' @param \dots Arguments to be passed to \code{\link{rangeMapStart-class}}
 #' @return rangeMap.start() and rangeMap.open() returns an sqlite connection.
 #' rangeMap() returns a \code{\link{rangeMap-class}} object.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
 #' @seealso \code{\link{rangeMap.save}}.\cr \code{\link{rangeMapStart-class}}
-#' @keywords spatial
+#' @export rangeMap.start rangeMap.open
 #' @examples
 #'
 #' td = setwd(tempdir())
@@ -62,7 +61,6 @@ setMethod("rangeMapStart",
 #' setwd(td)
 #'
 #'
-#' @export rangeMap.start
 rangeMap.start <- function(...) {
 
 	obj = new("rangeMapStart", ... )
@@ -75,6 +73,7 @@ rangeMap.start <- function(...) {
 	invisible(dbConnect( RSQLite::SQLite() , dbname = f))
 	}
 
+#' @rdname rangeMap.start
 rangeMap.open <- function(path, verbose = TRUE) {
 
 	stopifnot(file.exists(path))

@@ -7,7 +7,14 @@
 rangeOverlay(spp, canvas, name)
 }
 \arguments{
-\item{name}{}
+\item{spp}{a SpatialPolygons* object.}
+
+\item{canvas}{a SpatialPointsDataFrame.}
+
+\item{name}{a character vector (a bioid)}
+}
+\value{
+a data.frame with two columns: id (canvas id) and bioid.
 }
 \description{
 rangeOverlay

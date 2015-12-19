@@ -5,7 +5,7 @@
 \alias{assemblageFetch}
 \alias{assemblageFetch,rangeMap,SpatialPoints,character-method}
 \alias{assemblageFetch,rangeMap,SpatialPoints,missing-method}
-\title{\code{assemblageFetch} retrieves the species set of an arbitrary canvas cell}
+\title{Retrieves the species set of an arbitrary canvas cell}
 \usage{
 assemblageFetch(object, xy, BIO)
 
@@ -14,22 +14,19 @@ assemblageFetch(object, xy, BIO)
 \S4method{assemblageFetch}{rangeMap,SpatialPoints,character}(object, xy, BIO)
 }
 \description{
-Function \code{assemblageFetch} retrieves the species set, and the data
-associated with it, of an arbitrary canvas cell optionally with the
-associated life history data
+\code{assemblageFetch} retrieves the species set of an arbitrary canvas cell
+optionally with the associated life history data
 }
-\section{Methods}{
-\describe{
-		\item{list(signature(object = rangeMap, xy = SpatialPoints, BIO = missing))}
-{assemblageFetch(rangeMap, xy) returns only a data.frame containing two columns:
-the bioid (e.g. speciesnames) and the canvas id.} }
+\section{Methods (by class)}{
+\itemize{
+\item \code{object = rangeMap,xy = SpatialPoints,BIO = missing}: assemblageFetch(rangeMap, xy)
+returns a data.frame containing two columns:
+the bioid (e.g. speciesnames) and the canvas id.
 
-\describe{
-		\item{list(signature(object = rangeMap, xy = SpatialPoints, BIO = character))}
-	{ assemblageFetch(rangeMap, xy, BIO) returns a data.frame
-		containing the bioid (e.g. species names), canvas id and any associated life
-		history data contained in the BIO table. } }
-}
+\item \code{object = rangeMap,xy = SpatialPoints,BIO = character}: assemblageFetch(rangeMap, xy, BIO)
+returns a data.frame containing the bioid (e.g. species names),
+canvas id and any associated life history data contained in the BIO table.
+}}
 \examples{
 
 require(rangeMapper)
@@ -39,12 +36,12 @@ projLoc = paste(tempdir(), projName, sep = .Platform$file.sep)
 
 dbcon = rangeMap.start(file = projName,dir = tempdir() , overwrite = TRUE)
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-global.bbox.save(con = dbcon, bbox = f)
+r = readOGR(f, "wrens", verbose = FALSE)
+global.bbox.save(con = dbcon, bbox = r)
 gridSize.save(dbcon, gridSize = 3)
 canvas.save(dbcon)
 data(wrens)
 bio.save(con = dbcon, loc = wrens ,  ID = "sci_name")
-r = readOGR(f, "wrens", verbose = FALSE)
 processRanges(spdf = r, con =  dbcon, ID = "sci_name")
 rangeMap.save(dbcon)
 

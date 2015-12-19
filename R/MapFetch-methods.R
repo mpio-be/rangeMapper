@@ -28,16 +28,16 @@ setMethod("rangeMapFetch",
 	)
 
 # user level functions
+
 #' rangeMap.fetch
-#' rangeMap.fetch
-#' @param con
-#' @param maps
-#' @param spatial
+
+#' @param con 	  a connection to a valid rangeMapper project.
+#' @param maps    map(s) name as character vector. If missing then all the maps are returned.
+#' @param spatial If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.
+#' @param bioid   the name of the range to fetch (e.g. species name).
 #'
-#' @return
+#' @return        an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates and proj4 string as an atribute if spatial = FALSE.
 #' @export
-#'
-#' @examples
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
 
@@ -62,6 +62,7 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 
   }
 
+#' rangeFetch
 #' Range extractor
 #'
 #' Fetch an arbitrary range from a rangeMapper project.

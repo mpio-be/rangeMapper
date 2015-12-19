@@ -40,7 +40,6 @@ scales = FALSE, style = "equal", \dots{})}
 }}
 }
 \examples{
-
 require(rangeMapper)
 dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
@@ -59,7 +58,7 @@ SR = rangeMap.fetch(dbcon, 'species_richness')
 plot(all)
 plot(SR, style = "fisher", sub = "Wrens species richness")
 
-pal =  brewer.pal(11, 'RdYlGn')[11:1]
+pal =  RColorBrewer::brewer.pal(11, 'RdYlGn')[11:1]
 
 plot(SR, style = "fisher", colorpalette = pal)
 
@@ -67,5 +66,4 @@ plot(SR, style = "fisher", colorpalette = pal)
 \seealso{
 \code{\link{classInt::classIntervals}} \code{\link{RColorBrewer::brewer.pal}}
 }
-\keyword{methods}
 

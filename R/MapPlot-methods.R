@@ -33,9 +33,7 @@ if (!isGeneric("plot"))    {
 #'
 #' @seealso \code{\link{classInt::classIntervals}} \code{\link{RColorBrewer::brewer.pal}}
 #' @export
-#' @keywords methods
 #' @examples
-#'
 #' require(rangeMapper)
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
@@ -54,7 +52,7 @@ if (!isGeneric("plot"))    {
 #' plot(all)
 #' plot(SR, style = "fisher", sub = "Wrens species richness")
 #'
-#' pal =  brewer.pal(11, 'RdYlGn')[11:1]
+#' pal =  RColorBrewer::brewer.pal(11, 'RdYlGn')[11:1]
 #'
 #' plot(SR, style = "fisher", colorpalette = pal)
 #'
@@ -76,16 +74,16 @@ setMethod("plot",
 	if(length(mapVars ) == 3)  layout = cbind(rep(1, 3), 1:3, 1, 3)
 
 	for(i in seq(along = mapVars)) {
+		Int = classInt::classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
+		printMore = if(i<length(mapVars)) TRUE else FALSE
 
-	Int = classInt::classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
-	printMore = if(i<length(mapVars)) TRUE else FALSE
+		print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE, col.regions = colPal,
+			 at = Int$brks, main = if(length(mapVars) > 1) mapVars[i] else "", ...),
+				split=layout[i, ], more=printMore)
+		}
 
-	print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE, col.regions = colPal,
-		 at = Int$brks, main = if(length(mapVars) > 1) mapVars[i] else "", ...),
-			split=layout[i, ], more=printMore)
+ })
 
-
-	}})
 
 # TODO
 ggp <- function(){

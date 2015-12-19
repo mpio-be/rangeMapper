@@ -8,6 +8,8 @@
 \title{Initiate/open a new rangeMapper project}
 \usage{
 rangeMap.start(...)
+
+rangeMap.open(path, verbose = TRUE)
 }
 \arguments{
 \item{path}{Character vector; a path to a valid rangeMapper project}
@@ -40,11 +42,7 @@ setwd(td)
 
 
 }
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
 \seealso{
 \code{\link{rangeMap.save}}.\cr \code{\link{rangeMapStart-class}}
 }
-\keyword{spatial}
 
