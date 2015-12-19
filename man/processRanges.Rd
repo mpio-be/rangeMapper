@@ -5,20 +5,29 @@
 \alias{processRanges}
 \alias{processRanges,SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list-method}
 \alias{processRanges,SQLiteConnection,SpatialPolygonsDataFrame,missing,character,missing-method}
+\alias{processRanges,SQLiteConnection,missing,character,missing,list-method}
+\alias{processRanges,SQLiteConnection,missing,character,missing,missing-method}
 \title{processRanges}
 \usage{
-processRanges(sqlitecon, spdf, dir, ID, metadata)
+processRanges(con, spdf, dir, ID, metadata)
 
 
-  \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,missing}(sqlitecon,
+  \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,missing}(con,
   spdf, ID, metadata)
 
 
-  \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list}(sqlitecon,
+  \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list}(con,
   spdf, ID, metadata)
+
+
+  \S4method{processRanges}{SQLiteConnection,missing,character,missing,missing}(con,
+  dir)
+
+\S4method{processRanges}{SQLiteConnection,missing,character,missing,list}(con,
+  dir, metadata)
 }
 \arguments{
-\item{sqlitecon}{a \code{connection} object.}
+\item{con}{a \code{connection} object.}
 
 \item{spdf}{\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.}
 
@@ -33,9 +42,13 @@ processRanges
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{sqlitecon = SQLiteConnection,spdf = SpatialPolygonsDataFrame,dir = missing,ID = character,metadata = missing}: One SpatialPolygonsDataFrame containing all the ranges, no metadata are not computed
+\item \code{con = SQLiteConnection,spdf = SpatialPolygonsDataFrame,dir = missing,ID = character,metadata = missing}: Method 1: One SpatialPolygonsDataFrame containing all the ranges. No metadata.
 
-\item \code{sqlitecon = SQLiteConnection,spdf = SpatialPolygonsDataFrame,dir = missing,ID = character,metadata = list}: One SpatialPolygonsDataFrame containing all the ranges, metadata are computed
+\item \code{con = SQLiteConnection,spdf = SpatialPolygonsDataFrame,dir = missing,ID = character,metadata = list}: Method 2: One SpatialPolygonsDataFrame containing all the ranges. Metadata are computed.
+
+\item \code{con = SQLiteConnection,spdf = missing,dir = character,ID = missing,metadata = missing}: Method 3: Each range file is a separate shp file. No metadata.
+
+\item \code{con = SQLiteConnection,spdf = missing,dir = character,ID = missing,metadata = list}: Method 4: Each range file is a separate shp file. Metadata are computed.
 }}
 \examples{
 require(rangeMapper)
@@ -50,7 +63,7 @@ gridSize.save(dbcon, gridSize = 250000)
 canvas.save(dbcon)
 
 r = readOGR(f, "wrens", verbose = FALSE)
-processRanges(sqlitecon = dbcon, spdf = r, ID = "sci_name")
+processRanges(con = dbcon, spdf = r, ID = "sci_name")
 stopCluster(cl)
 }
 
