@@ -9,6 +9,25 @@ apt_packages:
  - libproj-dev
  - libgeos-dev
 
+r_binary_packages:
+ - testthat
+ - RSQLite
+ - rgdal
+ - rgeos
+ - data.table
+ - magrittr
+ - foreach
+ - RSQLite
+ - sp
+ - rgdal
+ - rgeos
+ - raster
+ - maptools
+ - lattice
+ - ggplot2
+ - RColorBrewer
+ - classInt
+
 
 after_success:
   - Rscript -e 'covr::codecov()'
