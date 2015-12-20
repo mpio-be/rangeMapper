@@ -4,13 +4,13 @@ language: R
 sudo: required
 warnings_are_errors: false
 
-r_github_packages:
-  - jimhester/covr
-
 apt_packages:
  - libgdal1-dev
  - libproj-dev
  - libgeos-dev
+
+r_packages:
+  - covr
 
 r_binary_packages:
  - testthat
