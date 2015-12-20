@@ -7,8 +7,7 @@ warnings_are_errors: false
 apt_packages:
  - libgdal1-dev
  - libproj-dev
- - geos
- -  geos-devel
+ - libgeos-dev
 
 
 after_success:
