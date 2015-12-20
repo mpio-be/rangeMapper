@@ -41,7 +41,7 @@ setMethod("rangeMapExport",
 #'
 rangeMap.export  <- function(con, dirName = dirName, ...) {
 	x = new("rangeMap", CON = con)
-	if(missing(dirName))  dirName =  dirname(dbGetInfo(con)$dbname)
+	if(missing(dirName))  dirName =  getwd()
 
 	rangeMapExport(x, dirName = dirName, ...)
   	}
