@@ -4,9 +4,8 @@ language: R
 sudo: required
 warnings_are_errors: false
 
-
-before_install:
-  - pip install codecov
+r_github_packages:
+  - jimhester/covr
 
 apt_packages:
  - libgdal1-dev
@@ -33,4 +32,4 @@ r_binary_packages:
  - classInt
 
 after_success:
-  - codecov
+  - Rscript -e 'covr::codecov()'
