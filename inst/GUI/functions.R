@@ -111,7 +111,7 @@ plotMap <- function(input) {
 	m = rangeMap.fetch(dbcon, input$mapPlotNam)
 	cpal = RColorBrewer::brewer.pal.get(input$palette)
 	if(input$inversePal) cpal = rev(cpal)
-	plot(m, scales = TRUE, style = input$classInt::classIntervals, colorpalette = cpal )
+	plot(m, scales = TRUE, style = input$classInt, colorpalette = cpal )
 	dbDisconnect(dbcon)
 	}
 

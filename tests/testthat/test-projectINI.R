@@ -3,12 +3,13 @@ context("low level")
 
 test_that("Range overlay", {
 	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+	spdf = readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+
 	global.bbox.save(con = con, bbox = spdf)
 	gridSize.save(con, gridSize = 10)
 	canvas.save(con)
 	canvas = canvas.fetch(con)
 
-	spdf = readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
 	name = 'Campylorhynchus_gularis'
 	spp = spdf[spdf$sci_name == name, ]
 

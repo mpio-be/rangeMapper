@@ -2,10 +2,11 @@
 #' rangeMapper GUI
 #' @export
 #' @examples
+#' \dontrun{
 #' rangeMapper()
+#'}
 #'
 rangeMapper <- function() {
-	require(shiny)
 	shiny::runApp(system.file('GUI', package = 'rangeMapper'))
 	}
 

@@ -85,67 +85,67 @@ setMethod("rangeMapBboxSave",
 		warning("Bounding box upload failed.") } )
 
 setMethod("rangeMapBboxSave",
-		signature  = c(object = "rangeMap", bbox = "character", p4s = "missing"),
-		definition = function(object,bbox, p4s) {
-		if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	signature  = c(object = "rangeMap", bbox = "character", p4s = "missing"),
+	definition = function(object,bbox, p4s) {
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 
-		# bbox  the path to the range file(s) directory, pass to new("rangeFiles" ....
+	# bbox  the path to the range file(s) directory, pass to new("rangeFiles" ....
 
-		bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE), checkProj = TRUE )
+	bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE), checkProj = TRUE )
 
-		res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
-		res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s = attributes(bb)$p4s), append = TRUE, row.names = FALSE)
+	res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
+	res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s = attributes(bb)$p4s), append = TRUE, row.names = FALSE)
 
-		res = all(res1, res2)
+	res = all(res1, res2)
 
-		if(res)
-			message( paste("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else
-			warning("Bounding box upload failed.")
-
-	 })
-
-setMethod("rangeMapBboxSave",
-		signature  = c(object = "rangeMap", bbox = "character", p4s = "CRS"),
-		definition = function(object, bbox, p4s) {
-		if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
-
-		bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE),checkProj = TRUE )
-
-		message(paste("Converting to", p4s@projargs) )
-			bbnew = rect2spp(bb[1], bb[2], bb[3], bb[4])
-			bbnew =  spsample(bbnew, n = 1000, type = "regular", offset = c(0,0) )
-			proj4string(bbnew) = attributes(bb)$p4s
-			bbnew = spTransform(bbnew , p4s )
-			bb = c(bbox(bbnew )[1, ], bbox(bbnew )[2, ] )
-			attributes(bb)$p4s = p4s@projargs
-
-		res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
-		res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s = attributes(bb)$p4s), append = TRUE, row.names = FALSE)
-
-		res = all(res1, res2)
-
-		if(res)
-			message(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else
-			warning("Bounding box upload failed.")
+	if(res)
+		message( paste("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else
+		warning("Bounding box upload failed.")
 
 	 })
 
 setMethod("rangeMapBboxSave",
-		signature  = c(object = "rangeMap", bbox = "Spatial", p4s = "missing"),
-		definition = function(object, bbox, p4s) {
-		if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	signature  = c(object = "rangeMap", bbox = "character", p4s = "CRS"),
+	definition = function(object, bbox, p4s) {
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 
-		bb = c( bbox(bbox)[1, ], bbox(bbox)[2, ])
-		p4s = proj4string(bbox)
+	bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE),checkProj = TRUE )
 
-		res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
-		res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s), append = TRUE, row.names = FALSE)
+	message(paste("Converting to", p4s@projargs) )
+		bbnew = rect2spp(bb[1], bb[2], bb[3], bb[4])
+		bbnew =  spsample(bbnew, n = 1000, type = "regular", offset = c(0,0) )
+		proj4string(bbnew) = attributes(bb)$p4s
+		bbnew = spTransform(bbnew , p4s )
+		bb = c(bbox(bbnew )[1, ], bbox(bbnew )[2, ] )
+		attributes(bb)$p4s = p4s@projargs
 
-		res = all(res1, res2)
+	res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
+	res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s = attributes(bb)$p4s), append = TRUE, row.names = FALSE)
 
-		if(res)
-			message(c("Bounding box uploaded.", "PROJ4STRING set to ", p4s) ) else
-			warning("Bounding box upload failed.")
+	res = all(res1, res2)
+
+	if(res)
+		message(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else
+		warning("Bounding box upload failed.")
+
+	 })
+
+setMethod("rangeMapBboxSave",
+	signature  = c(object = "rangeMap", bbox = "Spatial", p4s = "missing"),
+	definition = function(object, bbox, p4s) {
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+
+	bb = c( bbox(bbox)[1, ], bbox(bbox)[2, ])
+	p4s = proj4string(bbox)
+
+	res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
+	res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s), append = TRUE, row.names = FALSE)
+
+	res = all(res1, res2)
+
+	if(res)
+		message(c("Bounding box uploaded.", "PROJ4STRING set to ", p4s) ) else
+		warning("Bounding box upload failed.")
 	 })
 
 setMethod("rangeMapBboxFetch",

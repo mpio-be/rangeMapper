@@ -178,7 +178,7 @@ HTML('<hr>
 
 
 	<a href="http://cran.r-project.org/web/packages/classInt/" target="_blank"> Style: </a>
-		<select id = "classInt::classIntervals" class = "input-small" data-placement="top" data-toggle="tooltip" class="label label-success" title=  "Choose a class interval style.">
+		<select id = "classInt" class = "input-small" data-placement="top" data-toggle="tooltip" class="label label-success" title=  "Choose a class interval style.">
 			<option> equal </option> <option> sd </option> <option> pretty </option> <option> quantile </option> <option> kmeans </option> <option> hclust </option> <option> bclust </option> <option> fisher </option> <option> jenks </option>
 	</select>
 

@@ -24,7 +24,9 @@ body mass, \dots{}).
 interface (\bold{gui}) by typing \code{rangeMapper()}.
 }
 \examples{
+\dontrun{
 rangeMapper()
+}
 
 
 \dontrun{

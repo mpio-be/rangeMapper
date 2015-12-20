@@ -40,16 +40,4 @@ points(mp, col = 2, pch = 3, cex = 2)
 points(v, pch = 3, cex = .5)
 
 }
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
-\references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-platform for the study of macroecology of life history traits. 21(9). (DOI:
-10.1111/j.1466-8238.2011.00739.x)
-}
-\seealso{
-\code{\link[sp]{coordinates}}.
-}
-\keyword{spatial}
 
