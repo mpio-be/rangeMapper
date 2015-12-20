@@ -4,6 +4,10 @@ language: R
 sudo: required
 warnings_are_errors: false
 
+
+before_install:
+  - pip install codecov
+
 apt_packages:
  - libgdal1-dev
  - libproj-dev
@@ -28,6 +32,5 @@ r_binary_packages:
  - RColorBrewer
  - classInt
 
-
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - codecov
