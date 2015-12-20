@@ -74,7 +74,7 @@ setMethod("processRanges",
 
 #' @describeIn  processRanges Method 2: One SpatialPolygonsDataFrame containing all the ranges. Metadata are computed.
 setMethod("processRanges",
-	signature = c(con  = "SQLiteConnection",
+	signature = c(con        = "SQLiteConnection",
 				 spdf        = "SpatialPolygonsDataFrame",
 				 dir         = "missing",
 				 ID          = "character",
@@ -98,16 +98,23 @@ setMethod("processRanges",
 		rtr = foreach(i = ids, .packages = 'sp', .combine = rbind) %dopar%  {
 			spi = spdf[spdf@data[, ID] == i, ]
 			oi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
-			oi$bioid = i[1]
-			oi
+			cbind(bioid = i[1], oi)
 			}
 
-		  lapply(
-			paste("ALTER TABLE metadata_ranges ADD COLUMN",names(metadata) , "FLOAT"),
-				function(x)  dbGetQuery(con, x))
+		# prepare sql statements
+		st = data.frame(cols = names(rtr), rtypes = sapply(rtr, typeof), stringsAsFactors = FALSE)
+		st = st[-1, ] # the bioid column is written at project ini
+		st$sqltypes = sapply(st$rtypes, function(x)
+				switch(x, double = 'NUMERIC',
+						 integer = 'INTEGER',
+						 logical = 'INTEGER',
+						 varchar = 'TEXT') )
+		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
 
-
-		res = dbWriteTable(con, rmo@METADATA_RANGES, rtr, append = TRUE, row.names = FALSE)
+		# prepare metadata table
+		sapply(st$sql, dbGetQuery, conn =  con)
+		# save
+		dbWriteTable(con, rmo@METADATA_RANGES, rtr, append = TRUE, row.names = FALSE)
 
 
 
@@ -116,7 +123,7 @@ setMethod("processRanges",
 
 #' @describeIn processRanges Method 3: Each range file is a separate shp file. No metadata.
 setMethod("processRanges",
-	signature = c(con  = "SQLiteConnection",
+	signature = c(con        = "SQLiteConnection",
 				  spdf       = "missing",
 				  dir        = "character",
 				  ID         = "missing",
@@ -132,7 +139,7 @@ setMethod("processRanges",
 			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
 
 	# Elements
-		Files = rangeMapper:::rangeFiles(new("rangeFiles", dir = dir))
+		Files = rangeFiles(new("rangeFiles", dir = dir))
 		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
 		p4s =  dbReadTable(con, "proj4string")[1,1]
 
@@ -140,7 +147,7 @@ setMethod("processRanges",
 		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %do% {
 				ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
-				if( ! rangeMapper:::proj4string_is_identical(proj4string(ri), p4s) ) {
+				if( ! proj4string_is_identical(proj4string(ri), p4s) ) {
 					ri = spTransform( ri , CRS(p4s) )
 					}
 
@@ -179,16 +186,33 @@ setMethod("processRanges",
 		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
 		p4s =  dbReadTable(con, "proj4string")[1,1]
 
-	# prepare metadata table
-	  lapply(
-		paste("ALTER TABLE metadata_ranges ADD COLUMN",names(metadata) , "FLOAT"),
-			function(x)  dbGetQuery(con, x))
+	# prepare metadata table (on first range)
+		sp1  = readOGR(Files[1,'dsn'], Files[1,'layer'], verbose = FALSE)
+		rtr1 = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
+		rtr1 = cbind(bioid = Files[i,'layer'], rtr1)
+
+
+		# prepare sql statements
+		st = data.frame(cols = names(rtr1), rtypes = sapply(rtr1, typeof), stringsAsFactors = FALSE)
+		st = st[-1, ]
+		st$sqltypes = sapply(st$rtypes, function(x)
+				switch(x, double = 'NUMERIC',
+						 integer = 'INTEGER',
+						 logical = 'INTEGER',
+						 varchar = 'TEXT') )
+		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
+
+		# prepare metadata table
+		sapply(st$sql, dbGetQuery, conn =  con)
+		# save 1st range metadata
+		dbWriteTable(con, rmo@METADATA_RANGES, rtr1, append = TRUE, row.names = FALSE)
+
 
 	# Range over canvas
-		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %do% {
+		roc = foreach(i = 2:nrow(Files), .packages = c('sp') ) %do% {
 				spi = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
-				if( ! rangeMapper:::proj4string_is_identical(proj4string(spi), p4s) ) {
+				if( ! proj4string_is_identical(proj4string(spi), p4s) ) {
 					spi = spTransform( spi , CRS(p4s) )
 					}
 				# do overlay
@@ -196,9 +220,8 @@ setMethod("processRanges",
 				names(oi) = c(rmo@ID, rmo@BIOID)
 
 				# metadata
-				mi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.table
-				mi[, . := i[1]]
-				setnames(mi, '.', rmo@BIOID)
+				mi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
+				mi = cbind(bioid = i[1], mi)
 
 				# save
 				res1 = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
@@ -207,6 +230,6 @@ setMethod("processRanges",
 				}
 
 	# Msg
-		message(paste(  unlist(roc) %>% sum , "ranges updated to database; Elapsed time:",
+		message(paste(  unlist(roc) %>% sum +1 , "ranges updated to database; Elapsed time:",
 			round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins") )
 	})
