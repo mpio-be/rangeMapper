@@ -188,8 +188,8 @@ setMethod("processRanges",
 
 	# prepare metadata table (on first range)
 		sp1  = readOGR(Files[1,'dsn'], Files[1,'layer'], verbose = FALSE)
-		rtr1 = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
-		rtr1 = cbind(bioid = Files[i,'layer'], rtr1)
+		rtr1 = sapply(metadata, function(x) x(sp1 ) ) %>% t %>% data.frame
+		rtr1 = cbind(bioid = Files[1,'layer'], rtr1)
 
 
 		# prepare sql statements
