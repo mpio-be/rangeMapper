@@ -1,5 +1,5 @@
 
-# TODO: w. registered parallel backend
+# TODO: w. registered parallel back-end
 
 context("process Ranges")
 
