@@ -1,20 +1,11 @@
 .onAttach <- function(libname, pkgname) {
 	dcf <- read.dcf(file=system.file("DESCRIPTION", package=pkgname) )
-	packageStartupMessage("---------------------------------------------------------------------------------------")
 	packageStartupMessage(paste('This is', pkgname, dcf[, "Version"] ))
-	packageStartupMessage("---------------------------------------------------------------------------------------")
-}
+    }
 
 
 
-#' @import methods sp rgdal RSQLite rgeos raster  lattice ggplot2 RColorBrewer
-NULL
-
-
-#' @importFrom maptools getinfo.shape
-NULL
-
-#' @importFrom classInt classIntervals
+#' @import sp rgdal methods RSQLite lattice ggplot2
 NULL
 
 #' @importFrom magrittr %>%
@@ -25,5 +16,21 @@ NULL
 
 #' @importFrom data.table data.table
 NULL
+
+#' @importFrom rgeos gUnionCascaded readWKT
+NULL
+
+#' @importFrom raster raster rasterToPolygons projection
+NULL
+
+#' @importFrom maptools getinfo.shape
+NULL
+
+#' @importFrom classInt classIntervals
+NULL
+
+#' @importFrom RColorBrewer brewer.pal.info brewer.pal
+NULL
+
 
 utils::globalVariables(c("i", "."))

@@ -15,6 +15,7 @@
 #' @export
 #' @examples
 #' require(rangeMapper)
+#' require(rgdal)
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 #' global.bbox.save(con = dbcon, bbox = f,
@@ -52,7 +53,7 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 	if(length(mapVars ) == 3)  layout = cbind(rep(1, 3), 1:3, 1, 3)
 
 	for(i in seq(along = mapVars)) {
-		Int = classInt::classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
+		Int = classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
 		printMore = if(i<length(mapVars)) TRUE else FALSE
 
 		print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE, col.regions = colPal,

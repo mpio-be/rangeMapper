@@ -1,18 +1,17 @@
 Package: rangeMapper
-Version: 0.2-93
+Version: 0.2-94
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
     person("Joan", "Maspons", role = "ctb")
     )
 Title: A platform for the study of macroecology of life history traits
-Date: 2015-09-15
 Depends:
-    R (>= 3.0.0),
-    rgdal
+    R (>= 3.0.0)
 Imports:
     methods,
     sp,
+    rgdal,
     RSQLite(>= 1.0.0),
     rgeos,
     raster,

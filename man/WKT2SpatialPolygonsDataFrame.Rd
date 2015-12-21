@@ -70,6 +70,7 @@ rangeMap.save(dbcon)
 plot(rangeMap.fetch(dbcon))
 
 require(rangeMapper)
+require(rgdal)
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 # path to Campylorhynchus_gularis breeding range:
 camgul = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)[6, ]

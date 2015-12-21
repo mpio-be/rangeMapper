@@ -28,6 +28,7 @@ This is a wrapper around \code{spplot}
 }
 \examples{
 require(rangeMapper)
+require(rgdal)
 dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 global.bbox.save(con = dbcon, bbox = f,

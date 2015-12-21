@@ -259,6 +259,7 @@ setMethod("rangeMapImport",
 #' @export
 #' @examples
 #' require(rangeMapper)
+#' require(rgdal)
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 #'
 #' # Breeding range vector files location
@@ -297,6 +298,7 @@ setMethod("rangeMapImport",
 #' \dontrun{
 #' # import raster maps the current project
 #' require(rangeMapper)
+#' require(rgdal)
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 #' global.bbox.save(con = dbcon, bbox = f,

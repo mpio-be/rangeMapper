@@ -2,9 +2,7 @@
 
 TODO
 ----
-* move to roxigen2
-* write help to reflect changes in rangeMap.fetch
-
+* fix GUI
 
 NEW FEATURES
 ------------

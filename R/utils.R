@@ -1,9 +1,9 @@
 # non-exported functions
 
 brewer.pal.get  <- function(palette = NULL) {
-	pal = RColorBrewer::brewer.pal.info
+	pal = brewer.pal.info
 	pal = pal[!pal$category == "qual",]
-	bp = lapply(split(pal, row.names(pal)), FUN = function(x) RColorBrewer::brewer.pal(x$maxcolors, row.names(x)))
+	bp = lapply(split(pal, row.names(pal)), FUN = function(x) brewer.pal(x$maxcolors, row.names(x)))
 	if(!is.null(palette) && palette%in%names(bp) ) bp = bp[palette][[1]]
 	bp
 	}

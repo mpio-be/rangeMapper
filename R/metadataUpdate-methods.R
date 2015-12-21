@@ -57,27 +57,27 @@ setMethod("metadataUpdate",
 #' Updates \code{metadata_table} of a \code{rangeMapper} project \emph{after}
 #' importing ranges with \code{\link{processRanges}}.
 #'
-#' @param rangeMap A \code{\link{rangeMap}} object.
-#' @param FUN      Function used to aggregate the map values corresponding to each
-#'                 range
-#' @param name     The name of the new \code{metadata_table} field containing the
+#' @param rangeMap  A \code{\link{rangeMap}} object.
+#' @param FUN       Function used to aggregate the map values corresponding to each
+#'                  range
+#' @param name      The name of the new \code{metadata_table} field containing the
 #'                  variable computed by \code{FUN}
 #' @param map       Single-band \code{\link[sp]{SpatialGridDataFrame}} object
 #' @param overwrite If set to \code{TRUE} the the values of the field are
 #' replaced
 #' @param \dots     extra arguments (e.g. \code{na.rm = TRUE}) to be passed to FUN.
 #' @return          NULL.
-#' @note In order to compute taxa-level metadata which are not dependent on the
-#' project's resolution use \code{\link{processRanges}} with a \code{metadata}
-#' argument. See \code{\link{rangeTraits}} for more details. \cr The method can
-#' be extended to work with raster or vector objects (e.g. lines, polygons,
-#' points) using overlaying functions in the package \code{raster} and
-#' \code{rgeos} respectively.
+#' @note            In order to compute taxa-level metadata which are not dependent on the
+#'                  project's resolution use \code{\link{processRanges}} with a \code{metadata}
+#'                  argument. See \code{\link{rangeTraits}} for more details. \cr The method can
+#'                  be extended to work with raster or vector objects (e.g. lines, polygons,
+#'                  points) using overlaying functions in the package \code{raster} and
+#'                  \code{rgeos} respectively.
 #' @export
 #' @examples
 #'
 #' require(rangeMapper)
-#'
+#' require(rgdal)
 #' # data
 #' spdf = readOGR(system.file(package = "rangeMapper",
 #' 	"extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)

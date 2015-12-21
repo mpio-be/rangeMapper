@@ -17,6 +17,7 @@ NULL
 #' @examples
 #'
 #' require(rangeMapper)
+#' require(rgdal)
 #'
 #' projName = "wrens.sqlite"
 #' projLoc = paste(tempdir(), projName, sep = .Platform$file.sep)

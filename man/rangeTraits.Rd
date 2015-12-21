@@ -34,7 +34,7 @@ summary(rangeTraits(use.default = F))
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 troaed = selectShpFiles(f, ogr = TRUE,
 	polygons.only = TRUE)[71, ] # path to Troglodytes_aedon
-
+require(rgdal)
 r = readOGR(troaed$dsn, troaed$layer)
 
 # Beware of the value returned for Area!

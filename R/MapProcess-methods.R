@@ -8,6 +8,7 @@
 #' @export
 #' @examples
 #' require(rangeMapper)
+#' require(rgdal)
 #'\dontrun{
 #' if (require(doParallel) ) {
 #'  cl = makePSOCKcluster(2)

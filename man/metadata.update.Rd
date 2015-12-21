@@ -31,16 +31,16 @@ importing ranges with \code{\link{processRanges}}.
 }
 \note{
 In order to compute taxa-level metadata which are not dependent on the
-project's resolution use \code{\link{processRanges}} with a \code{metadata}
-argument. See \code{\link{rangeTraits}} for more details. \cr The method can
-be extended to work with raster or vector objects (e.g. lines, polygons,
-points) using overlaying functions in the package \code{raster} and
-\code{rgeos} respectively.
+                 project's resolution use \code{\link{processRanges}} with a \code{metadata}
+                 argument. See \code{\link{rangeTraits}} for more details. \cr The method can
+                 be extended to work with raster or vector objects (e.g. lines, polygons,
+                 points) using overlaying functions in the package \code{raster} and
+                 \code{rgeos} respectively.
 }
 \examples{
 
 require(rangeMapper)
-
+require(rgdal)
 # data
 spdf = readOGR(system.file(package = "rangeMapper",
 	"extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)

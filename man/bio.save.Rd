@@ -34,6 +34,7 @@ project.
 \examples{
 
 require(rangeMapper)
+require(rgdal)
 wd = setwd(tempdir())
 r = readOGR(system.file(package = "rangeMapper",
 	"extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -54,6 +55,7 @@ setwd(wd)
 
 \dontrun{
 require(rangeMapper)
+require(rgdal)
 wd = setwd(tempdir())
 r = readOGR(system.file(package = "rangeMapper",
   "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -68,8 +70,6 @@ wrensPath = system.file(package = "rangeMapper", "data", "wrens.csv")
 bio.save(con = dbcon, loc = wrensPath,  ID = "sci_name")
 bio.merge(dbcon, "wrensNew")
 metadata2bio(dbcon)
-
-summary(rangeMap("wrens.sqlite"))
 setwd(wd)
 
 }

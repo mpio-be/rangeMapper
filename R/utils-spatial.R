@@ -53,13 +53,13 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 				}
 
 			if(length(p) > 1) {
-				p = do.call(rbind, p)
+				p = do.call(sp::rbind.SpatialPolygons, p)
 				p = gUnionCascaded(p, id = as.character(x[1, id]) )
 				}
 	p
 	})
 
-	X = do.call(rbind, o)
+	X = do.call(sp::rbind.SpatialPolygons, o)
 	dat = data.frame(id = sapply(slot(X, "polygons"), function(x) slot(x, "ID")) )
 	row.names(dat ) = dat$id
 	names(dat) = id
@@ -80,6 +80,7 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 #' @export
 #' @examples
 #' require(rangeMapper)
+#' require(rgdal)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 #' # path to Campylorhynchus_gularis breeding range:
 #' camgul = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)[6, ]
@@ -137,7 +138,7 @@ setMethod("vertices", "SpatialPolygons",
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 #' troaed = selectShpFiles(f, ogr = TRUE,
 #' 	polygons.only = TRUE)[71, ] # path to Troglodytes_aedon
-#'
+#' require(rgdal)
 #' r = readOGR(troaed$dsn, troaed$layer)
 #'
 #' # Beware of the value returned for Area!

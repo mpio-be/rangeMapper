@@ -74,6 +74,7 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 #'
 #' wd = setwd(tempdir())
 #' require(rangeMapper)
+#' require(rgdal)
 #' spdf = readOGR(system.file(package = "rangeMapper", "extdata",
 #' 	"wrens", "vector_combined"), "wrens", verbose = FALSE)
 #' dbcon = rangeMap.start(file = "wrens.sqlite",
