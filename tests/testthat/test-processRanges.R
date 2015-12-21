@@ -12,7 +12,7 @@ test_that("reprojecting on the fly", {
 	gridSize.save(dbcon, gridSize = 1000000)
 	canvas.save(dbcon)
 
-	expect_warning( # because of re-projecting & executing %dopar% sequentially
+	expect_warning( # because of re-projecting
 		processRanges(con = dbcon, spdf = r, ID = "sci_name")  )
 
 	})
@@ -26,7 +26,7 @@ test_that("processRanges works with one SpPolyDF without metadata", {
 	gridSize.save(dbcon, gridSize = 10)
 	canvas.save(dbcon)
 
-	expect_warning( processRanges(con = dbcon, spdf = r, ID = "sci_name") ) # because executing %dopar% sequentially
+	processRanges(con = dbcon, spdf = r, ID = "sci_name")
 
 	expect_true( rangeMap.save(dbcon) )
 
