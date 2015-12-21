@@ -1,18 +1,17 @@
 
 
-
 #' Plot a SpatialPixelsRangeMap
 #'
-#' This is a wrapper around \link[sp]{spplot}
+#' This is a wrapper around \code{spplot}
 #'
-#'  @param x             A SpatialPixelsRangeMap object.
-#'  @param colorpalette  A color palette.
-#'  @param ncols         Number of color classes required, default to 20; argument to be passed to
-#'                       \code{\link{classInt::classIntervals}}
-#'  @param scales        If \sQuote{FALSE}, default, axes scale are not drawn.
-#'  @param style         Class interval style; see \code{\link[classInt]{classIntervals}} for more details
-#'  @param \dots{}       Any argument that can be passed to see \code{\link[sp]{spplot}}
-
+#' @param x             A SpatialPixelsRangeMap object.
+#' @param colorpalette  A color palette.
+#' @param ncols         Number of color classes required, default to 20; argument to be passed to
+#'                      \code{\link[classInt]{classIntervals}}
+#' @param scales        If \sQuote{FALSE}, default, axes scale are not drawn.
+#' @param style         Class interval style; see \code{\link[classInt]{classIntervals}} for more details
+#' @param \dots         Any argument that can be passed to see \code{\link[sp]{spplot}}
+#'
 #' @export
 #' @examples
 #' require(rangeMapper)
@@ -39,7 +38,7 @@
 #'
 setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 	function(x, colorpalette = brewer.pal.get('Spectral')[11:1],
-		ncols = 20, scales = FALSE, style = "equal",  ...) {
+		     ncols = 20, scales = FALSE, style = "equal",  ...) {
 
 	colPal= colorRampPalette(colorpalette, space = "Lab")(ncols)
 
@@ -65,20 +64,20 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 
 # TODO
-ggp <- function(){
-
-		g = ggplot(data = m) + geom_tile( aes(x, y, fill = species_richness) ) +
-		coord_equal() +
-		scale_fill_gradientn(
-				colours = RColorBrewer::brewer.pal(5, "YlGnBu"),
-				guide = guide_legend(title = "xxxxxx", keywidth = 1, keyheight = .5) ) +
-		theme_bw() +
-		labs(x=NULL, y=NULL) +
-		theme(axis.text = element_blank(), axis.ticks = element_blank() ,
-			 legend.justification=c(0,0), legend.position=c(0,0),
-			 panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank() )
-
-
-	}
-
+# ggp <- function(){
+#
+# 		g = ggplot(data = m) + geom_tile( aes(x, y, fill = species_richness) ) +
+# 		coord_equal() +
+# 		scale_fill_gradientn(
+# 				colours = RColorBrewer::brewer.pal(5, "YlGnBu"),
+# 				guide = guide_legend(title = "xxxxxx", keywidth = 1, keyheight = .5) ) +
+# 		theme_bw() +
+# 		labs(x=NULL, y=NULL) +
+# 		theme(axis.text = element_blank(), axis.ticks = element_blank() ,
+# 			 legend.justification=c(0,0), legend.position=c(0,0),
+# 			 panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank() )
+#
+#
+# 	}
+#
 

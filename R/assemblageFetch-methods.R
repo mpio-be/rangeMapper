@@ -1,4 +1,7 @@
 
+#' @include projectINI-methods.R
+NULL
+
 #' Retrieves the species set of an arbitrary canvas cell
 #'
 #' \code{assemblageFetch} retrieves the species set of an arbitrary canvas cell

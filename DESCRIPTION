@@ -1,7 +1,7 @@
 Package: rangeMapper
 Version: 0.2-93
 Authors@R: c(
-    person("Mihai", "Valcu", , "valcu@orn.mpg.de", c("aut", "cre")),
+    person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
     person("Joan", "Maspons", role = "ctb")
     )
@@ -9,25 +9,21 @@ Title: A platform for the study of macroecology of life history traits
 Date: 2015-09-15
 Depends:
     R (>= 3.0.0),
-    methods,
-    utils,
-    RSQLite (>= 1.0.0),
-    rgdal,
-    rgeos,
-    data.table,
-    magrittr,
-    foreach
+    rgdal
 Imports:
-    RSQLite,
+    methods,
     sp,
-    rgdal,
+    RSQLite(>= 1.0.0),
     rgeos,
     raster,
     maptools,
     lattice,
     ggplot2,
     RColorBrewer,
-    classInt
+    classInt,
+    magrittr,
+    data.table,
+    foreach
 Suggests:
     shiny (>= 0.8.0),
     doParallel,
@@ -38,5 +34,22 @@ License: GPL(>= 2)
 URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/
     package=rangeMapper
 RoxygenNote: 5.0.1
-
-
+Collate:
+    'AAA.R'
+    'AllClasses.R'
+    'GUI.R'
+    'MapCanvas-methods.R'
+    'MapExport-methods.R'
+    'MapFetch-methods.R'
+    'MapPlot-methods.R'
+    'MapProcess-methods.R'
+    'MapRemove-methods.R'
+    'MapSave-methods.R'
+    'projectINI-methods.R'
+    'assemblageFetch-methods.R'
+    'bioSave-methods.R'
+    'metadataUpdate-methods.R'
+    'rangeFiles-methods.R'
+    'rangeMapper-package.R'
+    'utils-spatial.R'
+    'utils.R'

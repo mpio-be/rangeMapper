@@ -47,30 +47,20 @@ setMethod("bioSave",
 		}
 	)
 
-
 #' Import \sQuote{BIO} tables to a \code{rangeMapper} project.
 #'
 #' Import tables (e.g. life history data) to an active \code{rangeMapper}
 #' project.
 #'
-#'
-#' @aliases bioSave bio.save metadata2bio bio.merge bioSave-methods
-#' bioSave,bioSaveDataFrame-method bioSave,bioSaveFile-method
-#' @param con An sqlite connection pointing to a valid \code{rangeMapper}
-#' project.
-#' @param loc file location or \code{data.frame} name
-#' @param tableName if missing, the name of the file or data.frame is used
-#' @param \dots Arguments to pass to the corresponding methods: e.g. the ID,
-#' the column corresponding to the names of the range files
-#' @return A \sQuote{BIO} table is created in the corresponding
-#' \code{rangeMapper} project.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link{rangeMap.save}}. \code{\link{wrens}}
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits. 21(9).  (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
-#' @keywords import
-#' @export
+#' @param con       An sqlite connection pointing to a valid \code{rangeMapper}
+#'                  project.
+#' @param loc       File location or \code{data.frame} name.
+#' @param tableName If missing, the name of the file or \code{data.frame} is used
+#' @param \dots     Arguments to pass to the corresponding methods: e.g. the ID,
+#'                  the column corresponding to the names of the range files
+#' @return          A \sQuote{BIO} table is created in the corresponding
+#'                  \code{rangeMapper} project.
+#' @export          bio.save bio.merge metadata2bio
 #' @examples
 #'
 #' require(rangeMapper)
@@ -89,7 +79,6 @@ setMethod("bioSave",
 #' Troglodytes  = wrens[grep("Troglodytes", wrens$sci_name), c(2, 5)]
 #' bio.save(con = dbcon, loc = Troglodytes,  ID = "sci_name")
 #'
-#' summary(rangeMap("wrens.sqlite"))$BIO_tables
 #' setwd(wd)
 #'
 #'
@@ -116,10 +105,7 @@ setMethod("bioSave",
 #' }
 #'
 #'
-#'
-#'
-#' @export bio.save
-bio.save   <- function(con, loc, tableName, ...) {
+bio.save <- function(con, loc, tableName, ...) {
 	if(is.character(loc)) {
 		if(missing(tableName)) tableName = gsub("\\.", "_", basename(loc))
 		dat = new("bioSaveFile", CON = con, loc = loc, tableName = tableName, ...) }
@@ -132,6 +118,7 @@ bio.save   <- function(con, loc, tableName, ...) {
 
 	}
 
+#' @rdname bio.save
 bio.merge <-  function(con, tableName, ...) {
 	# merge 2 or more BIO tables, default is merge all
 
@@ -175,6 +162,7 @@ bio.merge <-  function(con, tableName, ...) {
 	dbGetQuery(r@CON,( paste("CREATE  INDEX", paste(tableName, r@BIOID, sep = "_") , "ON", tableName ,  "(", r@BIOID ,")") ) )
     }
 
+#' @rdname bio.save
 metadata2bio <-function(con, ...) {
 
 	r = new("rangeMap", CON = con)

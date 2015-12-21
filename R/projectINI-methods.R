@@ -1,8 +1,31 @@
-setGeneric("rangeMapStart", function(object, ...)	standardGeneric("rangeMapStart") )
+#' @rdname rangeMap.start
+rangeMap <- function(path){
+	new("rangeMap", CON = dbConnect(RSQLite::SQLite(), dbname= path) )
+	}
 
-setMethod("rangeMapStart",
-	signature = "rangeMapStart",
-	definition = function(object){
+setMethod("show", signature(object = "rangeMap"), function(object){
+	out = list()
+	out[["class"]] = class(object)
+	dbinfo = dbGetInfo(object@CON)
+	out[["Project_location"]] = dbinfo$dbname
+	out[["SQLite_version"]] = dbinfo$serverVersion
+	if( nrow(dbGetQuery(object@CON, paste("select", object@ID, "from", object@CANVAS, "limit 1") )) == 0)
+	out[["empty_project"]] = "Empty rangeMapper project." else {
+		out[["Proj4"]]    = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
+		out[["CellSize"]] = dbReadTable(object@CON, object@GRIDSIZE)[1,1]
+		out[["Extent"]]   = dbReadTable(object@CON, object@BBOX)
+		tbs = dbGetQuery(object@CON, "select name from sqlite_master where type = 'table' ")$name
+		out[["BIO_tables"]] = paste(  gsub(object@BIO, "", tbs[grep(object@BIO, tbs)]), collapse = ";" )
+		out[["MAP_tables"]] = paste(  gsub(object@MAP, "", tbs[grep(object@MAP, tbs)]), collapse = ";" )
+		mtd =is.empty(object@CON, object@METADATA_RANGES)
+		out[[object@METADATA_RANGES]]= paste(object@METADATA_RANGES, "is empty:", mtd, collapse = ";" )
+		message(paste(paste(names(out), ":", out), collapse = "\n"))
+      } }
+	)
+
+setGeneric("rangeMapStart", function(object)	standardGeneric("rangeMapStart") )
+
+setMethod("rangeMapStart", signature  = "rangeMapStart", definition = function(object){
 	f = paste(object@dir, object@file, sep = .Platform$file.sep)
 	file.exists = if(file.exists(f) )  TRUE else FALSE
 	CON = dbConnect(RSQLite::SQLite(), dbname = f)
@@ -34,14 +57,15 @@ setMethod("rangeMapStart",
 
 #' Initiate/open a new rangeMapper project
 #'
-#' @param file      Project's file name.
 #' @param dir       Project directory.
+#' @param file      Project's file name.
 #' @param overwrite Logical vector, default to FALSE (the file is kept but all tables are dropped).
 #' @param path      Character vector; a path to a valid rangeMapper project.
 #' @param verbose   Character vector; if \code{TRUE} the project's summary is printed.
-#' @return          rangeMap.start() and rangeMap.open() returns an sqlite connection.
+#' @return          rangeMap.start() and rangeMap.open() returns an sqlite connection\cr
+#'					rangeMap() returns an object of class  \code{rangeMap}
 #' @seealso         \code{\link{rangeMap.save}}
-#' @export          rangeMap.start rangeMap.open
+#' @export          rangeMap.start rangeMap.open rangeMap
 #' @examples
 #'
 #' td = setwd(tempdir())
@@ -56,9 +80,9 @@ setMethod("rangeMapStart",
 #' setwd(td)
 #'
 #'
-rangeMap.start <- function(...) {
+rangeMap.start <- function(dir, file, overwrite = FALSE) {
 
-	obj = new("rangeMapStart", ... )
+	obj = new("rangeMapStart", dir = dir, file = file, overwrite = overwrite)
 
 	rangeMapStart(obj)
 	message( paste("New session", Sys.time() ) )

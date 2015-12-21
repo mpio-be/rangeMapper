@@ -3,29 +3,29 @@
 \name{bio.save}
 \alias{bio.merge}
 \alias{bio.save}
-\alias{bioSave}
-\alias{bioSave,bioSaveDataFrame-method}
-\alias{bioSave,bioSaveFile-method}
-\alias{bioSave-methods}
 \alias{metadata2bio}
 \title{Import \sQuote{BIO} tables to a \code{rangeMapper} project.}
 \usage{
 bio.save(con, loc, tableName, ...)
+
+bio.merge(con, tableName, ...)
+
+metadata2bio(con, ...)
 }
 \arguments{
 \item{con}{An sqlite connection pointing to a valid \code{rangeMapper}
 project.}
 
-\item{loc}{file location or \code{data.frame} name}
+\item{loc}{File location or \code{data.frame} name.}
 
-\item{tableName}{if missing, the name of the file or data.frame is used}
+\item{tableName}{If missing, the name of the file or \code{data.frame} is used}
 
 \item{\dots}{Arguments to pass to the corresponding methods: e.g. the ID,
 the column corresponding to the names of the range files}
 }
 \value{
 A \sQuote{BIO} table is created in the corresponding
-\code{rangeMapper} project.
+                 \code{rangeMapper} project.
 }
 \description{
 Import tables (e.g. life history data) to an active \code{rangeMapper}
@@ -49,7 +49,6 @@ data(wrens)
 Troglodytes  = wrens[grep("Troglodytes", wrens$sci_name), c(2, 5)]
 bio.save(con = dbcon, loc = Troglodytes,  ID = "sci_name")
 
-summary(rangeMap("wrens.sqlite"))$BIO_tables
 setwd(wd)
 
 
@@ -76,19 +75,5 @@ setwd(wd)
 }
 
 
-
-
 }
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
-}
-\references{
-Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-platform for the study of macroecology of life history traits. 21(9).  (DOI:
-10.1111/j.1466-8238.2011.00739.x)
-}
-\seealso{
-\code{\link{rangeMap.save}}. \code{\link{wrens}}
-}
-\keyword{import}
 

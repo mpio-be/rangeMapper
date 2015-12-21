@@ -118,6 +118,6 @@ plot(m)
 
 }
 \seealso{
-\code{\link[rangeMapper]{metadataUpdate}}.
+\code{\link{metadata.update}}.
 }
 

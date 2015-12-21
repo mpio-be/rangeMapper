@@ -21,20 +21,20 @@ vertices(object, FUN)
 
 \item{id}{is the name (character vector) of the column in the
 \code{data.frame} identifying the polygon.  when \code{id} is not unique
-then polygons are combined using \code{rgeos::gUnionCascaded}.}
+then polygons are combined using \code{\link[rgeos]{gUnionCascaded}}.}
 
 \item{object}{An object.}
 
 \item{FUN}{A function.}
 }
 \value{
-a \code{SpatialPolygonsDataFrame} object.
+a \code{\link[sp]{SpatialPolygonsDataFrame} }object.
 
 A \link[sp]{SpatialPointsDataFrame} containing an id column
           corresponding to each extracted Polygon.
 }
 \description{
-Convert a data.frame containing WKT polygons to a SpatialPolygonsDataFrame.
+Convert a data.frame containing WKT polygons to a \code{SpatialPolygonsDataFrame}.
 
 Extract vertices from a \link[sp]{SpatialPolygonsDataFrame} and optionally
 applies an aggregating function to each Polygon.
@@ -82,5 +82,4 @@ points(mp, col = 2, pch = 3, cex = 2)
 points(v, pch = 3, cex = .5)
 
 }
-\keyword{spatial}
 

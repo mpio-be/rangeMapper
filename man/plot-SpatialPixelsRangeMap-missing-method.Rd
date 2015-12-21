@@ -9,17 +9,22 @@
   colorpalette = brewer.pal.get("Spectral")[11:1], ncols = 20,
   scales = FALSE, style = "equal", ...)
 }
-\description{
-This is a wrapper around \link[sp]{spplot}
+\arguments{
+\item{x}{A SpatialPixelsRangeMap object.}
+
+\item{colorpalette}{A color palette.}
+
+\item{ncols}{Number of color classes required, default to 20; argument to be passed to
+\code{\link[classInt]{classIntervals}}}
+
+\item{scales}{If \sQuote{FALSE}, default, axes scale are not drawn.}
+
+\item{style}{Class interval style; see \code{\link[classInt]{classIntervals}} for more details}
+
+\item{\dots}{Any argument that can be passed to see \code{\link[sp]{spplot}}}
 }
-\details{
-@param x             A SpatialPixelsRangeMap object.
- @param colorpalette  A color palette.
- @param ncols         Number of color classes required, default to 20; argument to be passed to
-                      \code{\link{classInt::classIntervals}}
- @param scales        If \sQuote{FALSE}, default, axes scale are not drawn.
- @param style         Class interval style; see \code{\link[classInt]{classIntervals}} for more details
- @param \dots{}       Any argument that can be passed to see \code{\link[sp]{spplot}}
+\description{
+This is a wrapper around \code{spplot}
 }
 \examples{
 require(rangeMapper)

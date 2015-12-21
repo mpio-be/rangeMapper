@@ -1,3 +1,4 @@
+# non-exported functions
 
 brewer.pal.get  <- function(palette = NULL) {
 	pal = RColorBrewer::brewer.pal.info
@@ -7,8 +8,8 @@ brewer.pal.get  <- function(palette = NULL) {
 	bp
 	}
 
-extract.indexed <-function(con,table.name) {
-	# extract name of indexed colum
+extract.indexed <- function(con,table.name) {
+	# extract name of indexed column
 	indx = dbGetQuery(con,
 		paste("select * from sqlite_master where type = 'index' and tbl_name = '",
 				table.name, "'", sep = ""))$name
@@ -85,7 +86,7 @@ dbRemoveField   <- function(con, table.name, col.name) {
 
 	}
 
-subsetSQLstring   <- function(dbcon, subset = list() ) {
+subsetSQLstring <- function(dbcon, subset = list() ) {
 
 	if(length(subset) == 0) sql = NULL else {
 	if(is.null(names(subset))) stop(sQuote('subset'), " must be a named list!")

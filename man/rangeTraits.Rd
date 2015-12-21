@@ -2,25 +2,25 @@
 % Please edit documentation in R/utils-spatial.R
 \name{rangeTraits}
 \alias{rangeTraits}
-\title{A container of functions to apply on a \code{\link{SpatialPolygons} object}}
+\title{A container of functions to apply on a \code{SpatialPolygons} object}
 \usage{
 rangeTraits(..., use.default = TRUE)
 }
 \arguments{
 \item{use.default}{If \code{TRUE}, the default, the output list contains
 functions to extract Area, Median, Min and Max extent of the
-\code{\link{SpatialPolygons}} object. This option is ignored if no functions
-are given.}
+\code{\link{SpatialPolygons}} object. This option is ignored
+if no functions are given.}
 
 \item{\dots}{functions, given as myfun = FUN, to apply on a
 \code{\link{SpatialPolygons}} object}
 }
 \value{
 Returns a named list containing extractor functions to apply on
-\code{\link{SpatialPolygons}} objects.
+                   \code{\link[sp]{SpatialPolygons}} objects.
 }
 \description{
-This is a convenience function returning a named \code{\link{list}} of
+This is a convenience function returning a named \code{list} of
 functions.
 }
 \details{
@@ -55,6 +55,6 @@ sapply(rangeTraits(Area_sqm = Area2), function(x) x(r) )
 
 }
 \seealso{
-\code{\link{processRanges}} \code{\link{rangeMapper}}.
+\code{\link{processRanges}}.
 }
 

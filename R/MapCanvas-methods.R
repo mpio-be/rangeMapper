@@ -4,6 +4,7 @@ setGeneric("rangeMapBbox", function(object,...)   	             	standardGeneric
 setGeneric("rangeMapBboxSave", function(object,bbox, p4s,...)  standardGeneric("rangeMapBboxSave") )
 setGeneric("rangeMapBboxFetch", function(object,...)   		standardGeneric("rangeMapBboxFetch") )
 
+
 setMethod("rangeMapBbox",
 	signature  = c(object = "rangeFiles"),
 	definition = function(object, checkProj = TRUE) {
@@ -11,7 +12,7 @@ setMethod("rangeMapBbox",
 
 	message(paste("Computing global bounding box for",length(shpFiles ), "ranges...") )
 
-	nfo = lapply(shpFiles, maptools::getinfo.shape)
+	nfo = lapply(shpFiles, getinfo.shape)
 
 	bb = do.call(rbind, lapply(nfo, function(x) c(x$minbounds[1:2], x$maxbounds[1:2]) ) )
 	bb = c( xmin = min(bb[,1]), xmax = max(bb[,3]), ymin = min(bb[,2]), ymax = max(bb[,4]) )
@@ -37,7 +38,7 @@ setMethod("rangeMapBbox",
 setMethod("rangeMapBboxSave",
 	signature  = c(object = "rangeMap", bbox = "missing", p4s = "missing"),
 	definition = function(object,bbox, p4s) {
-	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was already saved for this project.")
 
 	bb = structure(c(-180, 180, -90, 90),
 	.Names = c("xmin", "xmax", "ymin", "ymax"),
@@ -59,7 +60,7 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxSave",
 	signature  = c(object = "rangeMap", bbox = "missing", p4s = "CRS"),
 	definition = function(object, bbox, p4s) {
-	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was already saved for this project.")
 
 	bb = structure(c(-180, 180, -90,90),
 	.Names = c("xmin", "xmax", "ymin", "ymax"),
@@ -87,7 +88,7 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxSave",
 	signature  = c(object = "rangeMap", bbox = "character", p4s = "missing"),
 	definition = function(object,bbox, p4s) {
-	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was already saved for this project.")
 
 	# bbox  the path to the range file(s) directory, pass to new("rangeFiles" ....
 
@@ -107,7 +108,7 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxSave",
 	signature  = c(object = "rangeMap", bbox = "character", p4s = "CRS"),
 	definition = function(object, bbox, p4s) {
-	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
+	if(! is.empty(object@CON, object@BBOX) ) stop("Bounding box was already saved for this project.")
 
 	bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE),checkProj = TRUE )
 

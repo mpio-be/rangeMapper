@@ -30,12 +30,9 @@ setMethod("rangeMapFetch",
 # user level functions
 
 #' rangeMap.fetch
-
 #' @param con 	  a connection to a valid rangeMapper project.
 #' @param maps    map(s) name as character vector. If missing then all the maps are returned.
 #' @param spatial If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.
-#' @param bioid   the name of the range to fetch (e.g. species name).
-#'
 #' @return        an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates
 #'                and proj4 string as an atribute if spatial = FALSE.
 #' @export

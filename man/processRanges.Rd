@@ -35,7 +35,7 @@ processRanges(con, spdf, dir, ID, metadata)
 
 \item{ID}{when spdf is set this is a \code{character} vector given the name of the range.}
 
-\item{metadata}{a named list of functions. See \code{\link[rangeMapper]{rangeTraits}} and \code{\link[rangeMapper]{metadataUpdate}}}
+\item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}}
 }
 \description{
 processRanges

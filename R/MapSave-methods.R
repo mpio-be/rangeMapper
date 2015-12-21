@@ -255,7 +255,7 @@ setMethod("rangeMapImport",
 #' @note            \code{SQL} aggregate functions are more efficient then their
 #'                  counterparts. For simple aggregate functions like mean, median, sd, count
 #'                  it is advisable to use \code{SQL} functions rather then R functions.
-#' @seealso         \code{\link[rangeMapper]{metadataUpdate}}.
+#' @seealso         \code{\link{metadata.update}}.
 #' @export
 #' @examples
 #' require(rangeMapper)

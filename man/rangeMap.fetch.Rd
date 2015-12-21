@@ -12,8 +12,6 @@ rangeMap.fetch(con, maps, spatial = TRUE)
 \item{maps}{map(s) name as character vector. If missing then all the maps are returned.}
 
 \item{spatial}{If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.}
-
-\item{bioid}{the name of the range to fetch (e.g. species name).}
 }
 \value{
 an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates

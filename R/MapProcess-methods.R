@@ -4,7 +4,7 @@
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
 #' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
-#' @param metadata 	a named list of functions. See \code{\link[rangeMapper]{rangeTraits}} and \code{\link[rangeMapper]{metadataUpdate}}
+#' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}
 #' @export
 #' @examples
 #' require(rangeMapper)

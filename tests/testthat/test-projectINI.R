@@ -1,6 +1,22 @@
 context("Project ini")
 
 
+test_that("class rangeMap works", {
+
+ 	td = setwd(tempdir())
+	con  = rangeMap.start(file = "test.sqlite", dir = tempdir(), overwrite = TRUE)
+	expect_warning( global.bbox.save(con = con) )
+	gridSize.save(con, gridSize = 10)
+	canvas.save(con)
+
+	x = rangeMap("test.sqlite")
+
+	expect_that(x, is_a('rangeMap') )
+
+	setwd(td)
+
+	})
+
 test_that("Range overlay", {
 	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 	spdf = readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)

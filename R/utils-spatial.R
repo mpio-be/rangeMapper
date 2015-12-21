@@ -1,16 +1,15 @@
 #' Convert WKT polygons to SpatialPolygonsDataFrame
 #'
-#' Convert a data.frame containing WKT polygons to a SpatialPolygonsDataFrame.
+#' Convert a data.frame containing WKT polygons to a \code{SpatialPolygonsDataFrame}.
 #'
 #'
-#' @param dat \code{data.frame}
-#' @param geom is the name (character vector) of the column in the
-#' \code{data.frame} containing the geometry.
-#' @param id is the name (character vector) of the column in the
-#' \code{data.frame} identifying the polygon.  when \code{id} is not unique
-#' then polygons are combined using \code{rgeos::gUnionCascaded}.
-#' @return a \code{SpatialPolygonsDataFrame} object.
-#' @keywords spatial
+#' @param dat   \code{data.frame}
+#' @param geom  is the name (character vector) of the column in the
+#'              \code{data.frame} containing the geometry.
+#' @param id    is the name (character vector) of the column in the
+#'              \code{data.frame} identifying the polygon.  when \code{id} is not unique
+#'              then polygons are combined using \code{\link[rgeos]{gUnionCascaded}}.
+#' @return      a \code{\link[sp]{SpatialPolygonsDataFrame} }object.
 #' @export
 #' @examples
 #'
@@ -94,6 +93,7 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 #'
 #' @rdname WKT2SpatialPolygonsDataFrame
 setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
+
 #' @rdname WKT2SpatialPolygonsDataFrame
 setMethod("vertices", "SpatialPolygons",
 	function(object, FUN) {
@@ -112,24 +112,24 @@ setMethod("vertices", "SpatialPolygons",
 		d
 	})
 
-#' A container of functions to apply on a \code{\link{SpatialPolygons} object}
+#' A container of functions to apply on a \code{SpatialPolygons} object
 #'
-#' This is a convenience function returning a named \code{\link{list}} of
+#' This is a convenience function returning a named \code{list} of
 #' functions.
 #'
 #' The function returns a named list so any additional functions should be
 #' given as rangeTraits(funName1 = FUN1, funName2 = FUN2) where FUN1, FUN2 are
 #' \code{\link{SpatialPolygons}} extractor functions.
 #'
-#' @param \dots functions, given as myfun = FUN, to apply on a
-#' \code{\link{SpatialPolygons}} object
+#' @param \dots       functions, given as myfun = FUN, to apply on a
+#'                    \code{\link{SpatialPolygons}} object
 #' @param use.default If \code{TRUE}, the default, the output list contains
-#' functions to extract Area, Median, Min and Max extent of the
-#' \code{\link{SpatialPolygons}} object. This option is ignored if no functions
-#' are given.
-#' @return Returns a named list containing extractor functions to apply on
-#' \code{\link{SpatialPolygons}} objects.
-#' @seealso \code{\link{processRanges}} \code{\link{rangeMapper}}.
+#'                    functions to extract Area, Median, Min and Max extent of the
+#'                    \code{\link{SpatialPolygons}} object. This option is ignored
+#'                    if no functions are given.
+#' @return            Returns a named list containing extractor functions to apply on
+#'                    \code{\link[sp]{SpatialPolygons}} objects.
+#' @seealso           \code{\link{processRanges}}.
 #' @export
 #' @examples
 #' summary(rangeTraits(use.default = F))
