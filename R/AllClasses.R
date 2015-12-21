@@ -96,8 +96,8 @@ setClass("gridSize",
 	contains = "rangeMap",
 
 	validity = function(object)	{
-		if(!is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was allready set!")
-		if(is.empty(object@CON, object@BBOX)) stop("There is no bouding box!")
+		if(!is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was already set!")
+		if(is.empty(object@CON, object@BBOX)) stop("There is no bounding box!")
 
 	})
 

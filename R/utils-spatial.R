@@ -74,20 +74,12 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 #' Extract vertices from a \link[sp]{SpatialPolygonsDataFrame} and optionally
 #' applies an aggregating function to each Polygon.
 #'
-#' @name vertices-methods
-#' @aliases vertices vertices-methods vertices,SpatialPolygonsDataFrame-method
-#' vertices.SpatialPolygonsDataFrame
-#' @docType methods
-#' @return A \link[sp]{SpatialPointsDataFrame} containing an id column
-#' corresponding to each extracted Polygon.
-#' @section Methods: \describe{ \item{"SpatialPolygonsDataFrame", FUN =
-#' function}{Extract Polygon vertices and remove the last (repeated line) of
-#' each Polygon.}
-#'
-#' }
+#' @param 	 object  An object.
+#' @param 	 FUN  A function.
+#' @return   A \link[sp]{SpatialPointsDataFrame} containing an id column
+#'           corresponding to each extracted Polygon.
 #' @export
 #' @examples
-#'
 #' require(rangeMapper)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 #' # path to Campylorhynchus_gularis breeding range:
@@ -100,7 +92,9 @@ WKT2SpatialPolygonsDataFrame <- function(dat, geom, id) {
 #' points(mp, col = 2, pch = 3, cex = 2)
 #' points(v, pch = 3, cex = .5)
 #'
+#' @rdname WKT2SpatialPolygonsDataFrame
 setGeneric("vertices", function(object, FUN)  standardGeneric("vertices") )
+#' @rdname WKT2SpatialPolygonsDataFrame
 setMethod("vertices", "SpatialPolygons",
 	function(object, FUN) {
 		d = lapply( unlist(lapply(slot(object, "polygons"), function(P) slot(P, "Polygons"))), function(cr) slot(cr, "coords") )

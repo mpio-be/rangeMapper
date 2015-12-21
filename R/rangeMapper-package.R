@@ -6,28 +6,12 @@
 #' \pkg{rangeMapper} is a front end platform for the study of macroecology of
 #' life history traits at both inter-specific and assemblage levels.
 #'
-#' The package uses species range (extent-of-occurrence) vector polygons and
-#' life history traits data-sets to build up maps (e.g. species richness, mean
-#' body mass, \dots{}).
-#'
-#' @name rangeMapper
-#' @docType package
-#' @section Getting Started: For a quick start open the graphical user
-#' interface (\bold{gui}) by typing \code{rangeMapper()}.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de},
-#' \url{http://orn.mpg.de/valcu.html} \cr James Dale
-#' \email{J.Dale@@massey.ac.nz}, \url{http://quelea.net}
-#' @seealso \code{\link[rangeMapper]{rangeMap.save}}.
+#' @name       rangeMapper
+#' @docType    package
 #' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
 #' platform for the study of macroecology of life history traits. 21(9). (DOI:
 #' 10.1111/j.1466-8238.2011.00739.x)
-#' @keywords package spatial macroecology spatial gui tcltk
-#' @examples
-#'
-#' \dontrun{
-#' rangeMapper()
-#' }
-#'
+
 NULL
 
 #' Life history data of the New World Wrens
@@ -39,19 +23,18 @@ NULL
 #' of \emph{Donacoblis atricapilla} which has been excluded due to its
 #' uncertain taxonomic position.
 #'
-#' @name wrens
-#' @docType data
-#' @format A data frame with 84 observations on the following 7 variables.
-#' \describe{ 
-#'    \item{list("ID_HBW")}{ Handbook of the birds of the world ID}
-#'    \item{"sci_name"}{scientific name; a factor with 84 levels}
-#'    \item{"com_name"}{English name; a factor with 84 levels}
-#'    \item{"genus"}{Genus name} 
-#'    \item{"body_size"}{body size (cm)}
-#'    \item{"body_mass"}{body mass (grams)}
-#'    \item{"clutch_size"}{mean or modal clutch size} 
-#'    \item{"source"}{bibliographic source of each
-#' trait (see references)} }
+#' @name     wrens
+#' @docType  data
+#' @format   A data frame with 84 observations on the following 7 variables.
+#' \describe{
+#'    \item{ID_HBW}{ Handbook of the birds of the world ID}
+#'    \item{body_mass}{body mass (grams)}
+#'    \item{body_size}{body size (cm)}
+#'    \item{clutch_size}{mean or modal clutch size}
+#'    \item{com_name}{English name; a factor with 84 levels}
+#'    \item{genus}{Genus name}
+#'    \item{sci_name}{scientific name; a factor with 84 levels}
+#'    \item{source}{bibliographic source of each trait (see references)} }
 #' @seealso \code{\link{rangeMap.save}}.
 #' @references Auer, S.K., Logue, D.M., Bassar, R.D. & Gammon, D.E. (2007)
 #' Nesting biology of the Black-bellied Wren (Thryothorus fasciatoventris) in

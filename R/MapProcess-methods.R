@@ -1,6 +1,6 @@
 #' processRanges
 #'
-#' @param con a \code{connection} object.
+#' @param con       a \code{connection} object.
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
 #' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
@@ -10,7 +10,7 @@
 #' require(rangeMapper)
 #'\dontrun{
 #' if (require(doParallel) ) {
-#'  cl = makePSOCKcluster(4)
+#'  cl = makePSOCKcluster(2)
 #'  registerDoParallel(cl) }
 #'}
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)

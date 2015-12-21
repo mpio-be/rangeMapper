@@ -13,20 +13,22 @@ assemblageFetch(object, xy, BIO)
 
 \S4method{assemblageFetch}{rangeMap,SpatialPoints,character}(object, xy, BIO)
 }
+\arguments{
+\item{object}{A \code{connection} object.}
+
+\item{xy}{A \code{\link[sp]{SpatialPoints}} object.}
+
+\item{BIO}{The name of the \code{BIO_table} containing species life-history data.}
+}
+\value{
+A \code{data.frame} containing the bioid (e.g. species names),
+                the canvas id and optionally any associated life history data contained
+                in the \code{BIO_table} table.
+}
 \description{
 \code{assemblageFetch} retrieves the species set of an arbitrary canvas cell
 optionally with the associated life history data
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{object = rangeMap,xy = SpatialPoints,BIO = missing}: assemblageFetch(rangeMap, xy)
-returns a data.frame containing two columns:
-the bioid (e.g. speciesnames) and the canvas id.
-
-\item \code{object = rangeMap,xy = SpatialPoints,BIO = character}: assemblageFetch(rangeMap, xy, BIO)
-returns a data.frame containing the bioid (e.g. species names),
-canvas id and any associated life history data contained in the BIO table.
-}}
 \examples{
 
 require(rangeMapper)

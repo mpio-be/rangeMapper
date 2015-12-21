@@ -5,16 +5,15 @@
 \alias{wrens}
 \title{Life history data of the New World Wrens}
 \format{A data frame with 84 observations on the following 7 variables.
-\describe{ 
-   \item{list("ID_HBW")}{ Handbook of the birds of the world ID}
-   \item{"sci_name"}{scientific name; a factor with 84 levels}
-   \item{"com_name"}{English name; a factor with 84 levels}
-   \item{"genus"}{Genus name} 
-   \item{"body_size"}{body size (cm)}
-   \item{"body_mass"}{body mass (grams)}
-   \item{"clutch_size"}{mean or modal clutch size} 
-   \item{"source"}{bibliographic source of each
-trait (see references)} }}
+\describe{
+   \item{ID_HBW}{ Handbook of the birds of the world ID}
+   \item{body_mass}{body mass (grams)}
+   \item{body_size}{body size (cm)}
+   \item{clutch_size}{mean or modal clutch size}
+   \item{com_name}{English name; a factor with 84 levels}
+   \item{genus}{Genus name}
+   \item{sci_name}{scientific name; a factor with 84 levels}
+   \item{source}{bibliographic source of each trait (see references)} }}
 \description{
 Life history data (body size, body mass and clutch size) of 84 wren
 \strong{(Troglodytidae)} species

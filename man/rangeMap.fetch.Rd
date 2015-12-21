@@ -16,7 +16,8 @@ rangeMap.fetch(con, maps, spatial = TRUE)
 \item{bioid}{the name of the range to fetch (e.g. species name).}
 }
 \value{
-an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates and proj4 string as an atribute if spatial = FALSE.
+an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates
+               and proj4 string as an atribute if spatial = FALSE.
 }
 \description{
 rangeMap.fetch

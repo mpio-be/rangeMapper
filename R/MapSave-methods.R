@@ -1,50 +1,30 @@
-# accessor functions for methods
-subsetSQLstring   <- function(dbcon, subset = list() ) {
-
-	if(length(subset) == 0) sql = NULL else {
-	if(is.null(names(subset))) stop(sQuote('subset'), " must be a named list!")
-
-	m = subset[grep("^MAP_", names(subset))]
-	b = subset[grep("^BIO_", names(subset))]
-	r = subset[which(names(subset)=="metadata_ranges")]
-
-	msql = if(length(m) > 0) paste(paste("r.id in (SELECT id FROM", names(m), "WHERE", m, ")"), collapse = " AND ") else NULL
-	bsql = if(length(b) > 0) paste(paste("r.bioid in (SELECT",
-			sapply(names(b), function(x) extract.indexed(dbcon, x)) ,
-				"FROM", names(b), "WHERE", b, ")"), collapse = " AND ") else NULL
-	rsql = if(length(r) > 0) paste(paste("r.bioid in (SELECT bioid FROM", names(r), "WHERE", r, ")"), collapse = " AND ") else NULL
-
-	sql = paste( c(msql, bsql, rsql), collapse = " AND ")
-	}
-	sql
-	}
 
 setGeneric("rangeMapSave", function(object,FUN,formula, ...)  standardGeneric("rangeMapSave") )
 
 # method for species richness,
 setMethod("rangeMapSave",
-		signature = c(object = "rangeMapSave", FUN = "missing", formula = "missing"),
-		definition = function(object, FUN, formula, ...){
+	signature = c(object = "rangeMapSave", FUN = "missing", formula = "missing"),
+	definition = function(object, FUN, formula, ...){
 
-			if(length(object@tableName) == 0) object@tableName = "species_richness"
+		if(length(object@tableName) == 0) object@tableName = "species_richness"
 
-			#build tableName
-			tableName = paste(object@MAP, object@tableName, sep = "")
+		#build tableName
+		tableName = paste(object@MAP, object@tableName, sep = "")
 
-			# build sql subset
-			sset = subsetSQLstring(object@CON, object@subset)
+		# build sql subset
+		sset = subsetSQLstring(object@CON, object@subset)
 
-			# build sql string
-			richnessSQL = paste("SELECT id, count(r.id) as", object@tableName ,"from ranges as r",
-							if(!is.null(sset)) paste("WHERE", sset), "group by r.id")
+		# build sql string
+		richnessSQL = paste("SELECT id, count(r.id) as", object@tableName ,"from ranges as r",
+						if(!is.null(sset)) paste("WHERE", sset), "group by r.id")
 
-			# build table and index
-			dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC)"))
-			dbGetQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
-			dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
+		# build table and index
+		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC)"))
+		dbGetQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
+		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
 
-		 return(dbtable.exists(object@CON, tableName))
-			})
+	 	return(dbtable.exists(object@CON, tableName))
+		})
 
 # aggregate method using sqlite
 setMethod("rangeMapSave",
@@ -121,7 +101,7 @@ setMethod("rangeMapSave",
 	split(d, d[, object@ID])
 	}
 
-# agggregate method using R functions called directly on the data
+# aggregate method using R functions called directly on the data
 setMethod("rangeMapSave",
 	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing"),
 	definition = function(object, FUN, formula, ...) {
@@ -148,7 +128,7 @@ setMethod("rangeMapSave",
 
 		})
 
-# agggregate method using R functions called directly using formula, data interface
+# aggregate method using R functions called directly using formula, data interface
 setMethod("rangeMapSave",
 	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula"),
 	definition = function(object, FUN, formula, ...) {
@@ -253,37 +233,31 @@ setMethod("rangeMapImport",
 #' Any valid SQL expression can be used to build up a subset. See
 #' \url{http://www.sqlite.org/lang_expr.html}
 #'
-#' @aliases rangeMap.save, rangeMap.fetch
-#' @param CON An sqlite connection pointing to a valid \code{rangeMapper}
-#' project.
-#' @param tableName Name of the table (quoted) to be added to the sqlite
-#' database. The prefix \sQuote{MAP} will be appended to \code{tableName} prior
-#' to saving.
-#' @param FUN the function to be applied to each pixel. If \code{FUN} is
-#' missing then species richness (species count) is computed.
-#' @param biotab character string identifying the \sQuote{BIO} table to use.
-#' @param biotrait character string identifying the ID of the \sQuote{BIO}
-#' table. see \code{\link{bio.save}}
-#' @param subset A named \code{\link{list}}. See details
-#' @param path Path to the raster file(quoted) to be imported to the existing
-#' project. \code{raster package} is required at this step.
+#' @param CON       An sqlite connection pointing to a valid \code{rangeMapper}
+#'                  project.
+#' @param tableName Name of the table (quoted) to be added to the sqlite database.
+#'                  The prefix \sQuote{MAP} will be appended to \code{tableName}
+#'                  prior to saving.
+#' @param FUN       The function to be applied to each pixel. If \code{FUN} is
+#'                  missing then species richness (species count) is computed.
+#' @param biotab    Character string identifying the \sQuote{BIO} table to use.
+#' @param biotrait  Character string identifying the ID of the \sQuote{BIO}
+#'                  table. see \code{\link{bio.save}}
+#' @param subset    A named \code{\link{list}}. See details
+#' @param path      Path to the raster file(quoted) to be imported to the existing
+#'                  project. \code{raster package} is required at this step.
 #' @param overwrite If \code{TRUE} then the table is removed
-#' @param \dots When \code{FUN} is an function, \dots{} denotes any extra
-#' arguments to be passed to it.
-#' @return \code{TRUE} when the MAP was created successfully.
-#' \code{rangeMap.fetch} returns a \code{\link{SpatialPixelsRangeMap-class}}.
-#' @note \code{SQL} aggregate functions are more efficient then their
-#' counterparts. For simple aggregate functions like mean, median, sd, count it
-#' is advisable to use \code{SQL} functions rather then R functions.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
-#' @seealso \code{\link[rangeMapper]{metadataUpdate}}.
-#' @references Valcu, M., Dale, J. and Kempenaers, B. (2012) rangeMapper: A
-#' platform for the study of macroecology of life history traits.  21(9). (DOI:
-#' 10.1111/j.1466-8238.2011.00739.x)
-#' @keywords spatial
+#' @param \dots     When \code{FUN} is an function, \dots{} denotes any extra
+#'                  arguments to be passed to it.
+#' @return          \code{TRUE} when the MAP was created successfully.
+#'                  \code{rangeMap.fetch} returns a
+#'                  \code{{SpatialPixelsRangeMap}}.
+#' @note            \code{SQL} aggregate functions are more efficient then their
+#'                  counterparts. For simple aggregate functions like mean, median, sd, count
+#'                  it is advisable to use \code{SQL} functions rather then R functions.
+#' @seealso         \code{\link[rangeMapper]{metadataUpdate}}.
 #' @export
 #' @examples
-#'
 #' require(rangeMapper)
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
 #'

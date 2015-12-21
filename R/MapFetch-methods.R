@@ -36,7 +36,8 @@ setMethod("rangeMapFetch",
 #' @param spatial If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.
 #' @param bioid   the name of the range to fetch (e.g. species name).
 #'
-#' @return        an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates and proj4 string as an atribute if spatial = FALSE.
+#' @return        an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates
+#'                and proj4 string as an atribute if spatial = FALSE.
 #' @export
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
@@ -68,9 +69,9 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 #' Fetch an arbitrary range from a rangeMapper project.
 #'
 #' @param rangeMap A \code{\link{rangeMap}} object.
-#' @param bioid A character vector, usually a taxon name, which identifies a
-#' range within a given rangeMapper project.
-#' @return A \code{\link{SpatialPolygons}}.
+#' @param bioid    A character vector, usually a taxon name, which identifies a
+#'                 range within a given rangeMapper project.
+#' @return         A \code{\link{SpatialPolygons}}.
 #' @export
 #' @examples
 #'

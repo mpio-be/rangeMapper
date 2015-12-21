@@ -34,19 +34,14 @@ setMethod("rangeMapStart",
 
 #' Initiate/open a new rangeMapper project
 #'
-#' Initiate/open a new rangeMapper project using a
-#' \code{\link{rangeMapStart-class} object}
-#'
-#'
-#' @aliases rangeMap.start rangeMapStart rangeMap.open rangeMap
-#' @param path Character vector; a path to a valid rangeMapper project
-#' @param verbose Character vector; if \code{TRUE} the project's summary is
-#' printed
-#' @param \dots Arguments to be passed to \code{\link{rangeMapStart-class}}
-#' @return rangeMap.start() and rangeMap.open() returns an sqlite connection.
-#' rangeMap() returns a \code{\link{rangeMap-class}} object.
-#' @seealso \code{\link{rangeMap.save}}.\cr \code{\link{rangeMapStart-class}}
-#' @export rangeMap.start rangeMap.open
+#' @param file      Project's file name.
+#' @param dir       Project directory.
+#' @param overwrite Logical vector, default to FALSE (the file is kept but all tables are dropped).
+#' @param path      Character vector; a path to a valid rangeMapper project.
+#' @param verbose   Character vector; if \code{TRUE} the project's summary is printed.
+#' @return          rangeMap.start() and rangeMap.open() returns an sqlite connection.
+#' @seealso         \code{\link{rangeMap.save}}
+#' @export          rangeMap.start rangeMap.open
 #' @examples
 #'
 #' td = setwd(tempdir())

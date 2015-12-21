@@ -4,6 +4,12 @@
 #' \code{assemblageFetch} retrieves the species set of an arbitrary canvas cell
 #' optionally with the associated life history data
 #'
+#' @param object   A \code{connection} object.
+#' @param xy       A \code{\link[sp]{SpatialPoints}} object.
+#' @param BIO      The name of the \code{BIO_table} containing species life-history data.
+#' @return         A \code{data.frame} containing the bioid (e.g. species names),
+#'                 the canvas id and optionally any associated life history data contained
+#'                 in the \code{BIO_table} table.
 #' @export
 #' @examples
 #'
@@ -40,10 +46,7 @@
 #'
 setGeneric("assemblageFetch", function(object, xy, BIO)		standardGeneric("assemblageFetch") )
 
-
-#' @describeIn assemblageFetch assemblageFetch(rangeMap, xy)
-#' returns a data.frame containing two columns:
-#' the bioid (e.g. speciesnames) and the canvas id.
+#' @rdname  assemblageFetch
 
 setMethod("assemblageFetch",
 	signature  = c(object = "rangeMap", xy = "SpatialPoints", BIO = "missing"),
@@ -65,9 +68,7 @@ setMethod("assemblageFetch",
 		}
    )
 
-#' @describeIn assemblageFetch assemblageFetch(rangeMap, xy, BIO)
-#' returns a data.frame containing the bioid (e.g. species names),
-#' canvas id and any associated life history data contained in the BIO table.
+#' @rdname  assemblageFetch
 
 setMethod("assemblageFetch",
 	signature  = c(object = "rangeMap", xy = "SpatialPoints", BIO = "character"),

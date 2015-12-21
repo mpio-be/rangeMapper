@@ -54,7 +54,7 @@ processRanges
 require(rangeMapper)
 \dontrun{
 if (require(doParallel) ) {
- cl = makePSOCKcluster(4)
+ cl = makePSOCKcluster(2)
  registerDoParallel(cl) }
 }
 dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
