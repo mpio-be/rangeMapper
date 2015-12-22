@@ -1,3 +1,20 @@
+
+
+as.rmap.table <-function(x,  ...){
+    UseMethod("as.rmap.table")
+	}
+
+as.rmap.table.default <- function(x, p4s, gridSize, bbox){
+  x = setDT(x)
+
+  setattr(x, 'class', c('as.rmap.table', 'data.table', 'data.frame'))
+  setattr(x, 'p4s', 'p4s')
+  setattr(x, 'gridSize', 'gridSize')
+  setattr(x, 'bbox', 'bbox')
+
+  invisible(x)
+}
+
 setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )
 
 setMethod("rangeMapFetch",
@@ -17,11 +34,16 @@ setMethod("rangeMapFetch",
 		sql = paste("SELECT c.x, c.y,", mapdat,
 		"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
 
-		map = dbGetQuery(object@CON, sql)
 
-		attr(map, 'p4s') = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
+		# elements
+		x = dbGetQuery(object@CON, sql)
+		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1] %>% CRS
+		grd = gridSize.fetch(object@CON)
+		bbx = global.bbox.fetch(object@CON) %>% vertices %>% coordinates %>% data.frame %>% as.list
 
-		map
+		# rmap.table
+		as.rmap.table(x, p4s, grd, bbx)
+
 
 		}
 	)
