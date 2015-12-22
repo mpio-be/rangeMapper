@@ -37,11 +37,9 @@ setMethod("processRanges",
 	definition = function(con, spdf, ID,  metadata){
 
 	Startprocess = Sys.time()
-
 	# ini
+		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
-		if(!is.empty(rmo@CON, rmo@RANGES))
-			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
 
 	# Elements
 		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
@@ -64,7 +62,7 @@ setMethod("processRanges",
 
 	# db update
 		message("Writing to project.")
-		res = dbWriteTable(con, "ranges", roc, append = TRUE, row.names = FALSE)
+		res = dbWriteTable(con, rmo@RANGES, roc, append = TRUE, row.names = FALSE)
 
 
 		if(res) message(paste(length(unique(spdf$ID)) , "ranges updated; Elapsed time:",
@@ -82,6 +80,7 @@ setMethod("processRanges",
 	definition = function(con, spdf, ID,  metadata){
 
 	# ini
+		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
 	# Elements
@@ -131,11 +130,9 @@ setMethod("processRanges",
 
 	Startprocess = Sys.time()
 
-
 	# ini
+		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
-		if(!is.empty(rmo@CON, rmo@RANGES))
-			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
 
 	# Elements
 		Files = rangeFiles(new("rangeFiles", dir = dir))
@@ -174,14 +171,12 @@ setMethod("processRanges",
 
 	Startprocess = Sys.time()
 
-
 	# ini
+		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
-		if(!is.empty(rmo@CON, rmo@RANGES))
-			stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
 
 	# Elements
-		Files = rangeMapper:::rangeFiles(new("rangeFiles", dir = dir))
+		Files = rangeFiles(new("rangeFiles", dir = dir))
 		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
 		p4s =  dbReadTable(con, "proj4string")[1,1]
 

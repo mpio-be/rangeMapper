@@ -33,6 +33,12 @@ dbfield.exists  <- function(con, table.name, col.name) {
 	ans
 	}
 
+ranges.exists <- function(con) {
+	rmo = new("rangeMap", CON = con)
+	if(!is.empty(rmo@CON, rmo@RANGES))
+		stop(paste(dQuote(rmo@RANGES), "table is not empty!"))
+	}
+
 is.empty        <- function(con, table.name) {
 	# returns TRUE if table is  empty FALSE otherwise
 	# performs a SELECT * from table limit 1;

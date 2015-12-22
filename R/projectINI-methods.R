@@ -101,7 +101,7 @@ rangeMap.open <- function(path, verbose = TRUE) {
 
 	o = new("rangeMap", CON = dbcon)
 
-	if(verbose) print(summary(o))
+	if(verbose) show(o)
 
 	invisible(dbcon)
 	}

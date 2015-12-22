@@ -1,4 +1,4 @@
-context("Output")
+context("3: Output")
 
 test_that("rangeMapFetch produces a SpatialPixelsRangeMap", {
 
@@ -12,13 +12,8 @@ test_that("rangeMapFetch produces a SpatialPixelsRangeMap", {
 	rangeMap.save(dbcon)
 	m= rangeMap.fetch(dbcon)
 
-	rastPath = paste( rangeMap.export(dbcon, dir = tempdir()), 'MAP_species_richness.tiff', sep = .Platform$file.sep)
-	r = rgdal::readGDAL(rastPath, silent = TRUE)
-
-	expect_that(r, is_a('SpatialGridDataFrame'))
 
 	})
-
 
 test_that("rangeMapExport produces a tiff", {
 

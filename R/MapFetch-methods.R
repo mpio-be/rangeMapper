@@ -1,4 +1,3 @@
-setGeneric("rangeMapFetchRaw", function(object, ...) 	standardGeneric("rangeMapFetchRaw") )
 setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )
 
 setMethod("rangeMapFetch",
@@ -32,9 +31,9 @@ setMethod("rangeMapFetch",
 #' rangeMap.fetch
 #' @param con 	  a connection to a valid rangeMapper project.
 #' @param maps    map(s) name as character vector. If missing then all the maps are returned.
-#' @param spatial If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.
-#' @return        an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates
-#'                and proj4 string as an atribute if spatial = FALSE.
+#' @param spatial If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{\link[data.table]{data.table}}.
+#' @return        an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
+#'                and \code{proj4} string as an atribute if \code{spatial = FALSE}.
 #' @export
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name

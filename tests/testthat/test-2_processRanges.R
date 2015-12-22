@@ -1,7 +1,7 @@
 
 # TODO: w. registered parallel back-end
 
-context("process Ranges")
+context("2: Process Ranges")
 
 test_that("reprojecting on the fly", {
 
@@ -9,7 +9,7 @@ test_that("reprojecting on the fly", {
 	f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 	r = readOGR(f, "wrens", verbose = FALSE)
 	global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
-	gridSize.save(dbcon, gridSize = 1000000)
+	gridSize.save(dbcon, gridSize = 2000000)
 	canvas.save(dbcon)
 
 	expect_warning( # because of re-projecting
@@ -70,7 +70,7 @@ test_that("processRanges works with multiple SpPolyDF-s and metadata", {
 
 	dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = wd)
 	global.bbox.save(con = dbcon, bbox = wd)
-	gridSize.save(dbcon, gridSize = 5)
+	gridSize.save(dbcon, gridSize = 10)
 	canvas.save(dbcon)
 
 	processRanges(dir = wd, con = dbcon, metadata = rangeTraits())

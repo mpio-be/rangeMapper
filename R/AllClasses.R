@@ -146,10 +146,10 @@ setClass("MapImport", representation(path = "character"),
 
 setClass("rangeMapFetch", representation(
 	tableName    = "character"),
-	contains = "rangeMap",
+	contains     = "rangeMap",
 
 	validity = function(object)	{
-	mapNam =paste(object@MAP, object@tableName, sep = "")
+	mapNam = paste(object@MAP, object@tableName, sep = "")
 
 	invalidNam = sapply(mapNam, FUN = function(x) !dbtable.exists(object@CON, x) )
 
