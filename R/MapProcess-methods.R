@@ -34,7 +34,6 @@ setMethod("processRanges",
 				 dir         = "missing",
 				 ID          = "character",
 				 metadata    = "missing"),
-
 	definition = function(con, spdf, ID,  metadata){
 
 	Startprocess = Sys.time()
@@ -80,7 +79,6 @@ setMethod("processRanges",
 				 dir         = "missing",
 				 ID          = "character",
 				 metadata    = "list"),
-
 	definition = function(con, spdf, ID,  metadata){
 
 	# ini
@@ -146,19 +144,19 @@ setMethod("processRanges",
 
 	# Range over canvas
 		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %do% {
-				ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
+			ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
-				if( ! proj4string_is_identical(proj4string(ri), p4s) ) {
-					ri = spTransform( ri , CRS(p4s) )
-					}
-
-				oi = rangeOverlay(ri,  cnv, Files[i,'layer'])
-
-				names(oi) = c(rmo@ID, rmo@BIOID)
-
-				# save  to db
-				res = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
+			if( ! proj4string_is_identical(proj4string(ri), p4s) ) {
+				ri = spTransform( ri , CRS(p4s) )
 				}
+
+			oi = rangeOverlay(ri,  cnv, Files[i,'layer'])
+
+			names(oi) = c(rmo@ID, rmo@BIOID)
+
+			# save  to db
+			res = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
+			}
 
 	# Msg
 		message(paste(  unlist(roc) %>% sum , "ranges updated to database; Elapsed time:",
@@ -211,24 +209,24 @@ setMethod("processRanges",
 
 	# Range over canvas
 		roc = foreach(i = 2:nrow(Files), .packages = c('sp') ) %do% {
-				spi = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
+			spi = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
-				if( ! proj4string_is_identical(proj4string(spi), p4s) ) {
-					spi = spTransform( spi , CRS(p4s) )
-					}
-				# do overlay
-				oi = rangeOverlay(spi,  cnv, Files[i,'layer'])
-				names(oi) = c(rmo@ID, rmo@BIOID)
-
-				# metadata
-				mi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
-				mi = cbind(bioid = i[1], mi)
-
-				# save
-				res1 = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
-				res2 = dbWriteTable(con, rmo@METADATA_RANGES, mi, append = TRUE, row.names = FALSE)
-				all(res1, res2)
+			if( ! proj4string_is_identical(proj4string(spi), p4s) ) {
+				spi = spTransform( spi , CRS(p4s) )
 				}
+			# do overlay
+			oi = rangeOverlay(spi,  cnv, Files[i,'layer'])
+			names(oi) = c(rmo@ID, rmo@BIOID)
+
+			# metadata
+			mi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
+			mi = cbind(bioid = i[1], mi)
+
+			# save
+			res1 = dbWriteTable(con, rmo@RANGES, oi, append = TRUE, row.names = FALSE)
+			res2 = dbWriteTable(con, rmo@METADATA_RANGES, mi, append = TRUE, row.names = FALSE)
+			all(res1, res2)
+			}
 
 	# Msg
 		message(paste(  unlist(roc) %>% sum +1 , "ranges updated to database; Elapsed time:",

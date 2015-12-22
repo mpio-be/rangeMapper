@@ -5,7 +5,7 @@
 
 
 
-#' @import sp rgdal methods RSQLite lattice ggplot2
+#' @import sp methods RSQLite lattice ggplot2
 NULL
 
 #' @importFrom magrittr %>%
@@ -18,6 +18,9 @@ NULL
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT
+NULL
+
+#' @importFrom rgdal CRSargs OGRSpatialRef readGDAL readOGR  writeGDAL
 NULL
 
 #' @importFrom raster raster rasterToPolygons projection
