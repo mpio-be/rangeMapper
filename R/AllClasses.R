@@ -167,14 +167,6 @@ setClass("rangeMapFetch", representation(
 	 stop(paste(sQuote(mapNam[isempty]), "is an empty MAP!\n"))
 	})
 
-setClass("SpatialPixelsRangeMap", representation(
-	mapvar    = "character"),
-    contains  = "SpatialPixelsDataFrame",
-
-	validity = function(object)	{
-	return(TRUE)
-	})
-
 setClass("rangeMapRemove", representation(
 	tableName = "character",
 	tablePrefix = "character"
@@ -192,3 +184,18 @@ setClass("rangeMapRemove", representation(
 					object@RANGES, "table(s) cannot be removed!"))
 	})
 
+setClass("SpatialPixelsRangeMap", representation(
+	mapvar    = "character"),
+    contains  = "SpatialPixelsDataFrame",
+
+	validity = function(object)	{
+	return(TRUE)
+	})
+
+setOldClass(c('data.table'))
+
+setOldClass(c('rmap.table', 'data.table'))
+
+setAs("data.table", "rmap.table", function(from) {
+    as.data.rmap.table(from)
+})
