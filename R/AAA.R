@@ -14,7 +14,7 @@ NULL
 #' @importFrom foreach foreach %do% %dopar%
 NULL
 
-#' @importFrom data.table data.table
+#' @importFrom data.table data.table setDT setattr
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT

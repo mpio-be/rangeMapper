@@ -14,7 +14,7 @@ rangeFetch(rangeMap, bioid)
 range within a given rangeMapper project.}
 }
 \value{
-A \code{\link{SpatialPolygons}}.
+A \code{\link[sp]{SpatialPolygons}}.
 }
 \description{
 Fetch an arbitrary range from a rangeMapper project.

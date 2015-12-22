@@ -1,19 +1,39 @@
 
+setOldClass(c('data.table'))
+setOldClass(c('data.table', 'rmap.frame'))
 
-as.rmap.table <-function(x,  ...){
-    UseMethod("as.rmap.table")
+setAs("data.table", "rmap.frame", function(from) {
+    as.rmap.frame(from)
+	})
+
+#' @rdname  as.rmap.frame.data.table
+as.rmap.frame <-function(x, ...) {
+    UseMethod("as.rmap.frame")
 	}
 
-as.rmap.table.default <- function(x, p4s, gridSize, bbox){
-  x = setDT(x)
+#' Convert data.table to rmap.frame
+#'
+#' @param x        a data.table
+#' @param p4s      proj4string
+#' @param gridSize grid size
+#' @param bbox     global bounding box, a list  with x and y
+#' @param \dots    extra argumnents
+#' @export
+#' @return an rmap.table object which inherits
+#'         from \code{\link[data.table]{data.table}}
+as.rmap.frame.data.table <- function(x, p4s, gridSize, bbox) {
+	setattr(x, 'class', c('rmap.frame', 'data.table', 'data.frame'))
+	setattr(x, 'p4s', p4s)
+	setattr(x, 'gridSize', gridSize)
+	setattr(x, 'bbox', bbox)
 
-  setattr(x, 'class', c('as.rmap.table', 'data.table', 'data.frame'))
-  setattr(x, 'p4s', 'p4s')
-  setattr(x, 'gridSize', 'gridSize')
-  setattr(x, 'bbox', 'bbox')
+	invisible(x)
+	}
 
-  invisible(x)
-}
+#' @rdname  as.rmap.frame.data.table
+as.data.rmap.table <-function(...) {
+	# dummy to stop R cmd check to complain
+	}
 
 setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )
 
@@ -36,13 +56,14 @@ setMethod("rangeMapFetch",
 
 
 		# elements
-		x = dbGetQuery(object@CON, sql)
-		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1] %>% CRS
+		x   = dbGetQuery(object@CON, sql)
+		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 		grd = gridSize.fetch(object@CON)
 		bbx = global.bbox.fetch(object@CON) %>% vertices %>% coordinates %>% data.frame %>% as.list
 
 		# rmap.table
-		as.rmap.table(x, p4s, grd, bbx)
+		x = setDT(x)
+		as.rmap.frame(x, p4s = p4s, gridSize = grd, bbox = bbx)
 
 
 		}
@@ -63,21 +84,18 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	maps = gsub("MAP_", "", maps)
 
 	x = new("rangeMapFetch", CON = con, tableName = maps)
-
 	map = rangeMapFetch(x)
 	p4s = attr(map, 'p4s')
 
 	if(spatial) {
+		map = as.data.frame(map)
 		coordinates(map) = ~ x + y
 		proj4string(map) = CRS(p4s)
 		gridded(map) = TRUE
 		map = new("SpatialPixelsRangeMap", map, mapvar = maps)
-		return(map)
 		}
 
-	if(!spatial) {
-	return(data.table(map))
-	}
+	map
 
   }
 
@@ -89,7 +107,7 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 #' @param rangeMap A \code{\link{rangeMap}} object.
 #' @param bioid    A character vector, usually a taxon name, which identifies a
 #'                 range within a given rangeMapper project.
-#' @return         A \code{\link{SpatialPolygons}}.
+#' @return         A \code{\link[sp]{SpatialPolygons}}.
 #' @export
 #' @examples
 #'
