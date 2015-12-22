@@ -11,11 +11,11 @@ rangeMap.fetch(con, maps, spatial = TRUE)
 
 \item{maps}{map(s) name as character vector. If missing then all the maps are returned.}
 
-\item{spatial}{If TRUE (default) a SpatialPixelsRangeMap is returned, else a data.table.}
+\item{spatial}{If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{\link[data.table]{data.table}}.}
 }
 \value{
-an object of SpatialPixelsRangeMap or data.table  containing the spatial coordinates
-               and proj4 string as an atribute if spatial = FALSE.
+an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
+               and \code{proj4} string as an atribute if \code{spatial = FALSE}.
 }
 \description{
 rangeMap.fetch
