@@ -1,10 +1,11 @@
 context("3: Output")
 
-test_that("rangeMapFetch produces a SpatialPixelsRangeMap", {
+r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
+
+test_that("rangeMap.fetch, spatial = TRUE ==> SpatialPixelsRangeMap", {
 
 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 	f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-	r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
 	global.bbox.save(con = dbcon, bbox = r)
 	gridSize.save(dbcon, gridSize = 10)
 	canvas.save(dbcon)
@@ -15,11 +16,27 @@ test_that("rangeMapFetch produces a SpatialPixelsRangeMap", {
 
 	})
 
+test_that("rmap.frame works with ggplot", {
+
+	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+	f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
+	global.bbox.save(con = dbcon, bbox = r)
+	gridSize.save(dbcon, gridSize = 10)
+	canvas.save(dbcon)
+	processRanges(con = dbcon, spdf = r, ID = "sci_name")
+	rangeMap.save(dbcon)
+	m = rangeMap.fetch(dbcon, spatial = FALSE)
+
+	})
+
+
+
+
+
 test_that("rangeMapExport produces a tiff", {
 
 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 	f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-	r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
 	global.bbox.save(con = dbcon, bbox = r)
 	gridSize.save(dbcon, gridSize = 10)
 	canvas.save(dbcon)

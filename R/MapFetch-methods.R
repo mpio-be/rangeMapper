@@ -32,7 +32,7 @@ as.rmap.frame.data.table <- function(x, p4s, gridSize, bbox) {
 
 #' @rdname  as.rmap.frame.data.table
 as.data.rmap.table <-function(...) {
-	# dummy to stop R cmd check to complain
+	# dummy function to stop R cmd check  from complaining
 	}
 
 setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )

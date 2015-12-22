@@ -61,24 +61,29 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 				split=layout[i, ], more=printMore)
 		}
 
- })
+ 	})
 
 
-# TODO
-# ggp <- function(){
+#setMethod("plot", signature(x='rmap.frame', y='missing'),
+#	function(x, colorpalette = brewer.pal.get('Spectral')[11:1],ncols = 20) {
 #
-# 		g = ggplot(data = m) + geom_tile( aes(x, y, fill = species_richness) ) +
-# 		coord_equal() +
-# 		scale_fill_gradientn(
-# 				colours = RColorBrewer::brewer.pal(5, "YlGnBu"),
-# 				guide = guide_legend(title = "xxxxxx", keywidth = 1, keyheight = .5) ) +
-# 		theme_bw() +
-# 		labs(x=NULL, y=NULL) +
-# 		theme(axis.text = element_blank(), axis.ticks = element_blank() ,
-# 			 legend.justification=c(0,0), legend.position=c(0,0),
-# 			 panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank() )
+#	g = ggplot(data = x) +
+#		geom_tile( aes(x, y, fill = species_richness) ) +
+#		coord_equal() +
+#		scale_fill_gradientn(colours = RColorBrewer::brewer.pal(5, "YlGnBu") ),
+#		theme_bw() +
+#		labs(x=NULL, y=NULL) +
+#		theme(
+#			axis.text = element_blank(),
+#			axis.ticks = element_blank() ,
+#			legend.justification=c(0,0),
+#			legend.position=c(0,0),
+#			panel.grid.major = element_blank(),
+#			panel.grid.minor = element_blank(),
+#			panel.border = element_blank() )
 #
+# 	})
 #
-# 	}
-#
+
+
 
