@@ -4,24 +4,23 @@ Changes in version 0.2-8
 BUG FIXES
     o   The package works now with RSQLite (>= 1.0.0)
 
-
 Changes in version 0.2-7
 NEW FEATURES
-    o   WKT2SpatialPolygonsDataFrame() 
+    o   WKT2SpatialPolygonsDataFrame()
 
 
 Changes in version 0.2-6
 BUG FIXES
-    o   fixed a bug in bio.merge(). 
+    o   fixed a bug in bio.merge().
 
 Changes in version 0.2-4
 NEW FEATURES
 	o    The old tcltk GUI has been replaced with a GUI based on shiny.
-		
+
 Changes in version 0.2-3
 NEW FEATURES
-	o   method assemblageFetch() to extract species sets (species assemblages) & 
-		the associated life history data 
+	o   method assemblageFetch() to extract species sets (species assemblages) &
+		the associated life history data
 
 Changes in version 0.1-7
 NEW FEATURES
@@ -31,12 +30,12 @@ NEW FEATURES
 Changes in version 0.1-5
 
 BUG FIXES
-    o   fixed a bug in vertices(). 
+    o   fixed a bug in vertices().
 
 NEW FEATURES
-	o   vertices is a new method of general use. Extract vertices from a 
-		SpatialPolygonsDataFrame and optionally applies an aggregating function 
-		to each Polygon. 
+	o   vertices is a new method of general use. Extract vertices from a
+		SpatialPolygonsDataFrame and optionally applies an aggregating function
+		to each Polygon.
     o   rangeTraits() & processRanges () changed to work with vertices().
 
 Changes in version 0.1-3
