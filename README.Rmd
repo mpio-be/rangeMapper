@@ -27,6 +27,8 @@ knitr::opts_chunk$set(
     rangeMap.save(dbcon)
     m = rangeMap.fetch(dbcon, spatial = FALSE)
     plot(m) + theme(legend.position="none")
+    plot(m) + theme(legend.position="none")
+    plot(m) + theme(legend.position="none")
 
 ```
 
