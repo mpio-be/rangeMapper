@@ -58,6 +58,7 @@ if (require(doParallel) ) {
  cl = makePSOCKcluster(2)
  registerDoParallel(cl) }
 }
+
 dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 r = readOGR(f, "wrens", verbose = FALSE)
@@ -65,6 +66,9 @@ global.bbox.save(con = dbcon, bbox = r)
 gridSize.save(dbcon, gridSize = 2)
 canvas.save(dbcon)
 processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
-\dontrun{ stopCluster(cl) }
+
+\dontrun{
+stopCluster(cl)
+}
 }
 

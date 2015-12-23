@@ -1,12 +1,4 @@
-# non-exported functions
 
-brewer.pal.get  <- function(palette = NULL) {
-	pal = brewer.pal.info
-	pal = pal[!pal$category == "qual",]
-	bp = lapply(split(pal, row.names(pal)), FUN = function(x) brewer.pal(x$maxcolors, row.names(x)))
-	if(!is.null(palette) && palette%in%names(bp) ) bp = bp[palette][[1]]
-	bp
-	}
 
 extract.indexed <- function(con,table.name) {
 	# extract name of indexed column
@@ -19,10 +11,8 @@ extract.indexed <- function(con,table.name) {
 	}
 
 dbtable.exists  <- function(con, table.name) {
-	# returns TRUE if the table exists on channel
 	x = dbGetQuery(con,paste('select name from sqlite_master where type in ("table") and tbl_name like', shQuote(table.name) ) )
 	if(nrow(x)>0) TRUE else FALSE
-
 	}
 
 dbfield.exists  <- function(con, table.name, col.name) {
@@ -111,8 +101,6 @@ subsetSQLstring <- function(dbcon, subset = list() ) {
 	}
 	sql
 	}
-
-
 
 
 

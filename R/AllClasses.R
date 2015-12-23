@@ -196,6 +196,9 @@ setOldClass(c('data.table'))
 
 setOldClass(c('rmap.table', 'data.table'))
 
-setAs("data.table", "rmap.table", function(from) {
-    as.data.rmap.table(from)
-})
+setOldClass(c('data.table'))
+setOldClass(c('data.table', 'rmap.frame'))
+
+setAs("data.table", "rmap.frame", function(from) {
+    as.rmap.frame(from)
+	})

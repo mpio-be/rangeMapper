@@ -50,5 +50,6 @@ Collate:
     'metadataUpdate-methods.R'
     'rangeFiles-methods.R'
     'rangeMapper-package.R'
+    'style.R'
     'utils-spatial.R'
     'utils.R'

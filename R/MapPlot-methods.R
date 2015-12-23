@@ -4,7 +4,7 @@
 #'
 #' This is a wrapper around \code{spplot}
 #'
-#' @param x             A SpatialPixelsRangeMap object.
+#' @param x             A SpatialPixelsRangeMap
 #' @param colorpalette  A color palette.
 #' @param ncols         Number of color classes required, default to 20; argument to be passed to
 #'                      \code{\link[classInt]{classIntervals}}
@@ -63,27 +63,26 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
  	})
 
+#' Plot a rmap.frame
+#'
+#' @param x a a rmap.frame object.
+#' @return  a ggplot object.
+#' @export
 
-#setMethod("plot", signature(x='rmap.frame', y='missing'),
-#	function(x, colorpalette = brewer.pal.get('Spectral')[11:1],ncols = 20) {
-#
-#	g = ggplot(data = x) +
-#		geom_tile( aes(x, y, fill = species_richness) ) +
-#		coord_equal() +
-#		scale_fill_gradientn(colours = RColorBrewer::brewer.pal(5, "YlGnBu") ),
-#		theme_bw() +
-#		labs(x=NULL, y=NULL) +
-#		theme(
-#			axis.text = element_blank(),
-#			axis.ticks = element_blank() ,
-#			legend.justification=c(0,0),
-#			legend.position=c(0,0),
-#			panel.grid.major = element_blank(),
-#			panel.grid.minor = element_blank(),
-#			panel.border = element_blank() )
-#
-# 	})
-#
+setMethod("plot", signature(x='rmap.frame', y='missing'), function(x) {
+	idv = setdiff(names(x), c('x', 'y') )
 
+	xl = melt(x, id.vars = c('x', 'y') ,   measure.vars = idv)
+	xl = xl[!is.na(value)]
+
+	ggplot(data = xl) +
+		geom_tile( aes_string(x = 'x', y = 'y', fill = 'value') ) +
+		{if(length(idv) > 1) facet_grid(~variable, scales = 'free')}  +
+		coord_equal() +
+		scale_fill_gradientn(colours = RColorBrewer::brewer.pal(5, "YlGnBu") ) +
+		labs(x=NULL, y=NULL) +
+		theme_rangemap()
+
+ 	})
 
 

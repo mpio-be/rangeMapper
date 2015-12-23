@@ -11,10 +11,10 @@ NULL
 #' @importFrom magrittr %>%
 NULL
 
-#' @importFrom foreach foreach %do% %dopar%
+#' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 
-#' @importFrom data.table data.table setDT setattr
+#' @importFrom data.table data.table setDT setattr melt
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT
@@ -35,5 +35,5 @@ NULL
 #' @importFrom RColorBrewer brewer.pal.info brewer.pal
 NULL
 
-
-utils::globalVariables(c("i", "."))
+# data.table and foreach 'values'
+utils::globalVariables(c("i", ".", "value"))

@@ -13,7 +13,8 @@
 #' if (require(doParallel) ) {
 #'  cl = makePSOCKcluster(2)
 #'  registerDoParallel(cl) }
-#'}
+#' }
+#'
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 #' r = readOGR(f, "wrens", verbose = FALSE)
@@ -21,7 +22,10 @@
 #' gridSize.save(dbcon, gridSize = 2)
 #' canvas.save(dbcon)
 #' processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
-#'\dontrun{ stopCluster(cl) }
+#'
+#'\dontrun{
+#' stopCluster(cl)
+#' }
 
 setGeneric("processRanges",
 	function(con,spdf, dir, ID,metadata)
@@ -38,6 +42,7 @@ setMethod("processRanges",
 
 	Startprocess = Sys.time()
 	# ini
+		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -54,7 +59,7 @@ setMethod("processRanges",
 			}
 
 	# range over canvas
-		roc = foreach(i = spdf$ID, .packages = c('sp'), .combine = rbind) %dopar% {
+		roc = foreach(i = spdf$ID, .packages = c('sp'), .combine = rbind) %trypar% {
  			spi  = spdf[spdf$ID == i, ]
  			nami = spi$ID[1]
  			rangeOverlay( spi , cnv, nami)
@@ -80,6 +85,7 @@ setMethod("processRanges",
 	definition = function(con, spdf, ID,  metadata){
 
 	# ini
+		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -93,7 +99,7 @@ setMethod("processRanges",
 
 	# 2. process metadata
 		message("Extracting metadata...")
-		rtr = foreach(i = ids, .packages = 'sp', .combine = rbind) %dopar%  {
+		rtr = foreach(i = ids, .packages = 'sp', .combine = rbind) %trypar%  {
 			spi = spdf[spdf@data[, ID] == i, ]
 			oi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
 			cbind(bioid = i[1], oi)
@@ -131,6 +137,7 @@ setMethod("processRanges",
 	Startprocess = Sys.time()
 
 	# ini
+		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -172,6 +179,7 @@ setMethod("processRanges",
 	Startprocess = Sys.time()
 
 	# ini
+		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 

@@ -10,7 +10,7 @@
   scales = FALSE, style = "equal", ...)
 }
 \arguments{
-\item{x}{A SpatialPixelsRangeMap object.}
+\item{x}{A SpatialPixelsRangeMap}
 
 \item{colorpalette}{A color palette.}
 

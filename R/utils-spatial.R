@@ -179,17 +179,6 @@ rangeTraits <- function(..., use.default = TRUE) {
 	res
 	}
 
-extract.p4s <- function(ShpFiles) {
-	#ShpFiles = selectShpFiles(paste(system.file(package="rangeMapper"), "extdata", "wrens", "vector", sep = .Platform$file.sep))
-		fl = split(ShpFiles, ShpFiles$layer)
-		unlist(lapply(fl, FUN = function(x) OGRSpatialRef(x[,1], x[,2])  ))
-	}
-
-rect2spp <- function(xmin, xmax, ymin, ymax) {
-	bb = cbind(c(xmin, xmax, xmax, xmin, xmin), c(ymin, ymin, ymax, ymax, ymin) )
-	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")) )
-	}
-
 #' rangeOverlay
 #'
 #' @param spp     a SpatialPolygons* object.
@@ -230,8 +219,28 @@ rangeOverlay <- function(spp, canvas, name) {
 	return(o)
 	}
 
+
 # undocumented functions
+extract.p4s <- function(ShpFiles) {
+	#ShpFiles = selectShpFiles(paste(system.file(package="rangeMapper"), "extdata", "wrens", "vector", sep = .Platform$file.sep))
+		fl = split(ShpFiles, ShpFiles$layer)
+		unlist(lapply(fl, FUN = function(x) OGRSpatialRef(x[,1], x[,2])  ))
+	}
+
+rect2spp <- function(xmin, xmax, ymin, ymax) {
+	bb = cbind(c(xmin, xmax, xmax, xmin, xmin), c(ymin, ymin, ymax, ymax, ymin) )
+	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")) )
+	}
 
 proj4string_is_identical <- function(a, b){
 	identical(gsub(" ", "", a), gsub(" ", "", b) )
+	}
+
+rmap.frame_to_SpatialPixelsRangeMap <- function(map, proj4string, names){
+	map = new("SpatialPixelsRangeMap",
+			SpatialPixelsDataFrame(
+				points = map[, c('x', 'y'), with = FALSE] %>% as.matrix,
+				data   = map[,  setdiff(names(map), c('x', 'y')), with = FALSE]  %>% as.data.frame,
+				proj4string = CRS(proj4string) ),
+			mapvar = names)
 	}

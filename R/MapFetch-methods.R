@@ -1,10 +1,4 @@
 
-setOldClass(c('data.table'))
-setOldClass(c('data.table', 'rmap.frame'))
-
-setAs("data.table", "rmap.frame", function(from) {
-    as.rmap.frame(from)
-	})
 
 #' @rdname  as.rmap.frame.data.table
 as.rmap.frame <-function(x, ...) {
@@ -30,10 +24,6 @@ as.rmap.frame.data.table <- function(x, p4s, gridSize, bbox) {
 	invisible(x)
 	}
 
-#' @rdname  as.rmap.frame.data.table
-as.data.rmap.table <-function(...) {
-	# dummy function to stop R cmd check  from complaining
-	}
 
 setGeneric("rangeMapFetch", function(object, ...) 		standardGeneric("rangeMapFetch") )
 
@@ -88,15 +78,10 @@ rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	p4s = attr(map, 'p4s')
 
 	if(spatial) {
-		map = as.data.frame(map)
-		coordinates(map) = ~ x + y
-		proj4string(map) = CRS(p4s)
-		gridded(map) = TRUE
-		map = new("SpatialPixelsRangeMap", map, mapvar = maps)
+		map = rmap.frame_to_SpatialPixelsRangeMap(map, p4s, maps)
 		}
 
 	map
-
   }
 
 #' rangeFetch
