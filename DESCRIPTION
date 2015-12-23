@@ -6,9 +6,9 @@ Authors@R: c(
     person("Joan", "Maspons", role = "ctb")
     )
 Title: A Platform for the Study of Macroecology of Life History Traits
-Depends:
+Depends: 
     R (>= 3.0.0)
-Imports:
+Imports: 
     methods,
     sp,
     rgdal,
@@ -23,17 +23,19 @@ Imports:
     magrittr,
     data.table,
     foreach
-Suggests:
+Suggests: 
     shiny (>= 0.8.0),
     doParallel,
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Description: Tools for easy generation of (life-history) traits maps based on
     species range (extent-of-occurrence) maps.
 License: GPL(>= 2)
 URL: http://rangemapper.orn.mpg.de, http://cran.at.r-project.org/
     package=rangeMapper
 RoxygenNote: 5.0.1
-Collate:
+Collate: 
     'AAA.R'
     'AllClasses.R'
     'GUI.R'
@@ -53,3 +55,4 @@ Collate:
     'style.R'
     'utils-spatial.R'
     'utils.R'
+VignetteBuilder: knitr

@@ -2,7 +2,7 @@
 
 TODO
 ----
-* fix GUI
+  * fix GUI
 
 NEW FEATURES
 ------------

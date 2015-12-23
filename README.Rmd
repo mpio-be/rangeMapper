@@ -5,7 +5,13 @@ output:
 ---
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+    )
+```
 [![Travis-CI Build Status](https://travis-ci.org/valcu/rangeMapper.svg?branch=master)](https://travis-ci.org/valcu/rangeMapper)
 [![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
@@ -24,10 +30,7 @@ install.packages("rangeMapper")
 ```
 
 
-
-```r
+```{r, fig.show='hold'}
 plot(1:10)
 plot(10:1)
 ```
-
-![plot of chunk unnamed-chunk-2](README-unnamed-chunk-2-1.png) ![plot of chunk unnamed-chunk-2](README-unnamed-chunk-2-2.png) 
