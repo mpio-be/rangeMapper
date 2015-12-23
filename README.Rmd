@@ -15,8 +15,9 @@ knitr::opts_chunk$set(
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
 
-```{r,1, fig.cap="", echo=FALSE,results='hide', message=FALSE,warning=FALSE}
+```{r,1, fig.cap="", echo=FALSE,results='hide', message=FALSE,warning=FALSE, fig.height=3}
     require(rangeMapper)
+    require(ggplot2)
     r = rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
     dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
     global.bbox.save(con = dbcon, bbox = r)
@@ -25,7 +26,7 @@ knitr::opts_chunk$set(
     processRanges(con = dbcon, spdf = r, ID = "sci_name")
     rangeMap.save(dbcon)
     m = rangeMap.fetch(dbcon, spatial = FALSE)
-    plot(m)
+    plot(m) + theme(legend.position="none")
 
 ```
 
