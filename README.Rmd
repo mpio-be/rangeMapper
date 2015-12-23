@@ -14,20 +14,8 @@ knitr::opts_chunk$set(
 [![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
-### Installation
 
-Install from github with:
-
-```R
-devtools::install_github("valcu/rangeMapper")
-```
-Install from CRAN with:
-
-```R
-install.packages("rangeMapper")
-```
-
-```{r,1, fig.show='hold', echo=FALSE, fig.cap=""}
+```{r,1, fig.cap="", echo=FALSE,results='hide', message=FALSE,warning=FALSE}
     require(rangeMapper)
     r = rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
     dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
@@ -39,4 +27,15 @@ install.packages("rangeMapper")
     m = rangeMap.fetch(dbcon, spatial = FALSE)
     plot(m)
 
+```
+
+### Installation
+
+Install from github with:
+```R
+devtools::install_github("valcu/rangeMapper")
+```
+Install from CRAN with:
+```R
+install.packages("rangeMapper")
 ```
