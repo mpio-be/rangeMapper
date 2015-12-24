@@ -11,10 +11,7 @@ knitr::knit('README.Rmd')
 
 
 
-<img src="README-1-1.png" width="20%"> |Snippet goes here <img src="README-1-2.png" width="20%"> |Snippet goes here <img src="README-1-3.png" width="20%">
-
-
-
+<img src="README-1-1.png" width="20%"> 1 ...2 ...3 <img src="README-1-2.png" width="20%"> ...4...5...6 <img src="README-1-3.png" width="20%">
 
 ### Installation
 
