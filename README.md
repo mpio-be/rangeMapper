@@ -11,7 +11,7 @@ knitr::knit('README.Rmd')
 
 
 
-<img src="README-1-1.png" width="18%"><img src="README-1-2.png" width="18%"><img src="README-1-3.png" width="18%">
+<img src="README-1-1.png" width="18%">###########<img src="README-1-2.png" width="18%">##########<img src="README-1-3.png" width="18%">
 
 
 
