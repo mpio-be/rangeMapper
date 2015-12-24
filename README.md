@@ -11,11 +11,7 @@ knitr::knit('README.Rmd')
 
 
 
-<img src="README-1-1.png" width="30%">
-`Snippet goes here` `x = function(a,b,c) {}` 
-<img src="README-1-2.png" width="30%">
-`Snippet goes here` `x = function(a,b,c) {}` 
-<img src="README-1-3.png" width="30%">
+<img src="README-1-1.png" width="30%">`Snippet goes here` <img src="README-1-2.png" width="30%">`Snippet goes here` <img src="README-1-3.png" width="30%">
 
 
 
