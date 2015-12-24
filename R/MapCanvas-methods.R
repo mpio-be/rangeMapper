@@ -173,20 +173,19 @@ setMethod("rangeMapBboxFetch",
 #'
 #' @aliases global.bbox
 #'
-#' @param con An \code{SQLiteConnection} object pointing to a
-#' \code{rangeMapper} project
-#' @param \dots Arguments to pass to the corresponding methods: \cr \emph{bbox}
-#' can be a \code{character} vector; the path to the range files directory \cr
-#' \emph{bbox} can also be an object inheriting from
-#' \code{\linkS4class{Spatial}} \cr \emph{p4s} an object of class
-#' \code{\linkS4class{CRS}} \cr
-#' @note If \emph{bbox} is a \code{character} vector then the corresponding
-#' method calls \code{rangeMapBbox} with \code{checkProj = TRUE} which requires
-#' all ranges to have the same \emph{proj4} argument.  \cr If \emph{p4s} is set
-#' then the \emph{bbox} will be set with that \emph{p4s} string else the
-#' \emph{p4s} will be identical with the \emph{proj4} string of the range
-#' files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
-#' global bounding box is set.
+#' @param con   An \code{SQLiteConnection} object pointing to a
+#'               \code{rangeMapper} project
+#' @param \dots Arguments to pass to the corresponding methods: \cr
+#'			    \emph{bbox} can be a \code{character} vector; the path to the range files directory
+#'			    \emph{bbox} can also be an object inheriting from \code{\linkS4class{Spatial}} \cr
+#'			    \emph{p4s} an object of class \code{\linkS4class{CRS}} \cr
+#' @note       If \emph{bbox} is a \code{character} vector then the corresponding
+#'             method calls \code{rangeMapBbox} with \code{checkProj = TRUE} which requires
+#'             all ranges to have the same \emph{proj4} argument.  \cr If \emph{p4s} is set
+#'             then the \emph{bbox} will be set with that \emph{p4s} string else the
+#'             \emph{p4s} will be identical with the \emph{proj4} string of the range
+#'             files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
+#'             global bounding box is set.
 #' @export global.bbox.save global.bbox.fetch
 #' @examples
 #' require(rangeMapper)
@@ -247,19 +246,16 @@ setMethod("gridSizeFetch",
 #' Save or retrieve the grid size from the active sqlite database.
 #'
 #'
-#' @aliases gridSize.save, gridSize.fetch
-#' @param con A connection pointing to a valid \code{rangeMapper} project.
+#' @aliases     gridSize.save, gridSize.fetch
+#' @param con   A connection pointing to a valid \code{rangeMapper} project.
 #' @param \dots \code{gridSize}: A numeric vector of one unit length. See
-#' notes.
-#' @return \item{list("gridSize.fetch")}{Returns a numeric vector of one unit
-#' length containing the grid size previously saved by \code{gridSize.save}}
-#' @note If \code{gridSize} is not given the default grid size is computed
-#' based on the bounding box as the range of the smallest axis /100.
-#' @keywords spatial sqlite
-#' @export gridSize.save gridSize.fetch
+#'               notes.
+#' @return      \item{list("gridSize.fetch")}{Returns a numeric vector of one unit
+#'              length containing the grid size previously saved by \code{gridSize.save}}
+#' @note        If \code{gridSize} is not given the default grid size is computed
+#'              based on the bounding box as the range of the smallest axis /100.
+#' @export      gridSize.save gridSize.fetch
 #' @examples
-#'
-#' require(rangeMapper)
 #' wd = tempdir()
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd )
 #' global.bbox.save(con = dbcon)
@@ -269,8 +265,6 @@ setMethod("gridSizeFetch",
 #' global.bbox.save(con = dbcon)
 #' gridSize.save(dbcon)
 #' gridSize.fetch(dbcon) #default grid size value
-#'
-
 gridSize.save <- function(con,...) {
 	x = new("gridSize", CON = con,...)
 	gridSizeSave(x) }
@@ -334,17 +328,14 @@ setMethod("canvasFetch",
 #' overlayed onto the canvas and the results saved to project.
 #'
 #' @param con An sqlite connection pointing to a valid \code{rangeMapper}
-#' project.
-#' @return \code{canvas.fetch} Returns a
-#' \code{\link[sp]{SpatialPixelsDataFrame}} object.
-#' @note The method canvasSave() fails if \code{grid.size} was not set and if
-#' the canvas was already constructed for the given project.
-#' @seealso \code{\link{rangeMap.save}}.\cr \code{\link{gridSize.save}}
-#' @keywords spatial sqlite
+#'            project.
+#' @return    \code{canvas.fetch} Returns a
+#'            \code{\link[sp]{SpatialPixelsDataFrame}} object.
+#' @note      The method canvasSave() fails if \code{grid.size} was not set and if
+#'            the canvas was already constructed for the given project.
+#' @seealso  \code{\link{rangeMap.save}}.\cr \code{\link{gridSize.save}}
 #' @export canvas.save canvas.fetch
 #' @examples
-#'
-#' require(rangeMapper)
 #' wd = tempdir()
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd)
 #' global.bbox.save(con = dbcon)
