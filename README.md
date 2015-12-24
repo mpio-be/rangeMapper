@@ -9,7 +9,12 @@ knitr::knit('README.Rmd')
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
 
-![](README-1-1.png) ![](README-1-2.png) ![](README-1-3.png) 
+
+
+<img src="README-1-1.png" width="18%"><img src="README-1-2.png" width="18%"><img src="README-1-3.png" width="18%">
+
+
+
 
 ### Installation
 
