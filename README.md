@@ -8,18 +8,19 @@ knitr::knit('README.Rmd')
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
 
-
-
 ```R
-rangeMap.save(con, FUN = lmSlope, biotab = "biotab",
-    biotrait = "body_mass", tableName = "slope_bodyMass_clutchSize",
+rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
+    biotrait = "body_mass", tableName = "slope_bm_cs",
     formula = log(body_mass) ~ clutch_size,
-    subset = list(MAP_species_richness = "species_richness >= 5",
+    subset = list(MAP_species_richness = "SR >= 5",
                   MAP_altitude = "altitude > 1000",
-                  BIO_biotab = "Family = 'Troglodytidae' AND clutch_size is not NULL) )
+                  BIO_biotab = "Family = 'Troglodytidae'
+                                 AND clutch_size is not NULL) )
 ```
+![](README-1-1.png) 
 
-<img src="README-1-1.png" width="20%">
+
+
 
 ### Installation
 ```R
