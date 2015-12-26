@@ -37,7 +37,7 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
                 FUN = "median", overwrite = TRUE)
 ```
 
-* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plot directly with `plot()`.
+* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plotted directly with `plot()`.
 
 ```{r,1, fig.cap="", echo=TRUE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
     m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)

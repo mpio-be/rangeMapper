@@ -23,7 +23,7 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
 
 
 
-* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plot directly with `plot()`.
+* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plotted directly with `plot()`.
 
 
 ```r
