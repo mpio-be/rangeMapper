@@ -5,15 +5,30 @@
 \alias{plot,rmap.frame,missing-method}
 \title{Plot a rmap.frame}
 \usage{
-\S4method{plot}{rmap.frame,missing}(x)
+\S4method{plot}{rmap.frame,missing}(x,
+  colours = palette_rangemap("divergent"), ...)
 }
 \arguments{
 \item{x}{a a rmap.frame object.}
+
+\item{colours}{a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.}
+
+\item{\dots}{further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.}
 }
 \value{
 a ggplot object.
 }
 \description{
 Plot a rmap.frame
+}
+\examples{
+breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
+     "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+data(wrens)
+d = subset(wrens, select = c('sci_name', 'body_mass', 'clutch_size') )
+con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID = "sci_name",
+            FUN = "median", overwrite = TRUE)
+m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
+plot(m, ncol = 2)
 }
 

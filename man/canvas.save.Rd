@@ -15,7 +15,7 @@ project.}
 }
 \value{
 \code{canvas.fetch} Returns a
-\code{\link[sp]{SpatialPixelsDataFrame}} object.
+           \code{\link[sp]{SpatialPixelsDataFrame}} object.
 }
 \description{
 The canvas is a regular grid of a given resolution. Each range map is
@@ -23,11 +23,9 @@ overlayed onto the canvas and the results saved to project.
 }
 \note{
 The method canvasSave() fails if \code{grid.size} was not set and if
-the canvas was already constructed for the given project.
+           the canvas was already constructed for the given project.
 }
 \examples{
-
-require(rangeMapper)
 wd = tempdir()
 dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd)
 global.bbox.save(con = dbcon)
@@ -41,6 +39,4 @@ plot(cnv, col = 'grey', axes = TRUE)
 \seealso{
 \code{\link{rangeMap.save}}.\cr \code{\link{gridSize.save}}
 }
-\keyword{spatial}
-\keyword{sqlite}
 

@@ -26,7 +26,6 @@ theme_rangemap <- function (base_size = 12, base_family = "")  {
 		  axis.text            = element_blank(),
 		  axis.ticks           = element_blank() ,
 
-		  legend.key           = element_blank(),
 		  legend.background    = element_blank(),
 		  legend.justification =c(0,0),
 		  legend.position      =c(0,0),
@@ -36,8 +35,22 @@ theme_rangemap <- function (base_size = 12, base_family = "")  {
 		  panel.grid.minor     = element_blank(),
 		  panel.border         = element_blank(),
 
+		  plot.title           = element_text(size=  10),
 		  plot.background      = element_blank(),
 		  plot.margin          = grid::unit(c(1,1,1,1), "mm")
 
 		)
+	}
+
+	#' ggplot theme
+#'
+#' A few color palettes
+#'
+#' @param set   set type (currently one set only)
+#' @export
+#'
+palette_rangemap <- function (set = set1)  {
+
+	c('#5D4893','#38847E','#D7C25B','#D78C5B')
+
 	}

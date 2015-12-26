@@ -27,28 +27,15 @@
 This is a wrapper around \code{spplot}
 }
 \examples{
-require(rangeMapper)
-require(rgdal)
-dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
-f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-global.bbox.save(con = dbcon, bbox = f,
-p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=km +no_defs") )
-gridSize.save(dbcon, gridSize = 500)  # cell size 2 deg
-canvas.save(dbcon)
-processRanges(spdf = readOGR(f, "wrens", verbose = FALSE), con =  dbcon, ID = "sci_name")
-rangeMap.save(dbcon) # species richness
-
-
-# PLOTS
-all = rangeMap.fetch(dbcon)
-SR = rangeMap.fetch(dbcon, 'species_richness')
-
+breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
+     "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)[1:10, ]
+data(wrens)
+d = subset(wrens, select = c('sci_name', 'body_size', 'body_mass', 'clutch_size') )
+con = ramp("wrens.sqlite", gridSize = 10, spdf = breding_ranges, biotab = d, ID = "sci_name",
+            metadata = rangeTraits(), FUN = "median", overwrite = TRUE)
+all = rangeMap.fetch(con)
+sr = rangeMap.fetch(con, 'species_richness')
+plot(sr)
 plot(all)
-plot(SR, style = "fisher", sub = "Wrens species richness")
-
-pal =  RColorBrewer::brewer.pal(11, 'RdYlGn')[11:1]
-
-plot(SR, style = "fisher", colorpalette = pal)
-
 }
 

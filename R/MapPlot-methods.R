@@ -14,32 +14,19 @@
 #'
 #' @export
 #' @examples
-#' require(rangeMapper)
-#' require(rgdal)
-#' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
-#' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-#' global.bbox.save(con = dbcon, bbox = f,
-#' p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=km +no_defs") )
-#' gridSize.save(dbcon, gridSize = 500)  # cell size 2 deg
-#' canvas.save(dbcon)
-#' processRanges(spdf = readOGR(f, "wrens", verbose = FALSE), con =  dbcon, ID = "sci_name")
-#' rangeMap.save(dbcon) # species richness
-#'
-#'
-#' # PLOTS
-#' all = rangeMap.fetch(dbcon)
-#' SR = rangeMap.fetch(dbcon, 'species_richness')
-#'
+#' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
+#'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)[1:10, ]
+#' data(wrens)
+#' d = subset(wrens, select = c('sci_name', 'body_size', 'body_mass', 'clutch_size') )
+#' con = ramp("wrens.sqlite", gridSize = 10, spdf = breding_ranges, biotab = d, ID = "sci_name",
+#'             metadata = rangeTraits(), FUN = "median", overwrite = TRUE)
+#' all = rangeMap.fetch(con)
+#' sr = rangeMap.fetch(con, 'species_richness')
+#' plot(sr)
 #' plot(all)
-#' plot(SR, style = "fisher", sub = "Wrens species richness")
-#'
-#' pal =  RColorBrewer::brewer.pal(11, 'RdYlGn')[11:1]
-#'
-#' plot(SR, style = "fisher", colorpalette = pal)
-#'
 setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
-	function(x, colorpalette = brewer.pal.get('Spectral')[11:1],
-		     ncols = 20, scales = FALSE, style = "equal",  ...) {
+	function(x, colorpalette = brewer.pal.get('Spectral')[11:1], ncols = 20,
+		    scales = FALSE, style = "equal",  ...) {
 
 	colPal= colorRampPalette(colorpalette, space = "Lab")(ncols)
 
@@ -56,8 +43,8 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 		Int = classIntervals(as.numeric(na.omit(x@data[,mapVars[i]])), n = ncols, style = style, ...)
 		printMore = if(i<length(mapVars)) TRUE else FALSE
 
-		print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE, col.regions = colPal,
-			 at = Int$brks, main = if(length(mapVars) > 1) mapVars[i] else "", ...),
+		print(spplot(x, mapVars[i] ,scales = list(draw = scales), cuts = ncols, checkEmptyRC = FALSE,
+			  col.regions = colPal, at = Int$brks, main = if(length(mapVars) > 1) mapVars[i] else "", ...),
 				split=layout[i, ], more=printMore)
 		}
 
@@ -65,23 +52,41 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 #' Plot a rmap.frame
 #'
-#' @param x a a rmap.frame object.
-#' @return  a ggplot object.
+#' @param x       a a rmap.frame object.
+#' @param colours a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.
+#' @param \dots   further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.
+#' @return        a ggplot object.
 #' @export
+#' @examples
+#' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
+#'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+#' data(wrens)
+#' d = subset(wrens, select = c('sci_name', 'body_mass', 'clutch_size') )
+#' con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID = "sci_name",
+#'             FUN = "median", overwrite = TRUE)
+#' m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
+#' plot(m, ncol = 2)
 
-setMethod("plot", signature(x='rmap.frame', y='missing'), function(x) {
+
+setMethod("plot", signature(x='rmap.frame', y='missing'),
+		function(x, colours = palette_rangemap('divergent'), ... ) {
 	idv = setdiff(names(x), c('x', 'y') )
 
-	xl = melt(x, id.vars = c('x', 'y') ,   measure.vars = idv)
-	xl = xl[!is.na(value)]
+	out = lapply(idv, function (v) {
+		ggplot(data = x[!is.na(eval(parse(text=v)))]) +
+			geom_tile( aes_string(x = 'x', y = 'y', fill = v ) ) +
+			coord_equal() +
+			scale_fill_gradientn(colours = colours, name = '') +
+			labs(x=NULL, y=NULL) +
+			ggtitle(v) +
+			theme_rangemap()
+		})
 
-	ggplot(data = xl) +
-		geom_tile( aes_string(x = 'x', y = 'y', fill = 'value') ) +
-		{if(length(idv) > 1) facet_grid(~variable, scales = 'free')}  +
-		coord_equal() +
-		scale_fill_gradientn(colours = RColorBrewer::brewer.pal(5, "YlGnBu") ) +
-		labs(x=NULL, y=NULL) +
-		theme_rangemap()
+	gg = lapply(out, ggplotGrob)
+
+	if( length(idv) == 1) out[[1]]  else
+	grid.arrange(  arrangeGrob(grobs = gg, ...)  )
+
 
  	})
 

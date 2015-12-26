@@ -62,61 +62,43 @@ Any valid SQL expression can be used to build up a subset. See
                  it is advisable to use \code{SQL} functions rather then R functions.
 }
 \examples{
-require(rangeMapper)
 require(rgdal)
-dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
-
-# Breeding range vector files location
-f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-
-# Save the global bounding box,
-global.bbox.save(con = dbcon, bbox = f,
-	p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs") )
-
-# upload grid size
-gridSize.save(dbcon, gridSize = 200000)  # cell size ~ 200km
-
-#  save canvas
-canvas.save(dbcon)
-summary(canvas.fetch(dbcon) )
-
-# Upload BIO tables
+breding_ranges = readOGR(system.file(package = "rangeMapper",
+     "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+breding_ranges = spTransform(breding_ranges,
+    CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0
+        +ellps=WGS84 +units=m +no_defs") )
 data(wrens)
-bio.save(con = dbcon, loc = wrens,  ID = "sci_name")
+d = subset(wrens, select = c('sci_name', 'body_size', 'body_mass', 'clutch_size') )
 
-# Process species ranges
-r = readOGR(f, "wrens", verbose = FALSE)
+con = ramp("wrens.sqlite", gridSize = 200000, spdf = breding_ranges, biotab = d,
+            ID = "sci_name", metadata = rangeTraits(),
+            FUN = "median", overwrite = TRUE)
 
-processRanges(spdf = r, con =  dbcon, ID = "sci_name" )
 
+lmSlope = function(formula, data) {
+    fm = try(lm(formula, data = data), silent = TRUE)
+    if (inherits(fm, "try-error"))
+        res = NA else res = coef(fm)[2]
+    as.numeric(res)
+}
 
-#Using sqlite aggregate functions
-rangeMap.save(dbcon, FUN = "median" , biotab = "wrens",
-			biotrait = "body_size", tableName = "body_size")
-
-# Fetch maps
-
-summary(rangeMap.fetch(dbcon) )
-
+# Subsetting by Species and Assembladge
+rangeMap.save(con, FUN = lmSlope, biotab = "biotab", biotrait = "body_mass",
+    tableName = "slope_bodyMass_clutchSize", formula = log(body_mass) ~ clutch_size,
+    list(MAP_species_richness = "species_richness >= 5",
+        BIO_biotab = "body_size > 15"
+        ), overwrite = TRUE)
 
 \dontrun{
-# import raster maps the current project
-require(rangeMapper)
-require(rgdal)
-dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
-f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-global.bbox.save(con = dbcon, bbox = f,
-p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
-gridSize.save(dbcon)
-canvas.save(dbcon)
-
+# Import raster maps the current project
 r = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
-rangeMap.save(dbcon, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
-
-m = rangeMap.fetch(dbcon)
-plot(m)
-
+rangeMap.save(con, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
 }
+
+
+m = rangeMap.fetch(con)
+plot(m)
 
 }
 \seealso{

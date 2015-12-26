@@ -11,6 +11,9 @@ NULL
 #' @importFrom magrittr %>%
 NULL
 
+#' @importFrom gridExtra grid.arrange arrangeGrob
+NULL
+
 #' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 

@@ -2,7 +2,7 @@
 context("2: Process Ranges")
 
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-r = rgdal::readOGR(f, "wrens", verbose = FALSE)
+r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
 
 test_that("reprojecting on the fly", {
 

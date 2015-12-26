@@ -18,18 +18,16 @@ notes.}
 }
 \value{
 \item{list("gridSize.fetch")}{Returns a numeric vector of one unit
-length containing the grid size previously saved by \code{gridSize.save}}
+             length containing the grid size previously saved by \code{gridSize.save}}
 }
 \description{
 Save or retrieve the grid size from the active sqlite database.
 }
 \note{
 If \code{gridSize} is not given the default grid size is computed
-based on the bounding box as the range of the smallest axis /100.
+             based on the bounding box as the range of the smallest axis /100.
 }
 \examples{
-
-require(rangeMapper)
 wd = tempdir()
 dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd )
 global.bbox.save(con = dbcon)
@@ -39,8 +37,5 @@ dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd )
 global.bbox.save(con = dbcon)
 gridSize.save(dbcon)
 gridSize.fetch(dbcon) #default grid size value
-
 }
-\keyword{spatial}
-\keyword{sqlite}
 

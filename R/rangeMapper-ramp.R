@@ -1,6 +1,6 @@
 #' \strong{ra}nge \strong{m}apper \strong{p}ipe line.
 #'
-#'A quick option to initiate a project by pipelining several functions.
+#'A quick alternative to initiate a project by pipelining several functions.
 #'
 #' @param gridSize grid resolution (in units previously set by \code{global.bbox.save})
 #' @param bbox     the spatial domain of the project (see \code{\link{global.bbox.save}} )
@@ -47,7 +47,7 @@ ramp <- function(file, dir = tempdir(), gridSize, spdf, bbox = spdf,
 
         rangeMap.save(dbcon)
 
-        if(!missing(FUN)){
+        if(!missing(FUN) && is.character(FUN)){
             whichmaps = setdiff(names(biotab), ID)
 
             n = sapply(whichmaps, function(i)  {

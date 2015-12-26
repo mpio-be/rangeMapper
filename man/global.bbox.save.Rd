@@ -14,11 +14,10 @@ global.bbox.fetch(con)
 \item{con}{An \code{SQLiteConnection} object pointing to a
 \code{rangeMapper} project}
 
-\item{\dots}{Arguments to pass to the corresponding methods: \cr \emph{bbox}
-can be a \code{character} vector; the path to the range files directory \cr
-\emph{bbox} can also be an object inheriting from
-\code{\linkS4class{Spatial}} \cr \emph{p4s} an object of class
-\code{\linkS4class{CRS}} \cr}
+\item{\dots}{Arguments to pass to the corresponding methods: \cr
+\emph{bbox} can be a \code{character} vector; the path to the range files directory
+\emph{bbox} can also be an object inheriting from \code{\linkS4class{Spatial}} \cr
+\emph{p4s} an object of class \code{\linkS4class{CRS}} \cr}
 }
 \description{
 Computes, sets or retrieves the global spatial bounding box.
@@ -31,12 +30,12 @@ retrieves the \emph{global bounding box} as a
 }
 \note{
 If \emph{bbox} is a \code{character} vector then the corresponding
-method calls \code{rangeMapBbox} with \code{checkProj = TRUE} which requires
-all ranges to have the same \emph{proj4} argument.  \cr If \emph{p4s} is set
-then the \emph{bbox} will be set with that \emph{p4s} string else the
-\emph{p4s} will be identical with the \emph{proj4} string of the range
-files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
-global bounding box is set.
+            method calls \code{rangeMapBbox} with \code{checkProj = TRUE} which requires
+            all ranges to have the same \emph{proj4} argument.  \cr If \emph{p4s} is set
+            then the \emph{bbox} will be set with that \emph{p4s} string else the
+            \emph{p4s} will be identical with the \emph{proj4} string of the range
+            files. \cr If \emph{bbox} and \emph{p4s} are missing then an unprojected
+            global bounding box is set.
 }
 \examples{
 require(rangeMapper)
