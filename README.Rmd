@@ -13,6 +13,9 @@ knitr::opts_chunk$set(
 [![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
+### _rangeMapper_ in a nutshell
+
+*  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
 
 ```R
 rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
@@ -23,7 +26,8 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
                   BIO_biotab = "Family = 'Troglodytidae'
                                  AND clutch_size is not NULL) )
 ```
-```{r,1, fig.cap="", echo=FALSE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
+
+```{r,echo=FALSE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
     require(rangeMapper)
     breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
          "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -31,16 +35,20 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
     d = subset(wrens, select = c('sci_name', 'body_mass', 'clutch_size') )
     con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID = "sci_name",
                 FUN = "median", overwrite = TRUE)
+```
+
+* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plot directly with `plot()`.
+
+```{r,1, fig.cap="", echo=TRUE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
     m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
     plot(m, ncol = 2)
 ```
 
 
 
-
 ### Installation
 ```R
-devtools::install_github("valcu/rangeMapper") # developement.
+devtools::install_github("valcu/rangeMapper") # development.
 install.packages("rangeMapper") # stable.
 ```
 

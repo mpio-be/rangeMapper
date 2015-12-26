@@ -7,6 +7,9 @@ knitr::knit('README.Rmd')
 [![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
+### _rangeMapper_ in a nutshell
+
+*  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
 
 ```R
 rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
@@ -17,14 +20,24 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
                   BIO_biotab = "Family = 'Troglodytidae'
                                  AND clutch_size is not NULL) )
 ```
-![](README-1-1.png) 
 
+
+
+* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plot directly with `plot()`.
+
+
+```r
+    m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
+    plot(m, ncol = 2)
+```
+
+![](README-1-1.png) 
 
 
 
 ### Installation
 ```R
-devtools::install_github("valcu/rangeMapper") # developement.
+devtools::install_github("valcu/rangeMapper") # development.
 install.packages("rangeMapper") # stable.
 ```
 
