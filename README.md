@@ -9,7 +9,18 @@ knitr::knit('README.Rmd')
 
 ### _rangeMapper_ in a nutshell
 
+
+* Datasets (i.e. maps) are retrieved from `sqlite` project files as objects inheriting from `SpatialPixels` or `data.table`. Maps can be plotted directly with `plot()`.
+
+```r
+    map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
+    plot(map, ncol = 2)
+```
+
+![](README-1-1.png) 
+
 *  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
+`MAP`s are constructed based on statistical models of any complexity and can be based on arbitrary subsets at both species and assemblage level.
 
 ```R
 rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
@@ -20,19 +31,6 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
                   BIO_biotab = "Family = 'Troglodytidae'
                                  AND clutch_size is not NULL) )
 ```
-
-
-
-* Datasets (i.e. maps) are stored as `sqlite` files, retrieved as objects inheriting from `SpatialPixels` or `data.table` and plotted directly with `plot()`.
-
-
-```r
-    m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
-    plot(m, ncol = 2)
-```
-
-![](README-1-1.png) 
-
 
 
 ### Installation
