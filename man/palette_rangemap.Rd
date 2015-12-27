@@ -2,9 +2,9 @@
 % Please edit documentation in R/style.R
 \name{palette_rangemap}
 \alias{palette_rangemap}
-\title{ggplot theme}
+\title{A few color palettes}
 \usage{
-palette_rangemap(set = set1)
+palette_rangemap(set = "set1")
 }
 \arguments{
 \item{set}{set type (currently one set only)}

@@ -69,7 +69,7 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 
 setMethod("plot", signature(x='rmap.frame', y='missing'),
-		function(x, colours = palette_rangemap('divergent'), ... ) {
+		function(x, colours = palette_rangemap('set1'), ... ) {
 	idv = setdiff(names(x), c('x', 'y') )
 
 	out = lapply(idv, function (v) {

@@ -1,77 +1,26 @@
 
 
-    
+library(shiny)
+library(rangeMapper)
+con = rangeMap.open ( options('rangeMapper.path')$rangeMapper.path )
 
-shinyServer( function(input, output, session) {
-	source("functions.R")
+cols =  c( list(rangeMapper = palette_rangemap('divergent')), rangeMapper:::brewer.pal.get () )
 
-	# project info
-	output$messages <- renderTable({
+shinyServer(function(input, output) {
 
-		if( input$goNew ) {
-			r = readOGR( dirname(input$shpPath) , gsub('.shp$', '', basename(input$shpPath) ), verbose = FALSE)
-			newProj(input, r)
-			updateCheckboxInput(session, "goNew", value = FALSE)
-			updateCheckboxInput(session, "goPlot", value = FALSE)
-	}
+  output$plot <- renderPlot({
 
-		if( input$goBio ) {
-			importBIO(input)
-			updateCheckboxInput(session, "goBio", value = FALSE)
-	}
+    if(!is.null(input$maps) )  {
+      plot( rangeMap.fetch(con, input$maps, spatial = FALSE), colours = cols[input$colorRamp][[1]]  )
+      }
 
-		if( input$goMap ) {
-			makeTraitMap(input)
-			updateCheckboxInput(session, "goMap", value = FALSE)
-		}
-		
-		if( input$goMapSR ) {
-			makeSRMap(input)
-			updateCheckboxInput(session, "goMapSR", value = FALSE)
-		}
-		
+  })
+
+  output$summary <- renderTable({
+    rangeMapProjInfo(con)
+  })
 
 
 
-	updateSelectInput(session, "mapVar", choices = BioFieldNames(input)$name_table )
-	updateSelectInput(session, "mapPlotNam", choices = MapNames(input) )
-	projInfo(input)
+})
 
-
-
-	}, include.rownames = FALSE, include.colnames = FALSE)
-
-	output$PLOT <- renderPlot({
-
-		if( input$goPlot & !is.null(input$mapPlotNam) ) {
-			plotMap(input)
-		}		
-		
-		if( !input$goPlot &  input$showPalettes) {
-			display.brewer.all()
-		}
-		
-		
-		
-		
-		
-
-	} 
-
-	,width  = 297*2.5 , height = 210*2.5
-	)
-
-	output$Print <- renderPrint({
-	 cat('<span class="label label-important">MAPS:</span>')
-	})
-  
-  
-  
-  
-  
- })
- 
- 
- 
- 
- 

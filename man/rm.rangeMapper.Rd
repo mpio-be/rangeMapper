@@ -17,9 +17,6 @@ Remove tables given prefix attribute or by name
 }
 \note{
 The default \sQuote{rm.rangeMapper(con)} will remove all \sQuote{MAP}
-and \sQuote{BIO} tables.
-}
-\author{
-Mihai Valcu \email{valcu@orn.mpg.de}
+              and \sQuote{BIO} tables.
 }
 

@@ -33,7 +33,8 @@ Suggests:
 Description: Tools for easy generation of (life-history) traits maps based on
     species range (extent-of-occurrence) maps.
 License: GPL(>= 2)
-URL: http://cran.at.r-project.org/package=rangeMapper, https://github.com/valcu/rangeMapper
+URL: http://cran.at.r-project.org/package=rangeMapper, https://github.com/valcu/
+    rangeMapper
 RoxygenNote: 5.0.1
 Collate:
     'AAA.R'
@@ -46,6 +47,7 @@ Collate:
     'MapProcess-methods.R'
     'MapRemove-methods.R'
     'MapSave-methods.R'
+    'MapShow-methods.R'
     'projectINI-methods.R'
     'assemblageFetch-methods.R'
     'bioSave-methods.R'

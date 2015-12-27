@@ -4,36 +4,35 @@ setGeneric("rangeMapBbox", function(object,...)   	             	standardGeneric
 setGeneric("rangeMapBboxSave", function(object,bbox, p4s,...)  standardGeneric("rangeMapBboxSave") )
 setGeneric("rangeMapBboxFetch", function(object,...)   		standardGeneric("rangeMapBboxFetch") )
 
-
 setMethod("rangeMapBbox",
-	signature  = c(object = "rangeFiles"),
-	definition = function(object, checkProj = TRUE) {
-	shpFiles = rangeFiles(object)
+    signature  = c(object = "rangeFiles"),
+    definition = function(object, checkProj = TRUE) {
+    shpFiles = rangeFiles(object)
 
-	message(paste("Computing global bounding box for",length(shpFiles ), "ranges...") )
+    message(paste("Computing global bounding box for",length(shpFiles ), "ranges...") )
 
-	nfo = lapply(shpFiles, getinfo.shape)
+    nfo = lapply(shpFiles, getinfo.shape)
 
-	bb = do.call(rbind, lapply(nfo, function(x) c(x$minbounds[1:2], x$maxbounds[1:2]) ) )
-	bb = c( xmin = min(bb[,1]), xmax = max(bb[,3]), ymin = min(bb[,2]), ymax = max(bb[,4]) )
+    bb = do.call(rbind, lapply(nfo, function(x) c(x$minbounds[1:2], x$maxbounds[1:2]) ) )
+    bb = c( xmin = min(bb[,1]), xmax = max(bb[,3]), ymin = min(bb[,2]), ymax = max(bb[,4]) )
 
-	ogrShpFiles = data.frame(dsn = dirname(shpFiles), layer = gsub(".shp", "", basename(shpFiles)), stringsAsFactors = FALSE)
+    ogrShpFiles = data.frame(dsn = dirname(shpFiles), layer = gsub(".shp", "", basename(shpFiles)), stringsAsFactors = FALSE)
 
-	if(checkProj) {
-	message("Checking for proj4 string differences...")
-	p4s = extract.p4s(ogrShpFiles)
-	p4s = p4s[!duplicated(p4s)]
-	if(length(p4s) > 1) warning(paste("More than one projection found:\n", paste("  *",p4s, collapse = "\n")))
-	}	else
-		p4s = extract.p4s(ogrShpFiles[1, ])
+    if(checkProj) {
+    message("Checking for proj4 string differences...")
+    p4s = extract.p4s(ogrShpFiles)
+    p4s = p4s[!duplicated(p4s)]
+    if(length(p4s) > 1) warning(paste("More than one projection found:\n", paste("  *",p4s, collapse = "\n")))
+    }   else
+        p4s = extract.p4s(ogrShpFiles[1, ])
 
-	attributes(bb)$p4s = as.character(p4s)
-	message("Done!")
+    attributes(bb)$p4s = as.character(p4s)
+    message("Done!")
 
-	bb
+    bb
 
-	}
-	)
+    }
+    )
 
 setMethod("rangeMapBboxSave",
 	signature  = c(object = "rangeMap", bbox = "missing", p4s = "missing"),
@@ -334,7 +333,7 @@ setMethod("canvasFetch",
 #' @note      The method canvasSave() fails if \code{grid.size} was not set and if
 #'            the canvas was already constructed for the given project.
 #' @seealso  \code{\link{rangeMap.save}}.\cr \code{\link{gridSize.save}}
-#' @export canvas.save canvas.fetch
+#' @export   canvas.save canvas.fetch
 #' @examples
 #' wd = tempdir()
 #' dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = wd)

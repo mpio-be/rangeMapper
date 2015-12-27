@@ -42,15 +42,15 @@ theme_rangemap <- function (base_size = 12, base_family = "")  {
 		)
 	}
 
-	#' ggplot theme
 #'
 #' A few color palettes
 #'
 #' @param set   set type (currently one set only)
 #' @export
 #'
-palette_rangemap <- function (set = set1)  {
+palette_rangemap <- function (set = 'set1')  {
 
-	c('#5D4893','#38847E','#D7C25B','#D78C5B')
+	set1 = c('#5D4893','#38847E','#D7C25B','#D78C5B')
+	set1
 
 	}

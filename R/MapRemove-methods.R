@@ -28,13 +28,11 @@ setMethod("rangeMapRemove",
 #'
 #' Remove tables given prefix attribute or by name
 #'
-#' @aliases rm.rangeMapper
-#' @param con A valid sqlite connection.
-#' @param \dots Arguments passed to the corresponding methods specifically
-#' \sQuote{tablePrefix} or \sQuote{tableName}
-#' @note The default \sQuote{rm.rangeMapper(con)} will remove all \sQuote{MAP}
-#' and \sQuote{BIO} tables.
-#' @author Mihai Valcu \email{valcu@@orn.mpg.de}
+#' @param  con   A valid sqlite connection.
+#' @param  \dots Arguments passed to the corresponding methods specifically
+#'               \sQuote{tablePrefix} or \sQuote{tableName}
+#' @note         The default \sQuote{rm.rangeMapper(con)} will remove all \sQuote{MAP}
+#'               and \sQuote{BIO} tables.
 #' @export
 #'
 rm.rangeMapper <- function(con, ...) {

@@ -5,8 +5,8 @@
 \alias{plot,rmap.frame,missing-method}
 \title{Plot a rmap.frame}
 \usage{
-\S4method{plot}{rmap.frame,missing}(x,
-  colours = palette_rangemap("divergent"), ...)
+\S4method{plot}{rmap.frame,missing}(x, colours = palette_rangemap("set1"),
+  ...)
 }
 \arguments{
 \item{x}{a a rmap.frame object.}
