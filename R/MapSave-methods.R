@@ -104,16 +104,22 @@ setMethod("rangeMapSave",
 # aggregate method using R functions called directly on the data
 setMethod("rangeMapSave",
 	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing"),
-	definition = function(object, FUN, formula, ...) {
+	definition = function(object, FUN, formula, cl, ...) {
 
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
 
 		# get data afer checking
 		dl = .rangeMapSaveData (object)
-
-		# apply R function
-		X = sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
+		if (missing(cl)){
+			# apply R function
+			X = sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
+		}else{
+			if (is.numeric(cl)) cl<- makeCluster(cl)
+			# apply R function
+			X = parSapply(cl=cl, dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
+			stopCluster(cl)
+		}
 
 		X = data.frame(id = names(X), X)
 		names(X) = c(object@ID, object@biotrait)
@@ -131,7 +137,7 @@ setMethod("rangeMapSave",
 # aggregate method using R functions called directly using formula, data interface
 setMethod("rangeMapSave",
 	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula"),
-	definition = function(object, FUN, formula, ...) {
+	definition = function(object, FUN, formula, cl, ...) {
 
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
@@ -139,8 +145,15 @@ setMethod("rangeMapSave",
 		# get data afer checking
 		dl = .rangeMapSaveData (object)
 
-		# apply R function
-		X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
+		if (missing(cl)){
+		  # apply R function
+		  X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
+		}else{
+		  if (is.numeric(cl)) cl<- makeCluster(cl)
+		  # apply R function
+		  X = parSapply(cl=cl, dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
+		  stopCluster(cl)
+		}
 
 		X = data.frame(id = names(X), X)
 		names(X) = c(object@ID, object@biotrait)
@@ -227,11 +240,14 @@ setMethod("rangeMapImport",
 #' subset can point to either one table type (e.g.
 #' \code{list(MAP_species_richness = "species_richness > 500")} ) or can point
 #' to several table types (e.g. \code{list(BIO_lifeHistory = "clutch_size > 4",
-#' MAP_meanAltitude = "meanAltitude < 1000", metadata_ranges = "Area < 1000")}
-#' )
+#' MAP_meanAltitude = "meanAltitude < 1000", metadata_ranges = "Area < 1000")})
 #'
 #' Any valid SQL expression can be used to build up a subset. See
 #' \url{http://www.sqlite.org/lang_expr.html}
+#' 
+#' When using \code{cl} parameter you must load the apropiated packages used in 
+#' \code{FUN} by loading the packages inside the function or initializing the 
+#' cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(caper))})).
 #'
 #' @param CON       An sqlite connection pointing to a valid \code{rangeMapper}
 #'                  project.
@@ -247,7 +263,10 @@ setMethod("rangeMapImport",
 #' @param path      Path to the raster file(quoted) to be imported to the existing
 #'                  project. \code{raster package} is required at this step.
 #' @param overwrite If \code{TRUE} then the table is removed
-#' @param \dots     When \code{FUN} is an function, \dots{} denotes any extra
+#' @param cl        The number of cores to use or a cluster object 
+#'                  (\code{\link[parallel]{makeCluster}} or \code{\link[snow]{makeCluster} from 
+#'                  \href{https://cran.r-project.org/web/packages/snow/index.html}{snow} package})
+#' @param \dots     When \code{FUN} is a function, \dots{} denotes any extra
 #'                  arguments to be passed to it.
 #' @return          \code{TRUE} when the MAP was created successfully.
 #'                  \code{rangeMap.fetch} returns a
@@ -296,7 +315,7 @@ setMethod("rangeMapImport",
 #' m = rangeMap.fetch(con)
 #' plot(m)
 #'
-rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, ...) {
+rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
 
 	if(overwrite)
 	try(dbGetQuery(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
