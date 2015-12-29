@@ -5,7 +5,7 @@
 
 
 
-#' @import sp methods RSQLite lattice ggplot2
+#' @import sp methods RSQLite lattice ggplot2 parallel
 NULL
 
 #' @importFrom magrittr %>%
