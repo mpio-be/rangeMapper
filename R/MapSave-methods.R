@@ -115,10 +115,10 @@ setMethod("rangeMapSave",
 			# apply R function
 			X = sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
 		}else{
-			if (is.numeric(cl)) cl<- makeCluster(cl)
+			if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
 			# apply R function
 			X = parSapply(cl=cl, dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
-			stopCluster(cl)
+			if (clNumeric) stopCluster(cl)
 		}
 
 		X = data.frame(id = names(X), X)
@@ -149,10 +149,10 @@ setMethod("rangeMapSave",
 		  # apply R function
 		  X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
 		}else{
-		  if (is.numeric(cl)) cl<- makeCluster(cl)
+		  if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
 		  # apply R function
 		  X = parSapply(cl=cl, dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
-		  stopCluster(cl)
+		  if (clNumeric) stopCluster(cl)
 		}
 
 		X = data.frame(id = names(X), X)
