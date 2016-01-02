@@ -30,7 +30,6 @@ r_binary_packages:
  - ggplot2
  - RColorBrewer
  - classInt
- - extremevalues
 
 after_success:
   - Rscript -e 'covr::codecov()'

@@ -34,7 +34,7 @@ test_that("ONE SpPolyDF NO metadata", {
 
 	})
 
-test_that("ONE e SpPolyDF WITH metadata", {
+test_that("ONE SpPolyDF WITH metadata", {
 
 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 

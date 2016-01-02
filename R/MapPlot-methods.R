@@ -54,10 +54,10 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 #'
 #' @param x               a a rmap.frame object.
 #' @param colours         a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.
-#' @param rm.outliers     logical, default to FALSE. if true outliers are removed using \code{outlierDetector}.
-#' @param outlierDetector a function used to detect ouliers returning lower and upper limits of non-outliers.
-#'                        default to \code{\link[extremevalues]{getOutliersI}};
-#'						  ignored if rm.outliers = FALSE.
+#' @param outlierDetector a function used to detect ouliers. Should lower and upper limits of non-outliers.
+#' @param boundary        a \code{\link[sp]{Spatial}}* object which can be \code{\link[ggplot2]{fortify}}ed.
+#' @param boundaryCol     bondary color, see \code{\link[ggplot2]{geom_polygon}}.
+#' @param boundarySize    bondary size, \code{\link[ggplot2]{geom_polygon}}.
 #' @param \dots           further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.
 #' @return                a ggplot object.
 #' @export
@@ -70,17 +70,24 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 #'             FUN = "median", overwrite = TRUE)
 #' m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
 #' plot(m, ncol = 2)
+#'
+#' wrens_boundary = rgeos::gUnionCascaded(breding_ranges)
+#' plot(m, ncol = 2, boundary = wrens_boundary)
+#'
+#'\dontrun{
+#' if(require(extremevalues))
+#' plot(m, ncol = 2, outlierDetector = function(x) getOutliersI(x)$limit)
+#' }
 
 
 setMethod("plot", signature(x='rmap.frame', y='missing'),
-		function(x,
-				colours         = palette_rangemap('set1'),
-				rm.outliers     = FALSE,
-				outlierDetector = function(x) getOutliersI(x)$limit ,
-				 ... ) {
+		function(x, colours = palette_rangemap('set1'), outlierDetector ,
+				boundary, boundaryCol = 1,boundarySize = 0.5  , ... ) {
 	idv = setdiff(names(x), c('x', 'y') )
 
-	if(rm.outliers) {
+	hasBoundary = !missing(boundary) && inherits(boundary, 'Spatial')
+
+	if( !missing(outlierDetector) ) {
 
 		for (j in  setdiff(names(x), c('x', 'y')) ) data.table::set(x, i=NULL, j=j, value = {
 			lims = outlierDetector(x[[j]])
@@ -90,13 +97,25 @@ setMethod("plot", signature(x='rmap.frame', y='missing'),
 		}
 
 	out = lapply(idv, function (v) {
-		ggplot(data = x[!is.na(eval(parse(text=v)))]) +
+		g = ggplot(data = x[!is.na(eval(parse(text=v)))]) +
 			geom_tile( aes_string(x = 'x', y = 'y', fill = v ) ) +
 			coord_equal() +
 			scale_fill_gradientn(colours = colours, name = '') +
 			labs(x=NULL, y=NULL) +
 			ggtitle(v) +
 			theme_rangemap()
+
+		if( hasBoundary ) {
+			bdry = fortify(boundary)
+			g = g +
+			 geom_polygon( data = bdry,
+			 	aes_string(x = names(bdry)[1], y = names(bdry)[2], group = 'group'),
+			 	fill   = NA,
+			 	colour = boundaryCol,
+			 	size   = boundarySize
+			 	)
+			}
+		g
 		})
 
 	gg = lapply(out, ggplotGrob)

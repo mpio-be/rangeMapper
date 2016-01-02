@@ -6,19 +6,20 @@
 \title{Plot a rmap.frame}
 \usage{
 \S4method{plot}{rmap.frame,missing}(x, colours = palette_rangemap("set1"),
-  rm.outliers = FALSE, outlierDetector = function(x) getOutliersI(x)$limit,
-  ...)
+  outlierDetector, boundary, boundaryCol = 1, boundarySize = 0.5, ...)
 }
 \arguments{
 \item{x}{a a rmap.frame object.}
 
 \item{colours}{a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.}
 
-\item{rm.outliers}{logical, default to FALSE. if true outliers are removed using \code{outlierDetector}.}
+\item{outlierDetector}{a function used to detect ouliers. Should lower and upper limits of non-outliers.}
 
-\item{outlierDetector}{a function used to detect ouliers returning lower and upper limits of non-outliers.
- default to \code{\link[extremevalues]{getOutliersI}};
-ignored if rm.outliers = FALSE.}
+\item{boundary}{a \code{\link[sp]{Spatial}}* object which can be \code{\link[ggplot2]{fortify}}ed.}
+
+\item{boundaryCol}{bondary color, see \code{\link[ggplot2]{geom_polygon}}.}
+
+\item{boundarySize}{bondary size, \code{\link[ggplot2]{geom_polygon}}.}
 
 \item{\dots}{further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.}
 }
@@ -37,5 +38,13 @@ con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID =
             FUN = "median", overwrite = TRUE)
 m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
 plot(m, ncol = 2)
+
+wrens_boundary = rgeos::gUnionCascaded(breding_ranges)
+plot(m, ncol = 2, boundary = wrens_boundary)
+
+\dontrun{
+if(require(extremevalues))
+plot(m, ncol = 2, outlierDetector = function(x) getOutliersI(x)$limit)
+}
 }
 

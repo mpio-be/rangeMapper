@@ -11,9 +11,6 @@ NULL
 #' @importFrom magrittr %>%
 NULL
 
-#' @importFrom extremevalues getOutliersI
-NULL
-
 #' @importFrom gridExtra grid.arrange arrangeGrob
 NULL
 

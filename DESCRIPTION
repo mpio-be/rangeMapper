@@ -23,8 +23,7 @@ Imports:
     classInt,
     magrittr,
     data.table,
-    foreach,
-    extremevalues
+    foreach
 Suggests:
     shiny (>= 0.8.0),
     doParallel,
