@@ -6,12 +6,19 @@
 \title{Plot a rmap.frame}
 \usage{
 \S4method{plot}{rmap.frame,missing}(x, colours = palette_rangemap("set1"),
+  rm.outliers = FALSE, outlierDetector = function(x) getOutliersI(x)$limit,
   ...)
 }
 \arguments{
 \item{x}{a a rmap.frame object.}
 
 \item{colours}{a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.}
+
+\item{rm.outliers}{logical, default to FALSE. if true outliers are removed using \code{outlierDetector}.}
+
+\item{outlierDetector}{a function used to detect ouliers returning lower and upper limits of non-outliers.
+ default to \code{\link[extremevalues]{getOutliersI}};
+ignored if rm.outliers = FALSE.}
 
 \item{\dots}{further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.}
 }

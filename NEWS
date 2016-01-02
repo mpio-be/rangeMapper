@@ -2,7 +2,7 @@
 
 Changes in version 0.2-8
 BUG FIXES
-    o   The package works now with RSQLite (>= 1.0.0)
+    o   The package works now with RSQLite (>= 1.0.0).
 
 Changes in version 0.2-7
 NEW FEATURES
@@ -20,7 +20,7 @@ NEW FEATURES
 Changes in version 0.2-3
 NEW FEATURES
 	o   method assemblageFetch() to extract species sets (species assemblages) &
-		the associated life history data
+		the associated life history data.
 
 Changes in version 0.1-7
 NEW FEATURES

@@ -11,13 +11,16 @@ NULL
 #' @importFrom magrittr %>%
 NULL
 
+#' @importFrom extremevalues getOutliersI
+NULL
+
 #' @importFrom gridExtra grid.arrange arrangeGrob
 NULL
 
 #' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 
-#' @importFrom data.table data.table setDT setattr melt
+#' @importFrom data.table data.table setDT setattr melt set
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT

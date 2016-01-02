@@ -52,10 +52,14 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 #' Plot a rmap.frame
 #'
-#' @param x       a a rmap.frame object.
-#' @param colours a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.
-#' @param \dots   further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.
-#' @return        a ggplot object.
+#' @param x               a a rmap.frame object.
+#' @param colours         a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.
+#' @param rm.outliers     logical, default to FALSE. if true outliers are removed using \code{outlierDetector}.
+#' @param outlierDetector a function used to detect ouliers returning lower and upper limits of non-outliers.
+#'                        default to \code{\link[extremevalues]{getOutliersI}};
+#'						  ignored if rm.outliers = FALSE.
+#' @param \dots           further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.
+#' @return                a ggplot object.
 #' @export
 #' @examples
 #' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
@@ -69,8 +73,21 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 
 setMethod("plot", signature(x='rmap.frame', y='missing'),
-		function(x, colours = palette_rangemap('set1'), ... ) {
+		function(x,
+				colours         = palette_rangemap('set1'),
+				rm.outliers     = FALSE,
+				outlierDetector = function(x) getOutliersI(x)$limit ,
+				 ... ) {
 	idv = setdiff(names(x), c('x', 'y') )
+
+	if(rm.outliers) {
+
+		for (j in  setdiff(names(x), c('x', 'y')) ) data.table::set(x, i=NULL, j=j, value = {
+			lims = outlierDetector(x[[j]])
+			ifelse(x[[j]] < lims[1] | x[[j]] > lims[2], NA, x[[j]])
+			} )
+
+		}
 
 	out = lapply(idv, function (v) {
 		ggplot(data = x[!is.na(eval(parse(text=v)))]) +

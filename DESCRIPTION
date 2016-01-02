@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.2-95
+Version: 0.2-96
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
@@ -23,13 +23,15 @@ Imports:
     classInt,
     magrittr,
     data.table,
-    foreach
+    foreach,
+    extremevalues
 Suggests:
     shiny (>= 0.8.0),
     doParallel,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    MASS
 Description: Tools for easy generation of (life-history) traits maps based on
     species range (extent-of-occurrence) maps.
 License: GPL(>= 2)

@@ -5,7 +5,7 @@
 \title{Save, retrieve and export maps.}
 \usage{
 rangeMap.save(CON, tableName, FUN, biotab, biotrait, subset = list(), path,
-  overwrite = FALSE, ...)
+  overwrite = FALSE, cl, ...)
 }
 \arguments{
 \item{CON}{An sqlite connection pointing to a valid \code{rangeMapper}
@@ -30,13 +30,15 @@ project. \code{raster package} is required at this step.}
 
 \item{overwrite}{If \code{TRUE} then the table is removed}
 
-\item{\dots}{When \code{FUN} is an function, \dots{} denotes any extra
+\item{cl}{The number of cores to use or a cluster object defined with
+\code{\link[parallel]{makeCluster}} in package \code{parallel}
+or \code{\link[snow]{makeCluster}} from \code{snow} package.}
+
+\item{\dots}{When \code{FUN} is a function, \dots{} denotes any extra
 arguments to be passed to it.}
 }
 \value{
 \code{TRUE} when the MAP was created successfully.
-                 \code{rangeMap.fetch} returns a
-                 \code{{SpatialPixelsRangeMap}}.
 }
 \description{
 Apply a chosen \code{SQL} or function at each grid cell, allowing for
@@ -50,14 +52,17 @@ the list are character strings containing the SQL \code{WHERE} clause. The
 subset can point to either one table type (e.g.
 \code{list(MAP_species_richness = "species_richness > 500")} ) or can point
 to several table types (e.g. \code{list(BIO_lifeHistory = "clutch_size > 4",
-MAP_meanAltitude = "meanAltitude < 1000", metadata_ranges = "Area < 1000")}
-)
+MAP_meanAltitude = "meanAltitude < 1000", metadata_ranges = "Area < 1000")})
 
 Any valid SQL expression can be used to build up a subset. See
 \url{http://www.sqlite.org/lang_expr.html}
+
+When using \code{cl} parameter you must load the apropiated packages used in
+\code{FUN} by loading the packages inside the function or initializing the
+cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(caper))})).
 }
 \note{
-\code{SQL} aggregate functions are more efficient then their
+\code{SQL} aggregate functions are more efficient then their R
                  counterparts. For simple aggregate functions like mean, median, sd, count
                  it is advisable to use \code{SQL} functions rather then R functions.
 }
@@ -91,7 +96,7 @@ rangeMap.save(con, FUN = lmSlope, biotab = "biotab", biotrait = "body_mass",
         ), overwrite = TRUE)
 
 \dontrun{
-# Import raster maps the current project
+# Import raster maps to the current project
 r = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
 rangeMap.save(con, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
 }

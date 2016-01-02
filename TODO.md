@@ -1,21 +1,16 @@
 
 
-TODO
-----
-  * fix GUI
+
 
 NEW FEATURES
 ------------
-  * Write methods for hexagonal canvas
-  * add match.call() to rangeMap.save()  and save to project
-  * rangeMap.save() if FUN returns two values than two maps should be saved.
+  * rangeMap.save() should save as many MAP-s as vectors/data.frame columns returned by FUN.
+  * add match.call() to rangeMap.save()  and save to project.
   * Write vignette  to document project db structure.
+  * Write methods for hexagonal canvas.
 
 BUGS, FIXES
 -----------
-  * rangeMap.save() should return TRUE if a (non-empty) MAP_ is saved to the project or FALSE
-  if an empty map was created.
-
 
 
 

@@ -24,6 +24,8 @@ setMethod("rangeMapSave",
 		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
 
 	 	return(dbtable.exists(object@CON, tableName))
+
+
 		})
 
 # aggregate method using sqlite
@@ -70,36 +72,6 @@ setMethod("rangeMapSave",
 		cat(strwrap(sql, width = 100))
 		}
 	)
-
-.rangeMapSaveData <- function(object) {
-	# CHECKS
-	biotab = paste(object@BIO, object@biotab, sep = "")
-		if(!dbtable.exists(object@CON,biotab) )
-		stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
-	# object@biotrait should exist as a field in biotab
-	if(!dbfield.exists(object@CON,biotab, object@biotrait) )
-		stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
-
-	# BIO_tab name
-	biotab = paste(object@BIO, object@biotab, sep = "")
-
-	#  sql subset
-	sset = subsetSQLstring(object@CON, object@subset)
-	#  sql string
-	sql = paste("SELECT r.id, b.* FROM ranges r left join ",
-			biotab, " b WHERE r.bioid = b.", extract.indexed(object@CON, biotab),
-			  if(!is.null(sset)) paste("AND", sset) )
-
-	# fetch table
-	d = dbGetQuery(object@CON, sql)
-
-	if(nrow(d) == 0) {
-		stop( paste("The map is going to be empty! Maybe the bioid in", sQuote(object@biotab), " BIO table was wrongly set.") ) }
-
-
-	# return list
-	split(d, d[, object@ID])
-	}
 
 # aggregate method using R functions called directly on the data
 setMethod("rangeMapSave",
@@ -189,8 +161,8 @@ setMethod("rangeMapImport",
 	message("Loading external MAP data...")
 	rst = raster::raster(object@path)
 
-	# is there any other way to compare CRS-s ?
-	if(!CRSargs(CRS(proj4string(cnv))) == CRSargs(raster::projection(rst, FALSE)))
+	p4s_is_ok = proj4string_is_identical(CRSargs(CRS(proj4string(cnv))), CRSargs(raster::projection(rst, FALSE)))
+	if(! p4s_is_ok )
 		warning(sQuote(filenam), " may have a different PROJ4 string;\n", "canvas:", CRSargs(CRS(proj4string(cnv))), "\n", filenam, ":", CRSargs(projection(rst, FALSE)) )
 
 	rstp = as(as(rst, "SpatialGridDataFrame"), "SpatialPointsDataFrame")
@@ -244,9 +216,9 @@ setMethod("rangeMapImport",
 #'
 #' Any valid SQL expression can be used to build up a subset. See
 #' \url{http://www.sqlite.org/lang_expr.html}
-#' 
-#' When using \code{cl} parameter you must load the apropiated packages used in 
-#' \code{FUN} by loading the packages inside the function or initializing the 
+#'
+#' When using \code{cl} parameter you must load the apropiated packages used in
+#' \code{FUN} by loading the packages inside the function or initializing the
 #' cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(caper))})).
 #'
 #' @param CON       An sqlite connection pointing to a valid \code{rangeMapper}
@@ -263,15 +235,13 @@ setMethod("rangeMapImport",
 #' @param path      Path to the raster file(quoted) to be imported to the existing
 #'                  project. \code{raster package} is required at this step.
 #' @param overwrite If \code{TRUE} then the table is removed
-#' @param cl        The number of cores to use or a cluster object 
-#'                  (\code{\link[parallel]{makeCluster}} or \code{\link[snow]{makeCluster} from 
-#'                  \href{https://cran.r-project.org/web/packages/snow/index.html}{snow} package})
+#' @param cl        The number of cores to use or a cluster object defined with
+#'                  \code{\link[parallel]{makeCluster}} in package \code{parallel}
+#'                  or \code{\link[snow]{makeCluster}} from \code{snow} package.
 #' @param \dots     When \code{FUN} is a function, \dots{} denotes any extra
 #'                  arguments to be passed to it.
 #' @return          \code{TRUE} when the MAP was created successfully.
-#'                  \code{rangeMap.fetch} returns a
-#'                  \code{{SpatialPixelsRangeMap}}.
-#' @note            \code{SQL} aggregate functions are more efficient then their
+#' @note            \code{SQL} aggregate functions are more efficient then their R
 #'                  counterparts. For simple aggregate functions like mean, median, sd, count
 #'                  it is advisable to use \code{SQL} functions rather then R functions.
 #' @seealso         \code{\link{metadata.update}}.
@@ -306,7 +276,7 @@ setMethod("rangeMapImport",
 #'         ), overwrite = TRUE)
 #'
 #' \dontrun{
-#' # Import raster maps the current project
+#' # Import raster maps to the current project
 #' r = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
 #' rangeMap.save(con, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
 #' }
@@ -317,8 +287,13 @@ setMethod("rangeMapImport",
 #'
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
 
-	if(overwrite)
+	if(overwrite & !missing(tableName))
 	try(dbGetQuery(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
+
+	if(overwrite & missing(tableName))
+	try(dbGetQuery(CON, "DROP TABLE MAP_species_richness"), silent = TRUE)
+
+
 
 	o = FALSE
 

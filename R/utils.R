@@ -1,4 +1,4 @@
-
+# undocumented functions
 
 extract.indexed <- function(con,table.name) {
 	# extract name of indexed column
@@ -102,7 +102,35 @@ subsetSQLstring <- function(dbcon, subset = list() ) {
 	sql
 	}
 
+.rangeMapSaveData <- function(object) {
+	# CHECKS
+	biotab = paste(object@BIO, object@biotab, sep = "")
+		if(!dbtable.exists(object@CON,biotab) )
+		stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
+	# object@biotrait should exist as a field in biotab
+	if(!dbfield.exists(object@CON,biotab, object@biotrait) )
+		stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
 
+	# BIO_tab name
+	biotab = paste(object@BIO, object@biotab, sep = "")
+
+	#  sql subset
+	sset = subsetSQLstring(object@CON, object@subset)
+	#  sql string
+	sql = paste("SELECT r.id, b.* FROM ranges r left join ",
+			biotab, " b WHERE r.bioid = b.", extract.indexed(object@CON, biotab),
+			  if(!is.null(sset)) paste("AND", sset) )
+
+	# fetch table
+	d = dbGetQuery(object@CON, sql)
+
+	if(nrow(d) == 0) {
+		stop( paste("The map is going to be empty! Maybe the bioid in", sQuote(object@biotab), " BIO table was wrongly set.") ) }
+
+
+	# return list
+	split(d, d[, object@ID])
+	}
 
 
 
