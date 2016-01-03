@@ -4,7 +4,6 @@
 .travis.yml
 TODO.md
 README.md
-.TESTS.R
 ^\.travis\.yml$
 ^README\.Rmd$
 ^README-.*\.png$

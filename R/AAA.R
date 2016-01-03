@@ -9,6 +9,15 @@ utils::globalVariables(c('i', '.', 'value', 'CON'))
 #' @import sp methods RSQLite lattice ggplot2 parallel
 NULL
 
+#' @importFrom grDevices colorRampPalette
+NULL
+
+#' @importFrom stats aggregate median na.omit
+NULL
+
+#' @importFrom utils packageDescription read.csv2 read.table
+NULL
+
 #' @importFrom magrittr %>%
 NULL
 
