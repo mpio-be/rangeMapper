@@ -193,12 +193,7 @@ setClass("SpatialPixelsRangeMap", representation(
 	})
 
 setOldClass(c('data.table'))
-
-setOldClass(c('rmap.table', 'data.table'))
-
-setOldClass(c('data.table'))
 setOldClass(c('data.table', 'rmap.frame'))
-
 setAs("data.table", "rmap.frame", function(from) {
     as.rmap.frame(from)
 	})

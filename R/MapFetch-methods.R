@@ -13,8 +13,8 @@ as.rmap.frame <-function(x, ...) {
 #' @param bbox     global bounding box, a list  with x and y
 #' @param \dots    extra argumnents
 #' @export
-#' @return an rmap.table object which inherits
-#'         from \code{\link[data.table]{data.table}}
+#' @return         an rmap.frame object which inherits
+#'                 from \code{\link[data.table]{data.table}}
 as.rmap.frame.data.table <- function(x, p4s, gridSize, bbox) {
 	setattr(x, 'class', c('rmap.frame', 'data.table', 'data.frame'))
 	setattr(x, 'p4s', p4s)
@@ -51,7 +51,7 @@ setMethod("rangeMapFetch",
 		grd = gridSize.fetch(object@CON)
 		bbx = global.bbox.fetch(object@CON) %>% vertices %>% coordinates %>% data.frame %>% as.list
 
-		# rmap.table
+		# rmap.frame
 		x = setDT(x)
 		as.rmap.frame(x, p4s = p4s, gridSize = grd, bbox = bbx)
 
@@ -64,7 +64,7 @@ setMethod("rangeMapFetch",
 #' rangeMap.fetch
 #' @param con 	  a connection to a valid rangeMapper project.
 #' @param maps    map(s) name as character vector. If missing then all the maps are returned.
-#' @param spatial If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{\link[data.table]{data.table}}.
+#' @param spatial If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{rmap.frame}.
 #' @return        an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
 #'                and \code{proj4} string as an atribute if \code{spatial = FALSE}.
 #' @export

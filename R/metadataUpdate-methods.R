@@ -95,24 +95,20 @@ setMethod("metadataUpdate",
 #' canvas.save(dbcon)
 #' processRanges(spdf = spdf, con =  dbcon, ID = "sci_name" )
 #'
-#'  #   # metadata.update
-#'  #   metadata.update (rmap,
-#'  #   			FUN = function(x, ...) {
-#'  #   				res = diff(range(x, ...))
-#'  #   				if( !is.finite(res)) res = 0
-#'  #   				res
-#'  #   				},
-#'  #   	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
-#'  #
-#'  #   # plot
-#'  #   mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
-#'  #   maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
-#'  #   image(r)
-#'  #   plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
-#'  #   title(main = maxRangeSp)
-#'
-#'
-#'
+#' # metadata.update
+#' metadata.update (rmap,
+#'  FUN = function(x, ...) {
+#'  	res = diff(range(x, ...))
+#'  	if( !is.finite(res)) res = 0
+#'  	res
+#'  	},
+#' 	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
+#' # plot
+#' mr = RSQLite::dbGetQuery(dbcon, 'select * from metadata_ranges')
+#' maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
+#' image(r)
+#' plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
+#' title(main = maxRangeSp)
 #'
 metadata.update  <- function(rangeMap, FUN, name, map, overwrite = FALSE,...){
 	if(overwrite)

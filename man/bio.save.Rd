@@ -13,18 +13,18 @@ bio.merge(con, tableName, ...)
 metadata2bio(con, ...)
 }
 \arguments{
-\item{con}{An sqlite connection pointing to a valid \code{rangeMapper}
+\item{con}{an sqlite connection pointing to a valid \code{rangeMapper}
 project.}
 
-\item{loc}{File location or \code{data.frame} name.}
+\item{loc}{file location or \code{data.frame} name.}
 
-\item{tableName}{If missing, the name of the file or \code{data.frame} is used}
+\item{tableName}{if missing, the name of the file or \code{data.frame} is used}
 
-\item{\dots}{Arguments to pass to the corresponding methods: e.g. the ID,
+\item{\dots}{arguments to pass to the corresponding methods: e.g. the ID,
 the column corresponding to the names of the range files}
 }
 \value{
-A \sQuote{BIO} table is created in the corresponding
+a \sQuote{BIO} table is created in the corresponding
                  \code{rangeMapper} project.
 }
 \description{

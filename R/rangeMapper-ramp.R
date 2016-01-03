@@ -11,10 +11,15 @@
 #' @inheritParams  processRanges
 #' @inheritParams  bio.save
 #' @inheritParams  rangeMap.save
-
-#' @return an sqlite connection to a rangeMapper project
+#' @seealso        \code{\link{rangeMap.start}} \code{\link{global.bbox.save}}
+#'                 \code{\link{gridSize.save}} \code{\link{canvas.save}}
+#'                 \code{\link{processRanges}} \code{\link{bio.save}}
+#'                 \code{\link{rangeMap.save}}
+#' @return         an sqlite connection to a rangeMapper project
+#' @note           \code{ramp} combines  all the functions from rangeMap.start() to processRanges() and
+#'                 rangeMap.save() but is less flexible as compared with a step-by-step
+#'                 project building.
 #' @export
-#'
 #' @examples
 #' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
 #'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -23,8 +28,6 @@
 #' con = ramp("wrens.sqlite", gridSize = 10, spdf = breding_ranges, biotab = d, ID = "sci_name",
 #'             metadata = rangeTraits(), FUN = "median", overwrite = TRUE)
 #' m = rangeMap.fetch(con)
-
-
 
 ramp <- function(file, dir = tempdir(), gridSize, spdf, bbox = spdf,
                  ID, biotab, metadata, FUN,

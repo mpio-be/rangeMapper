@@ -11,7 +11,7 @@ rangeMap.fetch(con, maps, spatial = TRUE)
 
 \item{maps}{map(s) name as character vector. If missing then all the maps are returned.}
 
-\item{spatial}{If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{\link[data.table]{data.table}}.}
+\item{spatial}{If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{rmap.frame}.}
 }
 \value{
 an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates

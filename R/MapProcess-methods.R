@@ -4,7 +4,8 @@
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
 #' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
-#' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}
+#' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.
+#' @note            if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
 #' @export
 #' @examples
 #' require(rangeMapper)
@@ -92,7 +93,6 @@ setMethod("processRanges",
 	# Elements
 		p4s =  dbReadTable(con, "proj4string")[1,1]
 		ids = spdf@data[, ID]
-
 
 	# 1. process ranges
 		processRanges(con = con, spdf = spdf, ID = ID)

@@ -19,7 +19,7 @@ setMethod("rangeMapSave",
 						if(!is.null(sset)) paste("WHERE", sset), "group by r.id")
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC)"))
+		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC) -- DDL:", richnessSQL))
 		dbGetQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
 		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
 
@@ -61,7 +61,7 @@ setMethod("rangeMapSave",
 		sql = paste("SELECT id,", FUN ,"(", object@biotrait, ") as", object@biotrait, "from (",sql,") group by id")
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbGetQuery(object@CON, paste("CREATE TABLE",tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
 		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, sql) )
 
@@ -203,7 +203,7 @@ setMethod("rangeMapImport",
 #' Save, retrieve and export maps.
 #'
 #' Apply a chosen \code{SQL} or function at each grid cell, allowing for
-#' complex subsetting at both ID (e.g. species) and pixel (e..g assemblage)
+#' complex subsetting at both ID (e.g. species) and pixel (e.g. assemblage)
 #' levels.
 #'
 #' The subset argument accepts a named list. Names refers to \sQuote{BIO},
@@ -221,24 +221,24 @@ setMethod("rangeMapImport",
 #' \code{FUN} by loading the packages inside the function or initializing the
 #' cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(caper))})).
 #'
-#' @param CON       An sqlite connection pointing to a valid \code{rangeMapper}
+#' @param CON       an sqlite connection pointing to a valid \code{rangeMapper}
 #'                  project.
-#' @param tableName Name of the table (quoted) to be added to the sqlite database.
-#'                  The prefix \sQuote{MAP} will be appended to \code{tableName}
+#' @param tableName name of the table (quoted) to be added to the sqlite database.
+#'                  the prefix \sQuote{MAP} will be appended to \code{tableName}
 #'                  prior to saving.
-#' @param FUN       The function to be applied to each pixel. If \code{FUN} is
+#' @param FUN       the function to be applied to each pixel. If \code{FUN} is
 #'                  missing then species richness (species count) is computed.
-#' @param biotab    Character string identifying the \sQuote{BIO} table to use.
-#' @param biotrait  Character string identifying the ID of the \sQuote{BIO}
+#' @param biotab    character string identifying the \sQuote{BIO} table to use.
+#' @param biotrait  character string identifying the ID of the \sQuote{BIO}
 #'                  table. see \code{\link{bio.save}}
-#' @param subset    A named \code{\link{list}}. See details
-#' @param path      Path to the raster file(quoted) to be imported to the existing
+#' @param subset    a named \code{\link{list}}. See details
+#' @param path      path to the raster file(quoted) to be imported to the existing
 #'                  project. \code{raster package} is required at this step.
-#' @param overwrite If \code{TRUE} then the table is removed
-#' @param cl        The number of cores to use or a cluster object defined with
+#' @param overwrite if \code{TRUE} then the table is removed
+#' @param cl        the number of cores to use or a cluster object defined with
 #'                  \code{\link[parallel]{makeCluster}} in package \code{parallel}
 #'                  or \code{\link[snow]{makeCluster}} from \code{snow} package.
-#' @param \dots     When \code{FUN} is a function, \dots{} denotes any extra
+#' @param \dots     when \code{FUN} is a function, \dots{} denotes any extra
 #'                  arguments to be passed to it.
 #' @return          \code{TRUE} when the MAP was created successfully.
 #' @note            \code{SQL} aggregate functions are more efficient then their R
@@ -247,6 +247,7 @@ setMethod("rangeMapImport",
 #' @seealso         \code{\link{metadata.update}}.
 #' @export
 #' @examples
+#' require(rangeMapper)
 #' require(rgdal)
 #' breding_ranges = readOGR(system.file(package = "rangeMapper",
 #'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -282,7 +283,7 @@ setMethod("rangeMapImport",
 #' }
 #'
 #'
-#' m = rangeMap.fetch(con)
+#' m = rangeMap.fetch(con, spatial = FALSE)
 #' plot(m)
 #'
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {

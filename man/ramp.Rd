@@ -8,9 +8,9 @@ ramp(file, dir = tempdir(), gridSize, spdf, bbox = spdf, ID, biotab,
   metadata, FUN, overwrite = FALSE)
 }
 \arguments{
-\item{file}{Project's file name.}
+\item{file}{project file name.}
 
-\item{dir}{Project directory.}
+\item{dir}{project directory.}
 
 \item{gridSize}{grid resolution (in units previously set by \code{global.bbox.save})}
 
@@ -20,20 +20,25 @@ ramp(file, dir = tempdir(), gridSize, spdf, bbox = spdf, ID, biotab,
 
 \item{ID}{when spdf is set this is a \code{character} vector given the name of the range.}
 
-\item{biotab}{Character string identifying the \sQuote{BIO} table to use.}
+\item{biotab}{character string identifying the \sQuote{BIO} table to use.}
 
-\item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}}
+\item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.}
 
-\item{FUN}{The function to be applied to each pixel. If \code{FUN} is
+\item{FUN}{the function to be applied to each pixel. If \code{FUN} is
 missing then species richness (species count) is computed.}
 
-\item{overwrite}{Logical vector, default to FALSE (the file is kept but all tables are dropped).}
+\item{overwrite}{logical vector, default to FALSE (the file is kept but all tables are dropped).}
 }
 \value{
 an sqlite connection to a rangeMapper project
 }
 \description{
 A quick alternative to initiate a project by pipelining several functions.
+}
+\note{
+\code{ramp} combines  all the functions from rangeMap.start() to processRanges() and
+                rangeMap.save() but is less flexible as compared with a step-by-step
+                project building.
 }
 \examples{
 breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
@@ -43,5 +48,11 @@ d = subset(wrens, select = c('sci_name', 'body_size', 'body_mass', 'clutch_size'
 con = ramp("wrens.sqlite", gridSize = 10, spdf = breding_ranges, biotab = d, ID = "sci_name",
             metadata = rangeTraits(), FUN = "median", overwrite = TRUE)
 m = rangeMap.fetch(con)
+}
+\seealso{
+\code{\link{rangeMap.start}} \code{\link{global.bbox.save}}
+                \code{\link{gridSize.save}} \code{\link{canvas.save}}
+                \code{\link{processRanges}} \code{\link{bio.save}}
+                \code{\link{rangeMap.save}}
 }
 

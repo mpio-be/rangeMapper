@@ -11,7 +11,7 @@ brewer.pal.get  <- function(palette = NULL) {
 
 #' ggplot theme
 #'
-#' A ggplot theme based on theme_bw()
+#' A ggplot theme based on \code{\link[ggplot2]{theme_bw}}
 #'
 #' @param base_size   base_size
 #' @param base_family base_family

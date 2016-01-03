@@ -35,7 +35,7 @@ processRanges(con, spdf, dir, ID, metadata)
 
 \item{ID}{when spdf is set this is a \code{character} vector given the name of the range.}
 
-\item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}}
+\item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.}
 }
 \description{
 processRanges
@@ -50,6 +50,9 @@ processRanges
 
 \item \code{con = SQLiteConnection,spdf = missing,dir = character,ID = missing,metadata = list}: Method 4: Each range file is a separate shp file. Metadata are computed.
 }}
+\note{
+if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
+}
 \examples{
 require(rangeMapper)
 require(rgdal)

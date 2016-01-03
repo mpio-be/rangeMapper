@@ -133,7 +133,7 @@ setMethod("vertices", "SpatialPolygons",
 #' @seealso           \code{\link{processRanges}}.
 #' @export
 #' @examples
-#' summary(rangeTraits(use.default = F))
+#' summary(rangeTraits(use.default = FALSE))
 #'
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 #' troaed = selectShpFiles(f, ogr = TRUE,

@@ -1,5 +1,3 @@
-utils::globalVariables(c('CON'))
-
 setGeneric("rangeMapExport", function(object,dirName, ...)  	    standardGeneric("rangeMapExport") )
 
 # method for  exporting to external files

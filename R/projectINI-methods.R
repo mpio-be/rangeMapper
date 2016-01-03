@@ -38,11 +38,11 @@ setMethod("rangeMapStart", signature  = "rangeMapStart", definition = function(o
 
 #' Initiate/open a new rangeMapper project
 #'
-#' @param dir       Project directory.
-#' @param file      Project's file name.
-#' @param overwrite Logical vector, default to FALSE (the file is kept but all tables are dropped).
-#' @param path      Character vector; a path to a valid rangeMapper project.
-#' @param verbose   Character vector; if \code{TRUE} the project's summary is printed.
+#' @param dir       project directory.
+#' @param file      project file name.
+#' @param overwrite logical vector, default to FALSE (the file is kept but all tables are dropped).
+#' @param path      character vector; a path to a valid rangeMapper project.
+#' @param verbose   character vector; if \code{TRUE} the project's summary is printed.
 #' @return          rangeMap.start() and rangeMap.open() returns an sqlite connection\cr
 #'					rangeMap() returns an object of class  \code{rangeMap}
 #' @seealso         \code{\link{rangeMap.save}}

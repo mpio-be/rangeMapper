@@ -10,18 +10,18 @@
   scales = FALSE, style = "equal", ...)
 }
 \arguments{
-\item{x}{A SpatialPixelsRangeMap}
+\item{x}{a \code{SpatialPixelsRangeMap}.}
 
-\item{colorpalette}{A color palette.}
+\item{colorpalette}{a color palette.}
 
-\item{ncols}{Number of color classes required, default to 20; argument to be passed to
-\code{\link[classInt]{classIntervals}}}
+\item{ncols}{number of color classes required, default to 20; argument to be passed to
+\code{\link[classInt]{classIntervals}}.}
 
-\item{scales}{If \sQuote{FALSE}, default, axes scale are not drawn.}
+\item{scales}{ff \sQuote{FALSE}, the default, axes scale are not drawn.}
 
-\item{style}{Class interval style; see \code{\link[classInt]{classIntervals}} for more details}
+\item{style}{class interval style; see \code{\link[classInt]{classIntervals}} for more details.}
 
-\item{\dots}{Any argument that can be passed to see \code{\link[sp]{spplot}}}
+\item{\dots}{any argument that can be passed to see \code{\link[sp]{spplot}}}
 }
 \description{
 This is a wrapper around \code{spplot}
@@ -37,5 +37,8 @@ all = rangeMap.fetch(con)
 sr = rangeMap.fetch(con, 'species_richness')
 plot(sr)
 plot(all)
+}
+\seealso{
+\code{\link{plot,rmap.frame,missing-method}}.
 }
 

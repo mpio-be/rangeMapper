@@ -9,22 +9,22 @@
   outlierDetector, boundary, boundaryCol = 1, boundarySize = 0.5, ...)
 }
 \arguments{
-\item{x}{a a rmap.frame object.}
+\item{x}{a \code{rmap.frame} object.}
 
 \item{colours}{a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.}
 
-\item{outlierDetector}{a function used to detect ouliers. Should lower and upper limits of non-outliers.}
+\item{outlierDetector}{a function used to detect ouliers. Should return lower and upper limits of non-outliers.}
 
 \item{boundary}{a \code{\link[sp]{Spatial}}* object which can be \code{\link[ggplot2]{fortify}}ed.}
 
-\item{boundaryCol}{bondary color, see \code{\link[ggplot2]{geom_polygon}}.}
+\item{boundaryCol}{boundary color, see \code{\link[ggplot2]{geom_polygon}}.}
 
-\item{boundarySize}{bondary size, \code{\link[ggplot2]{geom_polygon}}.}
+\item{boundarySize}{boundary size, \code{\link[ggplot2]{geom_polygon}}.}
 
 \item{\dots}{further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.}
 }
 \value{
-a ggplot object.
+a \code{ggplot} object for one map or a \code{gtable} in case of more than one map.
 }
 \description{
 Plot a rmap.frame
@@ -46,5 +46,8 @@ plot(m, ncol = 2, boundary = wrens_boundary)
 if(require(extremevalues))
 plot(m, ncol = 2, outlierDetector = function(x) getOutliersI(x)$limit)
 }
+}
+\seealso{
+\code{\link{plot,SpatialPixelsRangeMap,missing-method}}
 }
 

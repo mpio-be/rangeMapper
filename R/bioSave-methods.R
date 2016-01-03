@@ -52,13 +52,13 @@ setMethod("bioSave",
 #' Import tables (e.g. life history data) to an active \code{rangeMapper}
 #' project.
 #'
-#' @param con       An sqlite connection pointing to a valid \code{rangeMapper}
+#' @param con       an sqlite connection pointing to a valid \code{rangeMapper}
 #'                  project.
-#' @param loc       File location or \code{data.frame} name.
-#' @param tableName If missing, the name of the file or \code{data.frame} is used
-#' @param \dots     Arguments to pass to the corresponding methods: e.g. the ID,
+#' @param loc       file location or \code{data.frame} name.
+#' @param tableName if missing, the name of the file or \code{data.frame} is used
+#' @param \dots     arguments to pass to the corresponding methods: e.g. the ID,
 #'                  the column corresponding to the names of the range files
-#' @return          A \sQuote{BIO} table is created in the corresponding
+#' @return          a \sQuote{BIO} table is created in the corresponding
 #'                  \code{rangeMapper} project.
 #' @export          bio.save bio.merge metadata2bio
 #' @examples

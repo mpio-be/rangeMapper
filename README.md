@@ -24,7 +24,7 @@ knitr::knit('README.Rmd')
 ![](README-1-1.png) 
 
 *  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
-`MAP`s are constructed based on `SQL` aggregate functions or statistical models build in R and can be based on arbitrary subsets at both species and assemblage level.
+`MAP`s are constructed based on `SQL` aggregate functions or statistical models build in R and can be based on arbitrary subsets defined at both species and assemblage levels.
 
 ```R
 rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",

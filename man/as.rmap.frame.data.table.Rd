@@ -21,8 +21,8 @@ as.rmap.frame(x, ...)
 \item{\dots}{extra argumnents}
 }
 \value{
-an rmap.table object which inherits
-        from \code{\link[data.table]{data.table}}
+an rmap.frame object which inherits
+                from \code{\link[data.table]{data.table}}
 }
 \description{
 Convert data.table to rmap.frame

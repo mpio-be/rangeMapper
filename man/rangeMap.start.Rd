@@ -13,15 +13,15 @@ rangeMap.start(dir, file, overwrite = FALSE)
 rangeMap.open(path, verbose = TRUE)
 }
 \arguments{
-\item{path}{Character vector; a path to a valid rangeMapper project.}
+\item{path}{character vector; a path to a valid rangeMapper project.}
 
-\item{dir}{Project directory.}
+\item{dir}{project directory.}
 
-\item{file}{Project's file name.}
+\item{file}{project file name.}
 
-\item{overwrite}{Logical vector, default to FALSE (the file is kept but all tables are dropped).}
+\item{overwrite}{logical vector, default to FALSE (the file is kept but all tables are dropped).}
 
-\item{verbose}{Character vector; if \code{TRUE} the project's summary is printed.}
+\item{verbose}{character vector; if \code{TRUE} the project's summary is printed.}
 }
 \value{
 rangeMap.start() and rangeMap.open() returns an sqlite connection\cr

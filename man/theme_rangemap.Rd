@@ -12,6 +12,6 @@ theme_rangemap(base_size = 12, base_family = "")
 \item{base_family}{base_family}
 }
 \description{
-A ggplot theme based on theme_bw()
+A ggplot theme based on \code{\link[ggplot2]{theme_bw}}
 }
 

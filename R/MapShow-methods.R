@@ -1,3 +1,4 @@
+
 #' Method tables
 #'
 #' @param object an sqlite connection object.

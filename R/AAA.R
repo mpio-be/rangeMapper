@@ -3,7 +3,8 @@
 	packageStartupMessage(paste('This is', pkgname, dcf[, "Version"] ))
     }
 
-
+# data.table, foreach, rangeMapExport 'values'
+utils::globalVariables(c('i', '.', 'value', 'CON'))
 
 #' @import sp methods RSQLite lattice ggplot2 parallel
 NULL
@@ -38,5 +39,3 @@ NULL
 #' @importFrom RColorBrewer brewer.pal.info brewer.pal
 NULL
 
-# data.table and foreach 'values'
-utils::globalVariables(c("i", ".", "value"))

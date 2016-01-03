@@ -23,7 +23,6 @@ View_rmap <- function(path) {
 
      options(rangeMapper.path = path)
 
-
     if(interactive())
 	   shiny::runApp(system.file('GUI', package = 'rangeMapper'))
 	}

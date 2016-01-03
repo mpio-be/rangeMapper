@@ -29,7 +29,7 @@ given as rangeTraits(funName1 = FUN1, funName2 = FUN2) where FUN1, FUN2 are
 \code{\link{SpatialPolygons}} extractor functions.
 }
 \examples{
-summary(rangeTraits(use.default = F))
+summary(rangeTraits(use.default = FALSE))
 
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 troaed = selectShpFiles(f, ogr = TRUE,

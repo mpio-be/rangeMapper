@@ -1,17 +1,15 @@
-
-
 #' Plot a SpatialPixelsRangeMap
 #'
 #' This is a wrapper around \code{spplot}
 #'
-#' @param x             A SpatialPixelsRangeMap
-#' @param colorpalette  A color palette.
-#' @param ncols         Number of color classes required, default to 20; argument to be passed to
-#'                      \code{\link[classInt]{classIntervals}}
-#' @param scales        If \sQuote{FALSE}, default, axes scale are not drawn.
-#' @param style         Class interval style; see \code{\link[classInt]{classIntervals}} for more details
-#' @param \dots         Any argument that can be passed to see \code{\link[sp]{spplot}}
-#'
+#' @param x             a \code{SpatialPixelsRangeMap}.
+#' @param colorpalette  a color palette.
+#' @param ncols         number of color classes required, default to 20; argument to be passed to
+#'                      \code{\link[classInt]{classIntervals}}.
+#' @param scales        ff \sQuote{FALSE}, the default, axes scale are not drawn.
+#' @param style         class interval style; see \code{\link[classInt]{classIntervals}} for more details.
+#' @param \dots         any argument that can be passed to see \code{\link[sp]{spplot}}
+#' @seealso             \code{\link{plot,rmap.frame,missing-method}}.
 #' @export
 #' @examples
 #' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
@@ -52,14 +50,15 @@ setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'),
 
 #' Plot a rmap.frame
 #'
-#' @param x               a a rmap.frame object.
+#' @param x               a \code{rmap.frame} object.
 #' @param colours         a vector of colours to pass to \code{\link[ggplot2]{scale_fill_gradientn}}.
-#' @param outlierDetector a function used to detect ouliers. Should lower and upper limits of non-outliers.
+#' @param outlierDetector a function used to detect ouliers. Should return lower and upper limits of non-outliers.
 #' @param boundary        a \code{\link[sp]{Spatial}}* object which can be \code{\link[ggplot2]{fortify}}ed.
-#' @param boundaryCol     bondary color, see \code{\link[ggplot2]{geom_polygon}}.
-#' @param boundarySize    bondary size, \code{\link[ggplot2]{geom_polygon}}.
+#' @param boundaryCol     boundary color, see \code{\link[ggplot2]{geom_polygon}}.
+#' @param boundarySize    boundary size, \code{\link[ggplot2]{geom_polygon}}.
 #' @param \dots           further arguments to pass to \code{\link[gridExtra]{arrangeGrob}}.
-#' @return                a ggplot object.
+#' @return                a \code{ggplot} object for one map or a \code{gtable} in case of more than one map.
+#' @seealso               \code{\link{plot,SpatialPixelsRangeMap,missing-method}}
 #' @export
 #' @examples
 #' breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",

@@ -8,33 +8,33 @@ rangeMap.save(CON, tableName, FUN, biotab, biotrait, subset = list(), path,
   overwrite = FALSE, cl, ...)
 }
 \arguments{
-\item{CON}{An sqlite connection pointing to a valid \code{rangeMapper}
+\item{CON}{an sqlite connection pointing to a valid \code{rangeMapper}
 project.}
 
-\item{tableName}{Name of the table (quoted) to be added to the sqlite database.
-The prefix \sQuote{MAP} will be appended to \code{tableName}
+\item{tableName}{name of the table (quoted) to be added to the sqlite database.
+the prefix \sQuote{MAP} will be appended to \code{tableName}
 prior to saving.}
 
-\item{FUN}{The function to be applied to each pixel. If \code{FUN} is
+\item{FUN}{the function to be applied to each pixel. If \code{FUN} is
 missing then species richness (species count) is computed.}
 
-\item{biotab}{Character string identifying the \sQuote{BIO} table to use.}
+\item{biotab}{character string identifying the \sQuote{BIO} table to use.}
 
-\item{biotrait}{Character string identifying the ID of the \sQuote{BIO}
+\item{biotrait}{character string identifying the ID of the \sQuote{BIO}
 table. see \code{\link{bio.save}}}
 
-\item{subset}{A named \code{\link{list}}. See details}
+\item{subset}{a named \code{\link{list}}. See details}
 
-\item{path}{Path to the raster file(quoted) to be imported to the existing
+\item{path}{path to the raster file(quoted) to be imported to the existing
 project. \code{raster package} is required at this step.}
 
-\item{overwrite}{If \code{TRUE} then the table is removed}
+\item{overwrite}{if \code{TRUE} then the table is removed}
 
-\item{cl}{The number of cores to use or a cluster object defined with
+\item{cl}{the number of cores to use or a cluster object defined with
 \code{\link[parallel]{makeCluster}} in package \code{parallel}
 or \code{\link[snow]{makeCluster}} from \code{snow} package.}
 
-\item{\dots}{When \code{FUN} is a function, \dots{} denotes any extra
+\item{\dots}{when \code{FUN} is a function, \dots{} denotes any extra
 arguments to be passed to it.}
 }
 \value{
@@ -42,7 +42,7 @@ arguments to be passed to it.}
 }
 \description{
 Apply a chosen \code{SQL} or function at each grid cell, allowing for
-complex subsetting at both ID (e.g. species) and pixel (e..g assemblage)
+complex subsetting at both ID (e.g. species) and pixel (e.g. assemblage)
 levels.
 }
 \details{
@@ -67,6 +67,7 @@ cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(cap
                  it is advisable to use \code{SQL} functions rather then R functions.
 }
 \examples{
+require(rangeMapper)
 require(rgdal)
 breding_ranges = readOGR(system.file(package = "rangeMapper",
      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
@@ -102,7 +103,7 @@ rangeMap.save(con, path = r, tableName = "meanAltitude", FUN = mean, overwrite =
 }
 
 
-m = rangeMap.fetch(con)
+m = rangeMap.fetch(con, spatial = FALSE)
 plot(m)
 
 }
