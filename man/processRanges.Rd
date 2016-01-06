@@ -59,7 +59,8 @@ require(rgdal)
 \dontrun{
 if (require(doParallel) ) {
  cl = makePSOCKcluster(2)
- registerDoParallel(cl) }
+ registerDoParallel(cl)
+ }
 }
 
 dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)

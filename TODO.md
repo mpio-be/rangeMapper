@@ -8,5 +8,7 @@ BUGS, FIXES
 -----------
 
 
-
+  * make tempdir,
+  * write rangeOverlay() output to separate files in tempdir.
+  * loop through each output and dbWriteTable each file.
 
