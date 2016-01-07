@@ -3,7 +3,7 @@
 #' @param con       a \code{connection} object.
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
-#' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
+#' @param ID      	a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).
 #' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.
 #' @note            if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
 #' @export
@@ -67,7 +67,8 @@ setMethod("processRanges",
 
 	# range over canvas
 		message("Performing ", if(DoPar) 'parallel' else 'serial', " range overlay... ", 'In case something goes wrong check', td)
-		if(DoPar) message("In a Linux environment you can run e.g. ", sQuote(paste('while sleep 1; do ls',td  ,'-f |wc -l; done')), 'to follow progress.'  )
+		if(DoPar)
+		 message("In a Linux environment you can run e.g. ", dQuote(paste('while sleep 1; do ls',td  ,'-f |wc -l; done')), ' to follow progress.'  )
 
 		foreach(i = as.character(spdf$ID) , .packages = c('rangeMapper') ) %trypar% {
  			spi  = spdf[spdf$ID == i, ]
@@ -79,7 +80,7 @@ setMethod("processRanges",
 		setwd(wd)
 
 	# db update
-		message("Writing to project...")
+		message("Writing overlay output to project...")
 
 		inc = list.files(td, full.names = TRUE)
 
