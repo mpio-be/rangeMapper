@@ -20,11 +20,24 @@ rangeMap.save(con, biotab = "biotab", biotrait = "body_mass",
 
 test_that("rangeMap.save works in parallel", {
 
-rangeMap.save(con, biotab = "biotab", biotrait = "body_mass", cl = 2,
+cl<- parallel::makeCluster(parallel::detectCores())
+
+# Non parallel for SQL function
+rangeMap.save(con, biotab = "biotab", biotrait = "body_mass", cl = cl,
     tableName = "x", FUN = "avg", overwrite = TRUE)
 
-rangeMap.save(con, biotab = "biotab", biotrait = "body_mass", cl = 2,
-    tableName = "x", FUN = mean, na.rm = TRUE, overwrite = TRUE)
+slowMean<- function(x, ...){
+  Sys.sleep(1)
+  mean(x, ...)
+}
 
+parTime<- system.time(rangeMap.save(con, biotab = "biotab", biotrait = "body_mass", cl = cl,
+    tableName = "x", FUN = slowMean, na.rm = TRUE, overwrite = TRUE))
+Time<- system.time(rangeMap.save(con, biotab = "biotab", biotrait = "body_mass",
+    tableName = "x", FUN = slowMean, na.rm = TRUE, overwrite = TRUE))
 
+parallel::stopCluster(cl)
+
+diffT<- parTime - Time
+expect_less_than(diffT["elapsed"], 0)
     })
