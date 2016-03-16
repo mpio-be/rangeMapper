@@ -1,5 +1,5 @@
 
-setGeneric("rangeMapSave", function(object,FUN,formula, ...)  standardGeneric("rangeMapSave") )
+setGeneric("rangeMapSave", function(object,FUN,formula,cl, ...)  standardGeneric("rangeMapSave") )
 
 # method for species richness,
 setMethod("rangeMapSave",
@@ -75,7 +75,7 @@ setMethod("rangeMapSave",
 
 # aggregate method using R functions called directly on the data
 setMethod("rangeMapSave",
-	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing"),
+	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing", cl = "ANY"),
 	definition = function(object, FUN, formula, cl, ...) {
 
 		# tableName
@@ -83,14 +83,14 @@ setMethod("rangeMapSave",
 
 		# get data afer checking
 		dl = .rangeMapSaveData (object)
-		if (missing(cl)){
+		
+		if (inherits(cl, "cluster")){
+			# apply R function
+			message("Running on ", length(cl), " cores")
+			X = parSapply(cl=cl, dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
+		}else{
 			# apply R function
 			X = sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
-		}else{
-			if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
-			# apply R function
-			X = parSapply(cl=cl, dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
-			if (clNumeric) stopCluster(cl)
 		}
 
 		X = data.frame(id = names(X), X)
@@ -108,7 +108,7 @@ setMethod("rangeMapSave",
 
 # aggregate method using R functions called directly using formula, data interface
 setMethod("rangeMapSave",
-	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula"),
+	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula", cl = "ANY"),
 	definition = function(object, FUN, formula, cl, ...) {
 
 		# tableName
@@ -117,14 +117,13 @@ setMethod("rangeMapSave",
 		# get data afer checking
 		dl = .rangeMapSaveData (object)
 
-		if (missing(cl)){
-		  # apply R function
-		  X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
+		if (inherits(cl, "cluster")){
+			# apply R function
+			message("Running on ", length(cl), "cores")
+			X = parSapply(cl=cl, dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
 		}else{
-		  if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
-		  # apply R function
-		  X = parSapply(cl=cl, dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
-		  if (clNumeric) stopCluster(cl)
+			# apply R function
+			X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
 		}
 
 		X = data.frame(id = names(X), X)
@@ -315,10 +314,19 @@ rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(
 			}
 
 	if(!missing(FUN) & missing(path)) { # SQL or R function
-			rmap = new("rangeMapSave", CON = CON,  biotab = biotab, biotrait = biotrait, tableName = tableName, subset = subset)
-			 o = rangeMapSave(rmap, FUN = FUN, ...)
-			}
-		o
+		if (!missing(cl)){
+    			if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
+		}else{ 
+			cl<- NA
+			clNumeric<- FALSE
 		}
+	  
+		rmap = new("rangeMapSave", CON = CON,  biotab = biotab, biotrait = biotrait, tableName = tableName, subset = subset)
+		o = rangeMapSave(rmap, FUN = FUN, cl = cl, ...)
+
+		if (clNumeric) stopCluster(cl)
+	}
+	o
+}
 
 
