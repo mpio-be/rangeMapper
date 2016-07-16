@@ -4,5 +4,8 @@
 .Rold
 TODO.html
 temp.R
-
 inst/doc
+aves.sqlite
+aves.sqlite.log
+rangeMapper.sublime-workspace
+rangeMapper.sublime-project
