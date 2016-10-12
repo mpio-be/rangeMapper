@@ -5,6 +5,7 @@ sudo: required
 warnings_are_errors: true
 
 apt_packages:
+ - libhdf5-serial-dev 
  - libgdal-dev
  - libproj-dev
  - libgeos-dev
