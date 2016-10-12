@@ -4,11 +4,8 @@ language: R
 sudo: required
 warnings_are_errors: true
 
-apt_packages:
- - libhdf5-serial-dev 
- - libgdal-dev
- - libproj-dev
- - libgeos-dev
+before_install:
+  - sudo apt-get install libproj-dev libgdal-dev libgeos-dev
 
 r_packages:
   - covr
