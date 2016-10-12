@@ -7,12 +7,12 @@ Authors@R: c(
     )
 Title: A Platform for the Study of Macroecology of Life History Traits
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.0.0),
+    RSQLite(>= 1.0.0)
 Imports:
     methods,
     sp,
     rgdal,
-    RSQLite(>= 1.0.0),
     rgeos,
     raster,
     maptools,

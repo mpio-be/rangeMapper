@@ -21,7 +21,7 @@ setMethod("metadataUpdate",
 			# add new column
 			if( is.element(name, c(names(dbGetQuery(object@CON, 'SELECT * FROM metadata_ranges limit 1')), SQLKeywords(object@CON) ) ) )
 				stop(paste(dQuote(name), "allready exists or is not a valid SQL name!") )
-			name = RSQLite::make.db.names(object@CON, name)
+			name = make.db.names(object@CON, name)
 			dbGetQuery(object@CON, paste("ALTER TABLE metadata_ranges ADD COLUMN", name ,"NUMERIC;") )
 
 			# get ranges listing
@@ -104,7 +104,7 @@ setMethod("metadataUpdate",
 #'  	},
 #' 	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
 #' # plot
-#' mr = RSQLite::dbGetQuery(dbcon, 'select * from metadata_ranges')
+#' mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
 #' maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
 #' image(r)
 #' plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)

@@ -1,6 +1,6 @@
 #' @rdname rangeMap.start
 rangeMap <- function(path){
-	new("rangeMap", CON = dbConnect(RSQLite::SQLite(), dbname= path) )
+	new("rangeMap", CON = dbConnect(SQLite(), dbname= path) )
 	}
 
 
@@ -9,7 +9,7 @@ setGeneric("rangeMapStart", function(object)	standardGeneric("rangeMapStart") )
 setMethod("rangeMapStart", signature  = "rangeMapStart", definition = function(object){
 	f = paste(object@dir, object@file, sep = .Platform$file.sep)
 	file.exists = if(file.exists(f) )  TRUE else FALSE
-	CON = dbConnect(RSQLite::SQLite(), dbname = f)
+	CON = dbConnect(SQLite(), dbname = f)
 	verSql = paste("INSERT INTO version VALUES (" ,shQuote(packageDescription("rangeMapper")$Version) , ")")
 
 	if(!file.exists) {
@@ -70,7 +70,7 @@ rangeMap.start <- function(dir, file, overwrite = FALSE) {
 	message(paste("PROJECT:", obj@file, "\nDIRECTORY:",obj@dir) )
 
 	f = paste(obj@dir, obj@file, sep = .Platform$file.sep)
-	invisible(dbConnect( RSQLite::SQLite() , dbname = f))
+	invisible(dbConnect( SQLite() , dbname = f))
 	}
 
 #' @rdname rangeMap.start
@@ -78,7 +78,7 @@ rangeMap.open <- function(path, verbose = TRUE) {
 
 	stopifnot(file.exists(path))
 
-	dbcon = dbConnect( RSQLite::SQLite() , dbname= path)
+	dbcon = dbConnect( SQLite() , dbname= path)
 
 	o = new("rangeMap", CON = dbcon)
 

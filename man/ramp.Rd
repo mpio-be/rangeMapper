@@ -18,7 +18,7 @@ ramp(file, dir = tempdir(), gridSize, spdf, bbox = spdf, ID, biotab,
 
 \item{bbox}{the spatial domain of the project (see \code{\link{global.bbox.save}} )}
 
-\item{ID}{when spdf is set this is a \code{character} vector given the name of the range.}
+\item{ID}{a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).}
 
 \item{biotab}{character string identifying the \sQuote{BIO} table to use.}
 

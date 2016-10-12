@@ -15,7 +15,7 @@ NULL
 #' @importFrom stats aggregate median na.omit
 NULL
 
-#' @importFrom utils packageDescription read.csv2 read.table
+#' @importFrom utils packageDescription read.csv2 read.table write.table
 NULL
 
 #' @importFrom magrittr %>%
@@ -27,7 +27,7 @@ NULL
 #' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 
-#' @importFrom data.table data.table setDT setattr melt set
+#' @importFrom data.table data.table setDT setattr melt set fread
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT

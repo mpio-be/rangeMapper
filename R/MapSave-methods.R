@@ -36,7 +36,7 @@ setMethod("rangeMapSave",
 		# CHECKS
 		biotab = paste(object@BIO, object@biotab, sep = "")
 			if(!dbtable.exists(object@CON,biotab) )
-			stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
+			stop( paste(sQuote(object@biotab), "does not exist") )
 		# object@biotrait should exist as a field in biotab
 		if(!dbfield.exists(object@CON,biotab, object@biotrait) )
 			stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
@@ -149,7 +149,7 @@ setMethod("rangeMapImport",
 
 	filenam = basename(object@path)
 
-	if(length(object@tableName)== 0) tableName = RSQLite::make.db.names(filenam)
+	if(length(object@tableName)== 0) tableName = make.db.names(filenam)
 
 	tableName = paste(object@MAP, object@tableName, sep = "")
 

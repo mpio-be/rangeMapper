@@ -35,7 +35,7 @@ con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges,
 Range size classes
 
 ```{r}
-mt = RSQLite::dbReadTable(con, "metadata_ranges")
+mt = dbReadTable(con, "metadata_ranges")
 
 Q = quantile(log(mt$Area),  probs = seq(0.05, 1, 0.1) )
 rangeA = data.frame(area = exp(Q), quant =  gsub("%", "", names(Q)) )

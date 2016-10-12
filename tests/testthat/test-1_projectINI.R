@@ -1,6 +1,6 @@
 context("1: Project ini")
 
-spdf = readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+spdf = rgdal::readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
 
 test_that("Building blocks are in place", {
 
@@ -21,6 +21,31 @@ test_that("Building blocks are in place", {
 
 	#rangeMap fetch
 	expect_error(new("rangeMapFetch", CON = con, tableName = "species_richness") )
+
+	})
+
+test_that("Bounding box methods work", {
+	
+	# 1. bbox and p4s are missing
+	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	expect_warning(global.bbox.save(con = con))
+
+	# 2. bbox path to file, p4s is missing
+	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	expect_true(global.bbox.save(con = con, 
+ 		bbox = system.file(package = "rangeMapper", "extdata", "wrens", "vector") ) )
+
+	# 3. bbox path to file, p4s is set
+	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	expect_true(global.bbox.save(con = con, 
+ 		bbox = system.file(package = "rangeMapper", "extdata", "wrens", "vector"), 
+ 		p4s = CRS("+proj=aea") ) )
+
+	# 5. bbox is a spatial object, p4s is missing
+	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	expect_true(global.bbox.save(con = con, bbox = spdf ) )
+	
+
 
 	})
 
@@ -62,7 +87,7 @@ test_that("Pipeline works forward only", {
 
 test_that("Range overlay returns a data.frame", {
 	con  = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
-	spdf = readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+	spdf = rgdal::readOGR( system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
 
 	global.bbox.save(con = con, bbox = spdf)
 	gridSize.save(con, gridSize = 10)

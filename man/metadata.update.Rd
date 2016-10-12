@@ -67,7 +67,7 @@ metadata.update (rmap,
  	},
 	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
 # plot
-mr = RSQLite::dbGetQuery(dbcon, 'select * from metadata_ranges')
+mr = dbGetQuery(dbcon, 'select * from metadata_ranges')
 maxRangeSp = mr[mr$AltitudeRange== max(mr$AltitudeRange), 'bioid']
 image(r)
 plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)

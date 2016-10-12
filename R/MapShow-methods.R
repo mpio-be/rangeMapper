@@ -61,9 +61,9 @@ setMethod("show", signature(object = "rangeMap"), function(object){
     tbs = dbGetQuery(object@CON, "select name from sqlite_master where type = 'table' ")$name
 
     out[["class"]] = class(object)
-    dbinfo = dbGetInfo(object@CON)
+    # dbinfo = dbGetInfo(object@CON)
     out[["Project_location"]] = object@CON@dbname
-    out[["SQLite_version"]]   = dbinfo$serverVersion
+    # out[["SQLite_version"]]   = dbinfo$serverVersion
 
     if( is.empty(object@CON, object@CANVAS) )
     out[["empty_project"]]  = "Empty rangeMapper project." else {

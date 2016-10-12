@@ -52,7 +52,7 @@ test_that("ONE SpPolyDF WITH metadata", {
 
 	expect_that(rangeMap.fetch(dbcon, spatial = FALSE) , is_a("data.table") )
 
-	expect_more_than(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
+	expect_gt(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
 
 	})
 
@@ -76,7 +76,7 @@ test_that("MULTIPLE SpPolyDF-s WITH metadata", {
 
 	expect_that(rangeMap.fetch(dbcon, spatial = FALSE) , is_a("data.table") )
 
-	expect_more_than(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
+	expect_gt(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
 
 	})
 
@@ -97,7 +97,7 @@ test_that("MULTIPLE SpPolyDF-s WITH metadata", {
 #  	registerDoSEQ()
 #
 #  	})
-#
+
 
 
 

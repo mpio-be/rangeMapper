@@ -12,7 +12,7 @@ setClass("rangeMapStart",
 	create =
 	c(	"CREATE TABLE version (ver CHAR)",
 		"CREATE TABLE proj4string (p4s CHAR)",
-		"CREATE TABLE gridSize(gridSize FLOAT)",
+		"CREATE TABLE gridsize(gridsize FLOAT)",
 		"CREATE TABLE bbox(xmin FLOAT,xmax FLOAT,ymin FLOAT,ymax FLOAT)",
 		"CREATE TABLE canvas (x FLOAT,y FLOAT,id INT)",
 		"CREATE TABLE ranges (id INT,bioid CHAR)",

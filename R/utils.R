@@ -106,7 +106,7 @@ subsetSQLstring <- function(dbcon, subset = list() ) {
 	# CHECKS
 	biotab = paste(object@BIO, object@biotab, sep = "")
 		if(!dbtable.exists(object@CON,biotab) )
-		stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
+		stop( paste(sQuote(object@biotab), "does not exist.") )
 	# object@biotrait should exist as a field in biotab
 	if(!dbfield.exists(object@CON,biotab, object@biotrait) )
 		stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))

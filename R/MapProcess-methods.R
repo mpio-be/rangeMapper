@@ -36,10 +36,10 @@ setGeneric("processRanges",
 #' @describeIn  processRanges Method 1: One SpatialPolygonsDataFrame containing all the ranges. No metadata.
 setMethod("processRanges",
 	signature = c(con        = "SQLiteConnection",
-				 spdf        = "SpatialPolygonsDataFrame",
-				 dir         = "missing",
-				 ID          = "character",
-				 metadata    = "missing"),
+							 spdf        = "SpatialPolygonsDataFrame",
+							 dir         = "missing",
+							 ID          = "character",
+							 metadata    = "missing"),
 	definition = function(con, spdf, ID,  metadata){
 
 	Startprocess = Sys.time()
@@ -84,7 +84,7 @@ setMethod("processRanges",
 
 		inc = list.files(td, full.names = TRUE)
 
-		res = sapply(inc, FUN = function(f)  dbWriteTable(con, rmo@RANGES, f, append = TRUE, row.names = FALSE) )
+		res = sapply(inc, FUN = function(f)  dbWriteTable(con, rmo@RANGES, fread(f), append = TRUE, row.names = FALSE) )
 
 		if(any(res)) message(sum(res), " out of ", length(spdf$ID) , " ranges updated; Elapsed time: ",
 						round(difftime(Sys.time(), Startprocess, units = "mins"),1), " mins")

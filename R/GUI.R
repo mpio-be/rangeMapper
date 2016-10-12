@@ -18,7 +18,7 @@ View_rmap <- function(path) {
         con = ramp("wrens.sqlite", gridSize = 2, spdf = br, biotab = d, ID = "sci_name",
                     metadata = rangeTraits()[1], FUN = "median", overwrite = TRUE)
         path = paste(tempdir(), "wrens.sqlite", sep = .Platform$file.sep)
-        RSQLite::dbDisconnect(con)
+        dbDisconnect(con)
         }
 
      options(rangeMapper.path = path)
