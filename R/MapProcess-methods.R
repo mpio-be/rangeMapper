@@ -127,7 +127,7 @@ setMethod("processRanges",
 				switch(x, double = 'NUMERIC',
 						 integer = 'INTEGER',
 						 logical = 'INTEGER',
-						 varchar = 'TEXT') )
+						 character = 'TEXT') )
 		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
 
 		# prepare metadata table
@@ -216,7 +216,7 @@ setMethod("processRanges",
 				switch(x, double = 'NUMERIC',
 						 integer = 'INTEGER',
 						 logical = 'INTEGER',
-						 varchar = 'TEXT') )
+						 character = 'TEXT') )
 		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
 
 		# prepare metadata table
