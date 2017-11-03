@@ -7,7 +7,7 @@ knitr::knit('README.Rmd')
 [![Travis-CI Build Status](https://travis-ci.org/valcu/rangeMapper.svg?branch=master)](https://travis-ci.org/valcu/rangeMapper)
 [![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
-
+[![Rdoc](http://www.rdocumentation.org/badges/version/rangeMapper)](http://www.rdocumentation.org/packages/rangeMapper) 
 
 [_rangeMapper_](http://onlinelibrary.wiley.com/doi/10.1111/j.1466-8238.2011.00739.x/full/) is a framework for the study of macroecological patterns of life-history traits.
 
