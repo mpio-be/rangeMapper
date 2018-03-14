@@ -2,10 +2,12 @@
 knitr::knit('README.Rmd')
 -->
 
-[![Travis-CI Build Status](https://travis-ci.org/valcu/rangeMapper.svg?branch=master)](https://travis-ci.org/valcu/rangeMapper)
-[![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
+
+
+[![Travis-CI Build Status](https://travis-ci.org/mpio-be/rangeMapper.svg?branch=master)](https://travis-ci.org/mpio-be/rangeMapper)
+[![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
-[![Rdoc](http://www.rdocumentation.org/badges/version/rangeMapper)](http://www.rdocumentation.org/packages/rangeMapper) 
+
 
 [_rangeMapper_](http://onlinelibrary.wiley.com/doi/10.1111/j.1466-8238.2011.00739.x/full/) is a framework for the study of macroecological patterns of life-history traits.
 
@@ -14,12 +16,13 @@ knitr::knit('README.Rmd')
 
 * Datasets (i.e. maps) are retrieved from `sqlite` project files as objects inheriting from `SpatialPixels` or `data.table`. Maps can be plotted directly with `plot()`.
 
+
 ```r
     map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
-    plot(map, boundary = wrens_boundary, ncol = 2)
+    plot(map, boundary = wrens_boundary, ncol = 2 , outlierDetector = function(x) extremevalues::getOutliersI(x)$limit)
 ```
 
-![](README-1-1.png) 
+![](README-1-1.png)
 
 *  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
 `MAP`s are constructed based on `SQL` aggregate functions or statistical models build in R and can be based on arbitrary subsets defined at both species and assemblage levels.
@@ -33,9 +36,11 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
                   BIO_biotab = "Family = 'Troglodytidae'
                                  AND clutch_size is not NULL") )
 ```
+
+
 ### Installation
 ```R
-devtools::install_github("valcu/rangeMapper") # development.
+devtools::install_github("mpio-be/rangeMapper") # development.
 install.packages("rangeMapper") # stable.
 ```
 
