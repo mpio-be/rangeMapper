@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.3-1
+Version: 0.3-2
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
@@ -59,3 +59,4 @@ Collate:
     'utils-spatial.R'
     'utils.R'
 VignetteBuilder: knitr
+Encoding: UTF-8

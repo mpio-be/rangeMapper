@@ -17,7 +17,7 @@ setMethod("bioSave",
 		res = dbWriteTable(object@CON ,tableName , d, row.names = FALSE)
 
 		if(res) {
-			dbGetQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
+			dbExecute(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
 			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			}
 		}
@@ -40,7 +40,7 @@ setMethod("bioSave",
 		res = dbWriteTable(object@CON ,tableName , d, row.names = FALSE)
 
 		if(res) {
-			dbGetQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
+			dbExecute(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
 			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			} else
 				message( paste("Error in saving", object@tableName) )

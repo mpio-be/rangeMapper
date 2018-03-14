@@ -10,8 +10,8 @@ knitr::opts_chunk$set(
     )
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/valcu/rangeMapper.svg?branch=master)](https://travis-ci.org/valcu/rangeMapper)
-[![Coverage Status](https://img.shields.io/codecov/c/github/valcu/rangeMapper/master.svg)](https://codecov.io/github/valcu/rangeMapper?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/mpio-be/rangeMapper.svg?branch=master)](https://travis-ci.org/mpio-be/rangeMapper)
+[![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 
 
@@ -20,20 +20,30 @@ knitr::opts_chunk$set(
 ### _rangeMapper_ in a nutshell
 
 ```{r,echo=FALSE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
-    require(rangeMapper)
+    require(rangeMapper); require(magrittr)
     require(ggplot2)
-    breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
-         "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+    require(rgdal)
+    breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+    breding_ranges = spTransform(breding_ranges, CRS('+proj=moll')) %>% rgeos::gBuffer(width = 0, byid = TRUE)
     wrens_boundary = rgeos::gUnionCascaded(breding_ranges)
+
     data(wrens)
     d = subset(wrens, select = c('sci_name', 'body_mass', 'clutch_size') )
-    con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID = "sci_name",
+    
+
+    con = ramp("wrens.sqlite", gridSize = 150000, spdf = breding_ranges, biotab = d, ID = "sci_name",
                 FUN = "median", overwrite = TRUE)
+
+
 ```
 * Datasets (i.e. maps) are retrieved from `sqlite` project files as objects inheriting from `SpatialPixels` or `data.table`. Maps can be plotted directly with `plot()`.
+
 ```{r,1, fig.cap="", echo=TRUE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
     map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
-    plot(map, boundary = wrens_boundary, ncol = 2)
+    plot(map, boundary = wrens_boundary, ncol = 2 , outlierDetector = function(x) extremevalues::getOutliersI(x)$limit)
+
+
+
 ```
 
 *  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
@@ -52,7 +62,7 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
 
 ### Installation
 ```R
-devtools::install_github("valcu/rangeMapper") # development.
+devtools::install_github("mpio-be/rangeMapper") # development.
 install.packages("rangeMapper") # stable.
 ```
 

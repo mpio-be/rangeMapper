@@ -19,7 +19,7 @@ setMethod("rangeMapRemove",
 
 		for (i in 1:length(sql)) {
 	  message("SQLITE:", sql[i])
-	  dbGetQuery(object@CON , sql[i])
+	  dbExecute(object@CON , sql[i])
 		  }
 	   }
 	})

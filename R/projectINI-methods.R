@@ -16,9 +16,9 @@ setMethod("rangeMapStart", signature  = "rangeMapStart", definition = function(o
 		Queries = object@skeleton
 		db = unlist(Queries)
 			for (i in 1:length(db))
-					dbGetQuery(CON , db[i])
+					dbExecute(CON , db[i])
 
-		dbGetQuery(CON, verSql)
+		dbExecute(CON, verSql)
 		}
 
 	if(object@overwrite && file.exists) {
@@ -26,9 +26,9 @@ setMethod("rangeMapStart", signature  = "rangeMapStart", definition = function(o
 		if(nrow(dropAll) == 0) dropAll = NULL else dropAll = dropAll[,1 ]
 		Queries = c(dropAll, "vacuum", object@skeleton )
 		db = unlist(Queries)
-			for (i in 1:length(db)) dbGetQuery(CON , db[i])
+			for (i in 1:length(db)) dbExecute(CON , db[i])
 
-		dbGetQuery(CON, verSql)
+		dbExecute(CON, verSql)
 		}
 
 	if(!object@overwrite && file.exists) stop(paste("File", object@file, "already exists!"))

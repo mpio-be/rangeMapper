@@ -19,9 +19,9 @@ setMethod("rangeMapSave",
 						if(!is.null(sset)) paste("WHERE", sset), "group by r.id")
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC) -- DDL:", richnessSQL))
-		dbGetQuery(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
-		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
+		dbExecute(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "NUMERIC) -- DDL:", richnessSQL))
+		dbExecute(object@CON,paste("CREATE  INDEX", paste(object@tableName, object@ID, sep = "_") ,"ON", tableName, "(id)") )
+		dbExecute(object@CON, paste("INSERT INTO" ,tableName, richnessSQL) )
 
 	 	return(dbtable.exists(object@CON, tableName))
 
@@ -61,9 +61,9 @@ setMethod("rangeMapSave",
 		sql = paste("SELECT id,", FUN ,"(", object@biotrait, ") as", object@biotrait, "from (",sql,") group by id")
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE",tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
-		dbGetQuery(object@CON, paste("INSERT INTO" ,tableName, sql) )
+		dbExecute(object@CON, paste("CREATE TABLE",tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbExecute(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbExecute(object@CON, paste("INSERT INTO" ,tableName, sql) )
 
 
 		return(dbtable.exists(object@CON, tableName))
@@ -81,7 +81,7 @@ setMethod("rangeMapSave",
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
 
-		# get data afer checking
+		# get data after checking
 		dl = .rangeMapSaveData (object)
 		
 		if (inherits(cl, "cluster")){
@@ -98,8 +98,8 @@ setMethod("rangeMapSave",
 		row.names(X) = NULL
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbExecute(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbExecute(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 
 		return(dbtable.exists(object@CON, tableName))
@@ -114,7 +114,7 @@ setMethod("rangeMapSave",
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
 
-		# get data afer checking
+		# get data after checking
 		dl = .rangeMapSaveData (object)
 
 		if (inherits(cl, "cluster")){
@@ -131,8 +131,8 @@ setMethod("rangeMapSave",
 		row.names(X) = NULL
 
 		# build table and index
-		dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
-		dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+		dbExecute(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@biotrait, "NUMERIC)"))
+		dbExecute(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 
 		dbtable.exists(object@CON, tableName)
@@ -184,8 +184,8 @@ setMethod("rangeMapImport",
 
 	# build table and index
 	message("Creating table and indexes...")
-	dbGetQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "FLOAT)"))
-	dbGetQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
+	dbExecute(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "FLOAT)"))
+	dbExecute(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 	dbWriteTable(object@CON, tableName, o, row.names = FALSE, append = TRUE)
 
 
@@ -288,10 +288,10 @@ setMethod("rangeMapImport",
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
 
 	if(overwrite & !missing(tableName))
-	try(dbGetQuery(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
+	try(dbExecute(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
 
 	if(overwrite & missing(tableName))
-	try(dbGetQuery(CON, "DROP TABLE MAP_species_richness"), silent = TRUE)
+	try(dbExecute(CON, "DROP TABLE MAP_species_richness"), silent = TRUE)
 
 
 

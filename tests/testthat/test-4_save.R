@@ -9,11 +9,12 @@ con = ramp("wrens.sqlite", gridSize = 10, spdf = breding_ranges, biotab = d, ID 
 
 test_that("rangeMap.save subsetting", {
 
-  rangeMap.save(con, biotab = "biotab", biotrait = "body_mass",
+  expect_true(
+    rangeMap.save(con, biotab = "biotab", biotrait = "body_mass",
     tableName = "x", FUN = "avg",
     list(MAP_species_richness = "species_richness >= 5",
         BIO_biotab = "body_size > 15"
-        ), overwrite = TRUE)
+        ), overwrite = TRUE) )
 
   })
 
