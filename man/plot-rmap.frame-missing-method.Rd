@@ -50,4 +50,3 @@ plot(m, ncol = 2, outlierDetector = function(x) getOutliersI(x)$limit)
 \seealso{
 \code{\link{plot,SpatialPixelsRangeMap,missing-method}}
 }
-

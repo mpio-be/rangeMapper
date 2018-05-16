@@ -19,4 +19,3 @@ Remove tables given prefix attribute or by name
 The default \sQuote{rm.rangeMapper(con)} will remove all \sQuote{MAP}
               and \sQuote{BIO} tables.
 }
-

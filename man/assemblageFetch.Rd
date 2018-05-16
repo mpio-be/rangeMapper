@@ -3,8 +3,8 @@
 \docType{methods}
 \name{assemblageFetch}
 \alias{assemblageFetch}
-\alias{assemblageFetch,rangeMap,SpatialPoints,character-method}
 \alias{assemblageFetch,rangeMap,SpatialPoints,missing-method}
+\alias{assemblageFetch,rangeMap,SpatialPoints,character-method}
 \title{Retrieves the species set of an arbitrary canvas cell}
 \usage{
 assemblageFetch(object, xy, BIO)
@@ -64,4 +64,3 @@ print(af[, c(1, 4, 6:8)])
 
 
 }
-

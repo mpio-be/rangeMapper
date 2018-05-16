@@ -37,23 +37,36 @@ setMethod("rangeMapFetch",
 		# map variable
 		mapvar = sapply(mapNam, function(x)
 					setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
-		# sql string
-		dotid = paste('x', 1:length(mapNam), sep = "")
-		mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
+		
+		# sql string: replace with merge to avoid https://github.com/r-dbi/RSQLite/issues/65
+		#dotid = paste('x', 1:length(mapNam), sep = "")
+		#mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
+		#sql = paste("SELECT c.x, c.y,", mapdat,
+		#"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
+		# x   = dbGetQuery(object@CON, sql)
+		# x = setDT(x)
 
-		sql = paste("SELECT c.x, c.y,", mapdat,
-		"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
+		# canvas
+		M = dbReadTable(object@CON, object@CANVAS) %>% data.table
+		
+		# add variables to canvas
+		for( i in 1:length(mapNam)) {
+			v = dbReadTable(object@CON, mapNam[i]) %>% data.table
+			M = merge(M, v, by = object@ID, all.x = TRUE, sort = FALSE)
+			}
+		M[, (object@ID):=NULL] 		
+
+		setnames(M, mapvar, gsub('MAP_', '', names(mapvar))  )
+
 
 
 		# elements
-		x   = dbGetQuery(object@CON, sql)
 		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 		grd = gridSize.fetch(object@CON)
 		bbx = global.bbox.fetch(object@CON) %>% vertices %>% coordinates %>% data.frame %>% as.list
 
 		# rmap.frame
-		x = setDT(x)
-		as.rmap.frame(x, p4s = p4s, gridSize = grd, bbox = bbx)
+		as.rmap.frame(M, p4s = p4s, gridSize = grd, bbox = bbx)
 
 
 		}

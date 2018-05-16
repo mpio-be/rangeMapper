@@ -2,8 +2,8 @@
 % Please edit documentation in R/projectINI-methods.R
 \name{rangeMap}
 \alias{rangeMap}
-\alias{rangeMap.open}
 \alias{rangeMap.start}
+\alias{rangeMap.open}
 \title{Initiate/open a new rangeMapper project}
 \usage{
 rangeMap(path)
@@ -48,4 +48,3 @@ setwd(td)
 \seealso{
 \code{\link{rangeMap.save}}
 }
-

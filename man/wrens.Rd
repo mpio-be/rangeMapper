@@ -55,4 +55,3 @@ Yucatan Peninsula, Mexico. Wilson Journal of Ornithology, 122, 439-446.\cr
 \code{\link{rangeMap.save}}.
 }
 \keyword{datasets}
-

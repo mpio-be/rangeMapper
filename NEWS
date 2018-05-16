@@ -1,4 +1,11 @@
 
+Changes in version 0.3-3
+
+BUG FIXES
+    o   Updated rangeMapFetch methods to avoid https://github.com/r-dbi/RSQLite/issues/65
+
+
+
 Changes in version 0.3-0
 SIGNIFICANT USER-VISIBLE CHANGES
     o   View_rmap() project viewer replaces the RangeMapper() GUI.
@@ -11,7 +18,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
         (contributed by Joan Maspons).
     o   ramp() is a quick alternative to initiate a project; it combines
         all the functions from rangeMap.start() to processRanges() and
-        rangeMap.save() but is less flexible as compared with a step-by-step
+        rangeMap.save() but is less flexible as compared with an incremental
         project building.
 
 NEW FUNCTIONS

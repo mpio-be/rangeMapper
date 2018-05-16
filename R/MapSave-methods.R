@@ -288,10 +288,9 @@ setMethod("rangeMapImport",
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
 
 	if(overwrite & !missing(tableName))
-	try(dbExecute(CON, paste("DROP TABLE", paste("MAP", tableName, sep = "_"))), silent = TRUE)
-
+		dbExecute(CON, paste("DROP TABLE IF EXISTS", paste("MAP", tableName, sep = "_")))
 	if(overwrite & missing(tableName))
-	try(dbExecute(CON, "DROP TABLE MAP_species_richness"), silent = TRUE)
+        dbExecute(CON, "DROP TABLE IF EXISTS MAP_species_richness")
 
 
 

@@ -15,4 +15,3 @@ data.table
 \description{
 rangeMap file info
 }
-

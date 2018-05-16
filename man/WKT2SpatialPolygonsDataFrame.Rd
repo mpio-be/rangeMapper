@@ -83,4 +83,3 @@ points(mp, col = 2, pch = 3, cex = 2)
 points(v, pch = 3, cex = .5)
 
 }
-

@@ -16,4 +16,3 @@ data.frame
 \description{
 Tables and column names  of an sqlite db
 }
-

@@ -110,4 +110,3 @@ plot(m)
 \seealso{
 \code{\link{metadata.update}}.
 }
-

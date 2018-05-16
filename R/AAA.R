@@ -27,7 +27,7 @@ NULL
 #' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 
-#' @importFrom data.table data.table setDT setattr melt set fread
+#' @importFrom data.table data.table setDT setattr melt set fread setnames
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT

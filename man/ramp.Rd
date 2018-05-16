@@ -55,4 +55,3 @@ m = rangeMap.fetch(con)
                 \code{\link{processRanges}} \code{\link{bio.save}}
                 \code{\link{rangeMap.save}}
 }
-

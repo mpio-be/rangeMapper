@@ -27,4 +27,3 @@ res = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)
 head(res)
 
 }
-

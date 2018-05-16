@@ -41,4 +41,3 @@ plot(house_wren, add = TRUE, border = 'blue', lwd = 2)
 setwd(wd)
 
 }
-

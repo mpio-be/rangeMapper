@@ -12,4 +12,3 @@ palette_rangemap(set = "set1")
 \description{
 A few color palettes
 }
-

@@ -20,4 +20,3 @@ an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial 
 \description{
 rangeMap.fetch
 }
-

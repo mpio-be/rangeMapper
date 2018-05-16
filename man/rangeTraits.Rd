@@ -7,13 +7,13 @@
 rangeTraits(..., use.default = TRUE)
 }
 \arguments{
+\item{\dots}{functions, given as myfun = FUN, to apply on a
+\code{\link{SpatialPolygons}} object}
+
 \item{use.default}{If \code{TRUE}, the default, the output list contains
 functions to extract Area, Median, Min and Max extent of the
 \code{\link{SpatialPolygons}} object. This option is ignored
 if no functions are given.}
-
-\item{\dots}{functions, given as myfun = FUN, to apply on a
-\code{\link{SpatialPolygons}} object}
 }
 \value{
 Returns a named list containing extractor functions to apply on
@@ -57,4 +57,3 @@ sapply(rangeTraits(Area_sqm = Area2), function(x) x(r) )
 \seealso{
 \code{\link{processRanges}}.
 }
-

@@ -12,4 +12,3 @@ tables(object)
 \description{
 Method tables
 }
-

@@ -74,4 +74,3 @@ plot(rangeFetch(rmap, maxRangeSp), add = TRUE, border = 4, lwd = 3)
 title(main = maxRangeSp)
 
 }
-

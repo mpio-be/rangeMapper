@@ -18,4 +18,3 @@ If missing, the \sQuote{MAP}s will be exported in project's directory}
 \description{
 Export \sQuote{MAP} tables as single-band geotiff files
 }
-

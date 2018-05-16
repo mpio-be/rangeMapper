@@ -3,10 +3,10 @@
 \docType{methods}
 \name{processRanges}
 \alias{processRanges}
-\alias{processRanges,SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list-method}
 \alias{processRanges,SQLiteConnection,SpatialPolygonsDataFrame,missing,character,missing-method}
-\alias{processRanges,SQLiteConnection,missing,character,missing,list-method}
+\alias{processRanges,SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list-method}
 \alias{processRanges,SQLiteConnection,missing,character,missing,missing-method}
+\alias{processRanges,SQLiteConnection,missing,character,missing,list-method}
 \title{processRanges}
 \usage{
 processRanges(con, spdf, dir, ID, metadata)
@@ -50,6 +50,7 @@ processRanges
 
 \item \code{con = SQLiteConnection,spdf = missing,dir = character,ID = missing,metadata = list}: Method 4: Each range file is a separate shp file. Metadata are computed.
 }}
+
 \note{
 if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
 }
@@ -75,4 +76,3 @@ processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
 stopCluster(cl)
 }
 }
-

@@ -19,4 +19,3 @@ a data.frame with two columns: id (canvas id) and bioid.
 \description{
 rangeOverlay
 }
-

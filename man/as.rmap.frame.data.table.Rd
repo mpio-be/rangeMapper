@@ -12,13 +12,13 @@ as.rmap.frame(x, ...)
 \arguments{
 \item{x}{a data.table}
 
+\item{\dots}{extra argumnents}
+
 \item{p4s}{proj4string}
 
 \item{gridSize}{grid size}
 
 \item{bbox}{global bounding box, a list  with x and y}
-
-\item{\dots}{extra argumnents}
 }
 \value{
 an rmap.frame object which inherits
@@ -27,4 +27,3 @@ an rmap.frame object which inherits
 \description{
 Convert data.table to rmap.frame
 }
-

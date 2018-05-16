@@ -41,4 +41,3 @@ plot(all)
 \seealso{
 \code{\link{plot,rmap.frame,missing-method}}.
 }
-
