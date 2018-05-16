@@ -7,14 +7,9 @@ warnings_are_errors: true
 before_install:
   - sudo apt-get install -y libproj-dev libgeos-dev gdal-bin libgdal-dev
   
-  
-
-
 
 r_packages:
-  - covr
-
-r_binary_packages:
+ - covr
  - testthat
  - RSQLite
  - rgdal
