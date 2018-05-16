@@ -116,7 +116,7 @@ setClass("rangeMapSave",
 			stop(paste(sQuote(object@tableName), " already exists."))
 
 		if(dbtable.exists(object@CON, paste(object@BIO, object@tableName, sep = "") ) )
-			stop( paste(sQuote(object@tableName), " already exists."))
+    	stop( paste(sQuote(object@tableName), " already exists."))
 
 	})
 
