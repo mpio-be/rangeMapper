@@ -4,7 +4,7 @@
     }
 
 # data.table, foreach, rangeMapExport 'values'
-utils::globalVariables(c('i', '.', 'value', 'CON'))
+utils::globalVariables(c('i', '.', ':=', 'value', 'CON'))
 
 #' @import sp methods RSQLite lattice ggplot2 parallel
 NULL

@@ -34,10 +34,7 @@ setMethod("rangeMapFetch",
     	#build tableName(s)
 		mapNam = paste(object@MAP, object@tableName, sep = "")
 
-		# map variable
-		mapvar = sapply(mapNam, function(x)
-					setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
-		
+		# mapvar = sapply(mapNam, function(x)setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
 		# sql string: replace with merge to avoid https://github.com/r-dbi/RSQLite/issues/65
 		#dotid = paste('x', 1:length(mapNam), sep = "")
 		#mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
@@ -52,11 +49,11 @@ setMethod("rangeMapFetch",
 		# add variables to canvas
 		for( i in 1:length(mapNam)) {
 			v = dbReadTable(object@CON, mapNam[i]) %>% data.table
+			setnames(v,  setdiff(names(v), object@ID)  ,  gsub('MAP_', '',mapNam[i])  )
 			M = merge(M, v, by = object@ID, all.x = TRUE, sort = FALSE)
 			}
 		M[, (object@ID):=NULL] 		
 
-		setnames(M, mapvar, gsub('MAP_', '', names(mapvar))  )
 
 
 
