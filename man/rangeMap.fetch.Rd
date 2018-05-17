@@ -15,7 +15,7 @@ rangeMap.fetch(con, maps, spatial = TRUE)
 }
 \value{
 an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
-               and \code{proj4} string as an atribute if \code{spatial = FALSE}.
+               and \code{proj4} string as an attribute if \code{spatial = FALSE}.
 }
 \description{
 rangeMap.fetch

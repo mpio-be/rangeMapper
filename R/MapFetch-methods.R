@@ -11,7 +11,7 @@ as.rmap.frame <-function(x, ...) {
 #' @param p4s      proj4string
 #' @param gridSize grid size
 #' @param bbox     global bounding box, a list  with x and y
-#' @param \dots    extra argumnents
+#' @param \dots    extra arguments
 #' @export
 #' @return         an rmap.frame object which inherits
 #'                 from \code{\link[data.table]{data.table}}
@@ -76,7 +76,7 @@ setMethod("rangeMapFetch",
 #' @param maps    map(s) name as character vector. If missing then all the maps are returned.
 #' @param spatial If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{rmap.frame}.
 #' @return        an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
-#'                and \code{proj4} string as an atribute if \code{spatial = FALSE}.
+#'                and \code{proj4} string as an attribute if \code{spatial = FALSE}.
 #' @export
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name

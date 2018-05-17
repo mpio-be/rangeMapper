@@ -12,7 +12,7 @@ as.rmap.frame(x, ...)
 \arguments{
 \item{x}{a data.table}
 
-\item{\dots}{extra argumnents}
+\item{\dots}{extra arguments}
 
 \item{p4s}{proj4string}
 

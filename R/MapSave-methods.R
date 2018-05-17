@@ -216,8 +216,8 @@ setMethod("rangeMapImport",
 #' Any valid SQL expression can be used to build up a subset. See
 #' \url{http://www.sqlite.org/lang_expr.html}
 #'
-#' When using \code{cl} parameter you must load the apropiated packages used in
-#' \code{FUN} by loading the packages inside the function or initializing the
+#' When using \code{cl} parameter you must load the given packages used in
+#' \code{FUN} by loading the packages inside the function, using '::' or initializing the
 #' cluster before calling rangeMap.save (e.g. \code{clusterEvalQ(cl=cl, library(caper))})).
 #'
 #' @param CON       an sqlite connection pointing to a valid \code{rangeMapper}

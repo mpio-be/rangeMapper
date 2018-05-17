@@ -5,7 +5,6 @@ BUG FIXES
     o   Updated rangeMapFetch methods to avoid https://github.com/r-dbi/RSQLite/issues/65
 
 
-
 Changes in version 0.3-0
 SIGNIFICANT USER-VISIBLE CHANGES
     o   View_rmap() project viewer replaces the RangeMapper() GUI.
