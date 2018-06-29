@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.3-3
+Version: 0.3-4
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),

@@ -39,7 +39,7 @@ NULL
 #' p = list(x = -76.39, y = 9.26)
 #' # or use locator:  p =  locator(1)
 #'
-#' xy = SpatialPoints( do.call(cbind, p), proj4string = CRS("+proj=longlat +datum=NAD83 +no_defs ") )
+#' xy = SpatialPoints( do.call(cbind, p), proj4string = CRS(proj4string(r)) )
 #' af = assemblageFetch(rangeMap(projLoc) , xy)
 #' points(p, col = 4, cex = 2)
 #' print(af)
