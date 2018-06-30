@@ -19,12 +19,13 @@
 #'
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
-#' r = readOGR(f, "wrens", verbose = FALSE)
+#' r = readOGR(f, "wrens", verbose = FALSE)[1:50, ]
 #' global.bbox.save(con = dbcon, bbox = r)
-#' gridSize.save(dbcon, gridSize = 2)
+#' gridSize.save(dbcon, gridSize = 5)
 #' canvas.save(dbcon)
 #' processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
-#'
+#' dbDisconnect(dbcon)
+#' 
 #'\dontrun{
 #' stopCluster(cl)
 #' }

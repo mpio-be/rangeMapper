@@ -249,14 +249,14 @@ setMethod("rangeMapImport",
 #' require(rangeMapper)
 #' require(rgdal)
 #' breding_ranges = readOGR(system.file(package = "rangeMapper",
-#'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+#'      "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)[1:50, ]
 #' breding_ranges = spTransform(breding_ranges,
 #'     CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0
 #'         +ellps=WGS84 +units=m +no_defs") )
 #' data(wrens)
 #' d = subset(wrens, select = c('sci_name', 'body_size', 'body_mass', 'clutch_size') )
 #'
-#' con = ramp("wrens.sqlite", gridSize = 200000, spdf = breding_ranges, biotab = d,
+#' con = ramp("wrens.sqlite", gridSize = 500000, spdf = breding_ranges, biotab = d,
 #'             ID = "sci_name", metadata = rangeTraits(),
 #'             FUN = "median", overwrite = TRUE)
 #'
@@ -279,12 +279,11 @@ setMethod("rangeMapImport",
 #' # Import raster maps to the current project
 #' r = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
 #' rangeMap.save(con, path = r, tableName = "meanAltitude", FUN = mean, overwrite = TRUE)
-#' }
-#'
-#'
 #' m = rangeMap.fetch(con, spatial = FALSE)
 #' plot(m)
-#'
+#' 
+#' }
+
 rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
 
 	if(overwrite & !missing(tableName))

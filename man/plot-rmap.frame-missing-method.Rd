@@ -30,11 +30,12 @@ a \code{ggplot} object for one map or a \code{gtable} in case of more than one m
 Plot a rmap.frame
 }
 \examples{
+require(rangeMapper)
 breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper",
-     "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+     "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)[1:70, ]
 data(wrens)
 d = subset(wrens, select = c('sci_name', 'body_mass', 'clutch_size') )
-con = ramp("wrens.sqlite", gridSize = 1, spdf = breding_ranges, biotab = d, ID = "sci_name",
+con = ramp("wrens.sqlite", gridSize = 4, spdf = breding_ranges, biotab = d, ID = "sci_name",
             FUN = "median", overwrite = TRUE)
 m = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
 plot(m, ncol = 2)

@@ -1,4 +1,10 @@
 
+Changes in version 0.3-4
+
+BUG FIXES
+    o  Fix examples to comply to gdal 2.3.0 and higher.
+
+
 Changes in version 0.3-3
 
 BUG FIXES
