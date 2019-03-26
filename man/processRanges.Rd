@@ -9,22 +9,23 @@
 \alias{processRanges,SQLiteConnection,missing,character,missing,list-method}
 \title{processRanges}
 \usage{
-processRanges(con, spdf, dir, ID, metadata)
+processRanges(con, spdf, dir, ID, metadata, parallel)
 
 
   \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,missing}(con,
-  spdf, ID, metadata)
+  spdf, ID, metadata, parallel)
 
 
   \S4method{processRanges}{SQLiteConnection,SpatialPolygonsDataFrame,missing,character,list}(con,
-  spdf, ID, metadata)
+  spdf, ID, metadata, parallel)
 
 
   \S4method{processRanges}{SQLiteConnection,missing,character,missing,missing}(con,
-  dir)
+  dir, parallel)
 
-\S4method{processRanges}{SQLiteConnection,missing,character,missing,list}(con,
-  dir, metadata)
+
+  \S4method{processRanges}{SQLiteConnection,missing,character,missing,list}(con,
+  dir, metadata, parallel)
 }
 \arguments{
 \item{con}{a \code{connection} object.}
@@ -36,6 +37,8 @@ processRanges(con, spdf, dir, ID, metadata)
 \item{ID}{a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).}
 
 \item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.}
+
+\item{parallel}{default to FALSE. When TRUE a \code{multiprocess} evaluation scheme is initiated.}
 }
 \description{
 processRanges
@@ -51,18 +54,9 @@ processRanges
 \item \code{con = SQLiteConnection,spdf = missing,dir = character,ID = missing,metadata = list}: Method 4: Each range file is a separate shp file. Metadata are computed.
 }}
 
-\note{
-if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
-}
 \examples{
 require(rangeMapper)
 require(rgdal)
-\dontrun{
-if (require(doParallel) ) {
- cl = makePSOCKcluster(2)
- registerDoParallel(cl)
- }
-}
 
 dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
@@ -73,7 +67,4 @@ canvas.save(dbcon)
 processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
 dbDisconnect(dbcon)
 
-\dontrun{
-stopCluster(cl)
-}
 }

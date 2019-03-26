@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.3-4
+Version: 0.3-5
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
@@ -7,8 +7,8 @@ Authors@R: c(
     )
 Title: A Platform for the Study of Macro-Ecology of Life History Traits
 Depends:
-    R (>= 3.0.0),
-    RSQLite(>= 1.0.0)
+    R (>= 3.5.0),
+    RSQLite(>= 2.0.0)
 Imports:
     methods,
     sp,
@@ -23,7 +23,10 @@ Imports:
     classInt,
     magrittr,
     data.table,
-    foreach
+    foreach,
+    future,
+    doFuture,
+    future.apply
 Suggests:
     shiny (>= 0.8.0),
     doParallel,
@@ -35,7 +38,7 @@ Description: Tools for easy generation of (life-history) traits maps based on
     species range (extent-of-occurrence) maps.
 License: GPL(>= 2)
 URL: https://github.com/valcu/rangeMapper
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Collate:
     'AAA.R'
     'AllClasses.R'

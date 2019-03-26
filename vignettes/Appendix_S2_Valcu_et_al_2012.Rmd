@@ -53,7 +53,7 @@ Performs vector range maps interpolation with the canvas.
 r = rgdal::readOGR(branges, "wrens", verbose = FALSE)
 processRanges(spdf = r, con =  dbcon, ID = "sci_name", metadata = rangeTraits() )
 ```
-Uploads to the existing project a data.frame containing life history data
+Uploads to the existing project a `data.frame` containing life history data
 
 ```{r, }
 data(wrens)
@@ -106,7 +106,7 @@ rangeMap.save(dbcon, tableName = "endemics_hotspots", subset = list(
 
 ```{r, fig.width = 5, fig.height = 5}
 #1) Save Coefficient of variation (CV_Mass) map using a function (FUN) defined
- # on the fly. The ... argunent of the function will allow further arguments
+ # on the fly. The ... argument of the function will allow further arguments
  # in this case 'na.rm = TRUE' to be passed to FUN.
 
 rangeMap.save(dbcon,

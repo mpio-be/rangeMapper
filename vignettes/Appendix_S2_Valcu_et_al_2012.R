@@ -58,7 +58,7 @@ rangeMap.save(dbcon, tableName = "endemics_hotspots", subset = list(
 
 ## ---- fig.width = 5, fig.height = 5--------------------------------------
 #1) Save Coefficient of variation (CV_Mass) map using a function (FUN) defined
- # on the fly. The ... argunent of the function will allow further arguments
+ # on the fly. The ... argument of the function will allow further arguments
  # in this case 'na.rm = TRUE' to be passed to FUN.
 
 rangeMap.save(dbcon,

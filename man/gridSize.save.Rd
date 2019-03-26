@@ -4,7 +4,6 @@
 \alias{gridSize.save}
 \alias{gridSize.save,}
 \alias{gridSize.fetch}
-\alias{gridSize.fetch}
 \title{Save or retrieve the grid size from an \code{rangeMapper} project.}
 \usage{
 gridSize.save(con, ...)

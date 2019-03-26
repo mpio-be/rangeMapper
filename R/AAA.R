@@ -24,7 +24,13 @@ NULL
 #' @importFrom gridExtra grid.arrange arrangeGrob
 NULL
 
-#' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
+#' @importFrom future plan
+NULL
+#' @importFrom future.apply future_lapply
+NULL
+#' @importFrom foreach foreach %dopar%
+NULL
+#' @importFrom doFuture registerDoFuture
 NULL
 
 #' @importFrom data.table data.table setDT setattr melt set fread setnames

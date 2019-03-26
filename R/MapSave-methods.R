@@ -75,8 +75,8 @@ setMethod("rangeMapSave",
 
 # aggregate method using R functions called directly on the data
 setMethod("rangeMapSave",
-	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing", cl = "ANY"),
-	definition = function(object, FUN, formula, cl, ...) {
+	signature  = c(object = "rangeMapSave", FUN = "function", formula = "missing"),
+	definition = function(object, FUN, formula, ...) {
 
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
@@ -84,14 +84,9 @@ setMethod("rangeMapSave",
 		# get data after checking
 		dl = .rangeMapSaveData (object)
 		
-		if (inherits(cl, "cluster")){
-			# apply R function
-			message("Running on ", length(cl), " cores")
-			X = parSapply(cl=cl, dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
-		}else{
-			# apply R function
-			X = sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
-		}
+		# apply R function
+		X = future.apply::future_sapply(dl, FUN = function(x) FUN(x[, object@biotrait], ...) )
+
 
 		X = data.frame(id = names(X), X)
 		names(X) = c(object@ID, object@biotrait)
@@ -108,8 +103,8 @@ setMethod("rangeMapSave",
 
 # aggregate method using R functions called directly using formula, data interface
 setMethod("rangeMapSave",
-	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula", cl = "ANY"),
-	definition = function(object, FUN, formula, cl, ...) {
+	signature  = c(object = "rangeMapSave", FUN = "function", formula = "formula"),
+	definition = function(object, FUN, formula, ...) {
 
 		# tableName
 		tableName = paste(object@MAP, object@tableName, sep = "")
@@ -117,15 +112,9 @@ setMethod("rangeMapSave",
 		# get data after checking
 		dl = .rangeMapSaveData (object)
 
-		if (inherits(cl, "cluster")){
-			# apply R function
-			message("Running on ", length(cl), "cores")
-			X = parSapply(cl=cl, dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
-		}else{
-			# apply R function
-			X = sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
-		}
 
+		X = future.apply::future_sapply(dl, FUN = function(x) FUN(formula = formula, data = x, ...) )
+	
 		X = data.frame(id = names(X), X)
 		names(X) = c(object@ID, object@biotrait)
 		row.names(X) = NULL
@@ -234,9 +223,6 @@ setMethod("rangeMapImport",
 #' @param path      path to the raster file(quoted) to be imported to the existing
 #'                  project. \code{raster package} is required at this step.
 #' @param overwrite if \code{TRUE} then the table is removed
-#' @param cl        the number of cores to use or a cluster object defined with
-#'                  \code{\link[parallel]{makeCluster}} in package \code{parallel}
-#'                  or \code{\link[snow]{makeCluster}} from \code{snow} package.
 #' @param \dots     when \code{FUN} is a function, \dots{} denotes any extra
 #'                  arguments to be passed to it.
 #' @return          \code{TRUE} when the MAP was created successfully.
@@ -284,7 +270,7 @@ setMethod("rangeMapImport",
 #' 
 #' }
 
-rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, cl, ...) {
+rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(), path , overwrite = FALSE, ...) {
 
 	if(overwrite & !missing(tableName))
 		dbExecute(CON, paste("DROP TABLE IF EXISTS", paste("MAP", tableName, sep = "_")))
@@ -312,17 +298,11 @@ rangeMap.save  <- function(CON, tableName, FUN, biotab, biotrait, subset = list(
 			}
 
 	if(!missing(FUN) & missing(path)) { # SQL or R function
-		if (!missing(cl)){
-    			if (clNumeric<- is.numeric(cl)) cl<- makeCluster(cl)
-		}else{ 
-			cl<- NA
-			clNumeric<- FALSE
-		}
+
 	  
 		rmap = new("rangeMapSave", CON = CON,  biotab = biotab, biotrait = biotrait, tableName = tableName, subset = subset)
-		o = rangeMapSave(rmap, FUN = FUN, cl = cl, ...)
+		o = rangeMapSave(rmap, FUN = FUN, ...)
 
-		if (clNumeric) stopCluster(cl)
 	}
 	o
 }

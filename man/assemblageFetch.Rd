@@ -11,7 +11,8 @@ assemblageFetch(object, xy, BIO)
 
 \S4method{assemblageFetch}{rangeMap,SpatialPoints,missing}(object, xy)
 
-\S4method{assemblageFetch}{rangeMap,SpatialPoints,character}(object, xy, BIO)
+\S4method{assemblageFetch}{rangeMap,SpatialPoints,character}(object, xy,
+  BIO)
 }
 \arguments{
 \item{object}{A \code{connection} object.}

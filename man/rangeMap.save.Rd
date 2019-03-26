@@ -4,8 +4,8 @@
 \alias{rangeMap.save}
 \title{Save, retrieve and export maps.}
 \usage{
-rangeMap.save(CON, tableName, FUN, biotab, biotrait, subset = list(), path,
-  overwrite = FALSE, cl, ...)
+rangeMap.save(CON, tableName, FUN, biotab, biotrait, subset = list(),
+  path, overwrite = FALSE, ...)
 }
 \arguments{
 \item{CON}{an sqlite connection pointing to a valid \code{rangeMapper}
@@ -29,10 +29,6 @@ table. see \code{\link{bio.save}}}
 project. \code{raster package} is required at this step.}
 
 \item{overwrite}{if \code{TRUE} then the table is removed}
-
-\item{cl}{the number of cores to use or a cluster object defined with
-\code{\link[parallel]{makeCluster}} in package \code{parallel}
-or \code{\link[snow]{makeCluster}} from \code{snow} package.}
 
 \item{\dots}{when \code{FUN} is a function, \dots{} denotes any extra
 arguments to be passed to it.}

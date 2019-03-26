@@ -4,7 +4,7 @@ context("2: Process Ranges")
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
 
-test_that("reprojecting on the fly", {
+test_that("re-projecting works on the fly", {
 
 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 	global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
@@ -80,23 +80,17 @@ test_that("MULTIPLE SpPolyDF-s WITH metadata", {
 
 	})
 
-# R CMD check hangs
-# test_that("Process Ranges works parallel", {
-#
-#  	require(doParallel)
-#  	cl = makePSOCKcluster(2)
-#  	registerDoParallel(cl)
-#
-#  	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
-#  	global.bbox.save(con = dbcon, bbox = r)
-#  	gridSize.save(dbcon, gridSize = 10)
-#  	canvas.save(dbcon)
-#  	processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
-#
-#  	stopCluster(cl)
-#  	registerDoSEQ()
-#
-#  	})
+test_that("Process Ranges works parallel", {
+
+ 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	global.bbox.save(con = dbcon, bbox = r)
+ 	gridSize.save(dbcon, gridSize = 10)
+ 	canvas.save(dbcon)
+ 	o = processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits(), parallel = TRUE)
+ 	expect_true(o)
+
+
+ 	})
 
 
 

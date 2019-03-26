@@ -72,7 +72,7 @@ test_that("Pipeline works forward only", {
 	expect_that(canvas.fetch(con) , is_a("SpatialPixelsDataFrame") )
 
 	# process ranges
-	processRanges(con = con, spdf = spdf, ID = "sci_name")
+	processRanges(con = con, spdf = spdf, ID = "sci_name", parallel = TRUE)
 	expect_error(processRanges(con = con, spdf = spdf, ID = "sci_name") )
 
 	# map

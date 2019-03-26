@@ -5,8 +5,9 @@
 \alias{plot,rmap.frame,missing-method}
 \title{Plot a rmap.frame}
 \usage{
-\S4method{plot}{rmap.frame,missing}(x, colours = palette_rangemap("set1"),
-  outlierDetector, boundary, boundaryCol = 1, boundarySize = 0.5, ...)
+\S4method{plot}{rmap.frame,missing}(x,
+  colours = palette_rangemap("set1"), outlierDetector, boundary,
+  boundaryCol = 1, boundarySize = 0.5, ...)
 }
 \arguments{
 \item{x}{a \code{rmap.frame} object.}

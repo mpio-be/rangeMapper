@@ -5,17 +5,12 @@
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
 #' @param ID      	a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).
 #' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.
-#' @note            if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
+#' @param parallel 	default to FALSE. When TRUE a \code{multiprocess} evaluation scheme is initiated.
+#' 
 #' @export
 #' @examples
 #' require(rangeMapper)
 #' require(rgdal)
-#'\dontrun{
-#' if (require(doParallel) ) {
-#'  cl = makePSOCKcluster(2)
-#'  registerDoParallel(cl)
-#'  }
-#' }
 #'
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
 #' f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
@@ -26,12 +21,9 @@
 #' processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
 #' dbDisconnect(dbcon)
 #' 
-#'\dontrun{
-#' stopCluster(cl)
-#' }
 
 setGeneric("processRanges",
-	function(con,spdf, dir, ID,metadata)
+	function(con,spdf, dir, ID,metadata,parallel)
 	standardGeneric("processRanges") )
 
 #' @describeIn  processRanges Method 1: One SpatialPolygonsDataFrame containing all the ranges. No metadata.
@@ -40,13 +32,23 @@ setMethod("processRanges",
 							 spdf        = "SpatialPolygonsDataFrame",
 							 dir         = "missing",
 							 ID          = "character",
-							 metadata    = "missing"),
-	definition = function(con, spdf, ID,  metadata){
+							 metadata    = "missing" 
+							),
+	definition = function(con, spdf, ID,  metadata,parallel){
 
 	Startprocess = Sys.time()
 	# ini
-		DoPar = getDoParRegistered() && getDoParWorkers() > 1
-		`%trypar%` = if(DoPar) `%dopar%` else `%do%`
+		if(missing(parallel)) parallel = FALSE
+
+		if (!parallel) {
+			future::plan(future::transparent)
+			} else {
+			doFuture::registerDoFuture()
+			future::plan(future::multiprocess)
+			}
+
+
+
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -67,11 +69,8 @@ setMethod("processRanges",
 			}
 
 	# range over canvas
-		message("Performing ", if(DoPar) 'parallel' else 'serial', " range overlay... ", 'In case something goes wrong check', td)
-		if(DoPar)
-		 message("In a Linux environment you can run e.g. ", dQuote(paste('while sleep 1; do ls',td  ,'-f |wc -l; done')), ' to follow progress.'  )
 
-		foreach(i = as.character(spdf$ID) , .packages = c('rangeMapper') ) %trypar% {
+		foreach(i = as.character(spdf$ID) , .packages = c('rangeMapper') ) %dopar% {
  			spi  = spdf[spdf$ID == i, ]
  			oi   = rangeOverlay( spi , cnv, i)
  			setwd(td)
@@ -99,10 +98,18 @@ setMethod("processRanges",
 				 dir         = "missing",
 				 ID          = "character",
 				 metadata    = "list"),
-	definition = function(con, spdf, ID,  metadata){
+	definition = function(con, spdf, ID,  metadata,parallel){
 
 	# ini
-		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
+		if(missing(parallel)) parallel = FALSE
+
+		if (!parallel) {
+			future::plan(future::transparent)
+			} else {
+			doFuture::registerDoFuture()
+			future::plan(future::multiprocess)
+			}
+
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -115,7 +122,7 @@ setMethod("processRanges",
 
 	# 2. process metadata
 		message("Extracting metadata...")
-		rtr = foreach(i = ids, .packages = 'sp', .combine = rbind) %trypar%  {
+		rtr = foreach(i = ids, .packages = 'sp', .combine = rbind) %dopar%  {
 			spi = spdf[spdf@data[, ID] == i, ]
 			oi  = sapply(metadata, function(x) x(spi ) ) %>% t %>% data.frame
 			cbind(bioid = i[1], oi)
@@ -148,12 +155,20 @@ setMethod("processRanges",
 				  dir        = "character",
 				  ID         = "missing",
 				  metadata   = "missing"),
-	definition = function(con, dir){
+	definition = function(con, dir,parallel){
 
 	Startprocess = Sys.time()
 
 	# ini
-		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
+		if(missing(parallel)) parallel = FALSE
+
+		if (!parallel) {
+			future::plan(future::transparent)
+			} else {
+			doFuture::registerDoFuture()
+			future::plan(future::multiprocess)
+			}
+
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -163,7 +178,7 @@ setMethod("processRanges",
 		p4s =  dbReadTable(con, "proj4string")[1,1]
 
 	# Range over canvas
-		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %do% {
+		roc = foreach(i = 1:nrow(Files), .packages = c('sp') ) %dopar% {
 			ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
 			if( ! proj4string_is_identical(proj4string(ri), p4s) ) {
@@ -190,12 +205,20 @@ setMethod("processRanges",
 				  dir        = "character",
 				  ID         = "missing",
 				  metadata   = "list"),
-	definition = function(con, dir, metadata){
+	definition = function(con, dir, metadata,parallel){
 
 	Startprocess = Sys.time()
 
 	# ini
-		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
+		if(missing(parallel)) parallel = FALSE
+
+		if (!parallel) {
+			future::plan(future::transparent)
+			} else {
+			doFuture::registerDoFuture()
+			future::plan(future::multiprocess)
+			}
+
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
 
@@ -227,7 +250,7 @@ setMethod("processRanges",
 
 
 	# Range over canvas
-		roc = foreach(i = 2:nrow(Files), .packages = c('sp') ) %do% {
+		roc = foreach(i = 2:nrow(Files), .packages = c('sp') ) %dopar% {
 			spi = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
 			if( ! proj4string_is_identical(proj4string(spi), p4s) ) {
