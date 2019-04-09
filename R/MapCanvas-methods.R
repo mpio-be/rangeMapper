@@ -91,9 +91,8 @@ setMethod("rangeMapBboxSave",
 	bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE),checkProj = TRUE )
 
 	message(paste("Converting to", p4s@projargs) )
-		bbnew = rect2spp(bb[1], bb[2], bb[3], bb[4])
+		bbnew = rect2spp(bb[1], bb[2], bb[3], bb[4], attributes(bb)$p4s)
 		bbnew =  spsample(bbnew, n = 1000, type = "regular", offset = c(0,0) )
-		proj4string(bbnew) = attributes(bb)$p4s
 		bbnew = spTransform(bbnew , p4s )
 		bb = c(bbox(bbnew )[1, ], bbox(bbnew )[2, ] )
 		attributes(bb)$p4s = p4s@projargs
@@ -144,9 +143,8 @@ setMethod("rangeMapBboxFetch",
 		md = dbReadTable(object@CON, object@BBOX)
 		p4s = dbReadTable(object@CON, object@PROJ4STRING)
 
-		bb = rect2spp(md$xmin, md$xmax, md$ymin, md$ymax)
-		proj4string(bb) = p4s$p4s
-		return(bb)
+		rect2spp(md$xmin, md$xmax, md$ymin, md$ymax, p4s$p4s)
+
 
 	 })
 

@@ -227,9 +227,10 @@ extract.p4s <- function(ShpFiles) {
 		unlist(lapply(fl, FUN = function(x) OGRSpatialRef(x[,1], x[,2])  ))
 	}
 
-rect2spp <- function(xmin, xmax, ymin, ymax) {
+rect2spp <- function(xmin, xmax, ymin, ymax, proj4string ) {
 	bb = cbind(c(xmin, xmax, xmax, xmin, xmin), c(ymin, ymin, ymax, ymax, ymin) )
-	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")) )
+	SpatialPolygons(Srl = list(Polygons(list(Polygon(bb)), "bb")), 
+		proj4string = CRS(proj4string, doCheckCRSArgs = FALSE) )
 	}
 
 proj4string_is_identical <- function(a, b){

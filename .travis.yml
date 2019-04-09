@@ -5,7 +5,7 @@ sudo: required
 warnings_are_errors: true
 
 before_install:
-  - sudo apt-get install -y libproj-dev libgeos-dev gdal-bin libgdal-dev
+  - sudo apt-get install -y libproj-dev libgeos-dev gdal-bin libgdal-dev libgit2-dev
   
 
 r_packages:
