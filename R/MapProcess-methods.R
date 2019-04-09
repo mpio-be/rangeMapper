@@ -65,7 +65,7 @@ setMethod("processRanges",
 	#  Reproject spdf to p4s
 		if( ! proj4string_is_identical(proj4string(spdf), p4s) ) {
 			warning( paste("Reprojecting to", dQuote(p4s) ) )
-			spdf = spTransform( spdf , CRS(p4s) )
+			spdf = spTransform( spdf , CRS(p4s, doCheckCRSArgs = FALSE) )
 			}
 
 	# range over canvas
@@ -182,7 +182,7 @@ setMethod("processRanges",
 			ri = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
 			if( ! proj4string_is_identical(proj4string(ri), p4s) ) {
-				ri = spTransform( ri , CRS(p4s) )
+				ri = spTransform( ri , CRS(p4s,doCheckCRSArgs = FALSE) )
 				}
 
 			oi = rangeOverlay(ri,  cnv, Files[i,'layer'])
@@ -254,7 +254,7 @@ setMethod("processRanges",
 			spi = readOGR(Files[i,'dsn'], Files[i,'layer'], verbose = FALSE)
 
 			if( ! proj4string_is_identical(proj4string(spi), p4s) ) {
-				spi = spTransform( spi , CRS(p4s) )
+				spi = spTransform( spi , CRS(p4s, doCheckCRSArgs = FALSE) )
 				}
 			# do overlay
 			oi = rangeOverlay(spi,  cnv, Files[i,'layer'])

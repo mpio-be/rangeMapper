@@ -108,7 +108,7 @@ setMethod("vertices", "SpatialPolygons",
 		d = data.frame(do.call("rbind", d))
 
 		coordinates(d) = ~ x+y
-		proj4string(d) = CRS(proj4string(object))
+		proj4string(d) = CRS(proj4string(object), doCheckCRSArgs = FALSE)
 		names(d) = "id"
 		d
 	})
@@ -241,6 +241,6 @@ rmap.frame_to_SpatialPixelsRangeMap <- function(map, proj4string, names){
 			SpatialPixelsDataFrame(
 				points = map[, c('x', 'y'), with = FALSE] %>% as.matrix,
 				data   = map[,  setdiff(names(map), c('x', 'y')), with = FALSE]  %>% as.data.frame,
-				proj4string = CRS(proj4string) ),
+				proj4string = CRS(proj4string, doCheckCRSArgs = FALSE) ),
 			mapvar = names)
 	}

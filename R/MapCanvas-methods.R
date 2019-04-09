@@ -302,7 +302,7 @@ setMethod("canvasFetch",
 
 		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 
-		proj4string(cnv) = CRS(p4s)
+		proj4string(cnv) = CRS(p4s, doCheckCRSArgs = FALSE)
 
 		gridded(cnv) = TRUE
 

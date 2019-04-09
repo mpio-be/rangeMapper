@@ -129,7 +129,7 @@ rangeFetch <- function(rangeMap, bioid) {
 	if( nrow(dbGetQuery(rangeMap@CON, paste("SELECT * from canvas limit 1"))) == 0)
 		stop('Empty project!')
 
-	p4s = CRS(dbReadTable(rangeMap@CON, rangeMap@PROJ4STRING)[1,1]) 	# proj4string
+	p4s = CRS(dbReadTable(rangeMap@CON, rangeMap@PROJ4STRING)[1,1], doCheckCRSArgs = FALSE) 	# proj4string
 	cs2 = dbGetQuery(rangeMap@CON, "select * from gridsize")[1,1]/2 		# 1/2 grid size
 
 	d = dbGetQuery(rangeMap@CON, paste("SELECT c.id, c.x, c.y from canvas c join ranges r on c.id = r.id where r.bioid = ", shQuote(bioid) ) )

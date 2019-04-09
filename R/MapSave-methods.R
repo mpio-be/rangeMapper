@@ -149,7 +149,7 @@ setMethod("rangeMapImport",
 	message("Loading external MAP data...")
 	rst = raster::raster(object@path)
 
-	p4s_is_ok = proj4string_is_identical(CRSargs(CRS(proj4string(cnv))), CRSargs(raster::projection(rst, FALSE)))
+	p4s_is_ok = proj4string_is_identical(CRSargs(CRS(proj4string(cnv), doCheckCRSArgs = FALSE)), CRSargs(raster::projection(rst, FALSE)))
 	if(! p4s_is_ok )
 		warning(sQuote(filenam), " may have a different PROJ4 string;\n", "canvas:", CRSargs(CRS(proj4string(cnv))), "\n", filenam, ":", CRSargs(projection(rst, FALSE)) )
 
