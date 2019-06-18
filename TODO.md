@@ -8,6 +8,7 @@ BUGS, FIXES
 
 NEW FEATURES
 ------------
+  * Add support for fasterize https://cran.r-project.org/web/packages/fasterize/index.html.
   * Add hexagonal canvas support.
   * add match.call() to rangeMap.save()  and save to the project.
   * Write vignette  to document project db structure.
