@@ -4,17 +4,17 @@ context("2: Process Ranges")
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 r = rgdal::readOGR(f, "wrens", verbose = FALSE)[1:10, ]
 
-test_that("re-projecting works on the fly", {
-
-	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
-	global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
-	gridSize.save(dbcon, gridSize = 2000000)
-	canvas.save(dbcon)
-
-	expect_warning( # because of re-projecting
-		processRanges(con = dbcon, spdf = r, ID = "sci_name")  )
-
-	})
+# test_that("re-projecting works on the fly", {
+# 
+# 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+# 	global.bbox.save(con = dbcon, bbox = f, p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs"))
+# 	gridSize.save(dbcon, gridSize = 2000000)
+# 	canvas.save(dbcon)
+# 
+# 	expect_warning( # because of re-projecting
+# 		processRanges(con = dbcon, spdf = r, ID = "sci_name")  )
+# 
+# 	})
 
 test_that("ONE SpPolyDF NO metadata", {
 

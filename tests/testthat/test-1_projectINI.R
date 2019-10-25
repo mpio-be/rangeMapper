@@ -26,26 +26,27 @@ test_that("Building blocks are in place", {
 
 test_that("Bounding box methods work", {
 	
-	# 1. bbox and p4s are missing
+	#  bbox and p4s are missing
 	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
  	expect_warning(global.bbox.save(con = con))
 
-	# 2. bbox path to file, p4s is missing
+	#  bbox path to file, p4s is missing
 	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
  	expect_true(global.bbox.save(con = con, 
  		bbox = system.file(package = "rangeMapper", "extdata", "wrens", "vector") ) )
 
-	# 3. bbox path to file, p4s is set
-	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
- 	expect_true(global.bbox.save(con = con, 
- 		bbox = system.file(package = "rangeMapper", "extdata", "wrens", "vector"), 
- 		p4s = CRS("+proj=aea") ) )
+	# #  bbox path to file, p4s is set
+	# con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+ 	# expect_true(
+ 	# 	global.bbox.save(con = con, 
+ 	# 	bbox = system.file(package = "rangeMapper", "extdata", "wrens", "vector"), 
+ 	# 	p4s = CRS("+proj=aea") ) 
+ 	# 	)
 
-	# 5. bbox is a spatial object, p4s is missing
+	#  bbox is a spatial object, p4s is missing
 	con = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
  	expect_true(global.bbox.save(con = con, bbox = spdf ) )
 	
-
 
 	})
 
