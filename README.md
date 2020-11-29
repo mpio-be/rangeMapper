@@ -8,10 +8,7 @@ knitr::knit('README.Rmd')
 [![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
-
 [![cran checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
-
-
 [![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper) 
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
 
