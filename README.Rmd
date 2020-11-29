@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![cran checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
 [![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper) 
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
-
+[![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
 
 <!-- badges: end -->
 
@@ -27,10 +27,13 @@ knitr::opts_chunk$set(
 ### _rangeMapper_ in a nutshell
 
 ```{r,echo=FALSE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
-    require(rangeMapper); require(magrittr)
+    require(rangeMapper)
+    require(magrittr)
     require(ggplot2)
     require(rgdal)
-    breding_ranges = rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+
+    breding_ranges = readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), 
+                    "wrens", verbose = FALSE)
     breding_ranges = spTransform(breding_ranges, CRS('+proj=moll')) %>% rgeos::gBuffer(width = 0, byid = TRUE)
     wrens_boundary = rgeos::gUnionCascaded(breding_ranges)
 
@@ -47,7 +50,10 @@ knitr::opts_chunk$set(
 
 ```{r,1, fig.cap="", echo=TRUE,results='hide', message=FALSE,warning=FALSE, fig.width=10, fig.height=5}
     map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
-    plot(map, boundary = wrens_boundary, ncol = 2 , outlierDetector = function(x) extremevalues::getOutliersI(x)$limit)
+    plot(map, boundary = wrens_boundary, 
+        ncol = 2 , 
+        outlierDetector = function(x) extremevalues::getOutliersI(x)$limit, 
+        colours = viridisLite::viridis(11) )
 
 
 

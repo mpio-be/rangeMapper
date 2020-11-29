@@ -11,7 +11,7 @@ knitr::knit('README.Rmd')
 [![cran checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
 [![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper) 
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
-
+[![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
 
 <!-- badges: end -->
 
@@ -26,7 +26,10 @@ knitr::knit('README.Rmd')
 
 ```r
     map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
-    plot(map, boundary = wrens_boundary, ncol = 2 , outlierDetector = function(x) extremevalues::getOutliersI(x)$limit)
+    plot(map, boundary = wrens_boundary, 
+        ncol = 2 , 
+        outlierDetector = function(x) extremevalues::getOutliersI(x)$limit, 
+        colours = viridisLite::viridis(11) )
 ```
 
 ![](README-1-1.png)
