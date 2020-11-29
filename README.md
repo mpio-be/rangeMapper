@@ -42,7 +42,7 @@ rangeMap.save(con, FUN = lmSlope, biotab = "life_history_traits",
 
 ### Installation
 ```R
-devtools::install_github("mpio-be/rangeMapper") # development.
+remotes::install_github("mpio-be/rangeMapper") # development.
 install.packages("rangeMapper") # stable.
 ```
 
