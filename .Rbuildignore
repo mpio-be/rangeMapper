@@ -11,3 +11,4 @@ README.md
 ^.*\.sublime-project
 ^.*\.sublime-workspace
 build.sh
+^\.github$

@@ -4,10 +4,15 @@ knitr::knit('README.Rmd')
 
 
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
+<!-- badges: end -->
+
+
+
 [![Travis-CI Build Status](https://travis-ci.org/mpio-be/rangeMapper.svg?branch=master)](https://travis-ci.org/mpio-be/rangeMapper)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
-[![downloads](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://cran.rstudio.com/web/packages/rangeMapper/index.html)
 
 
 [_rangeMapper_](http://onlinelibrary.wiley.com/doi/10.1111/j.1466-8238.2011.00739.x/full/) is a framework for the study of macroecological patterns of life-history traits.
@@ -21,9 +26,8 @@ knitr::knit('README.Rmd')
 ```r
     map = rangeMap.fetch(con, c('median_body_mass', 'median_clutch_size'), spatial = FALSE)
     plot(map, boundary = wrens_boundary, ncol = 2 , outlierDetector = function(x) extremevalues::getOutliersI(x)$limit)
+#> Error in loadNamespace(name): there is no package called 'extremevalues'
 ```
-
-![](README-1-1.png)
 
 *  The link between the assemblage level (i.e. the raster cell) and the species level (i.e. the data behind the raster cell) is kept explicit at all stages of the project.
 `MAP`s are constructed based on `SQL` aggregate functions or statistical models build in R and can be based on arbitrary subsets defined at both species and assemblage levels.

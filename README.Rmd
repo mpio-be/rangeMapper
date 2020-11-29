@@ -10,6 +10,12 @@ knitr::opts_chunk$set(
     )
 ```
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
+<!-- badges: end -->
+
+
+
 [![Travis-CI Build Status](https://travis-ci.org/mpio-be/rangeMapper.svg?branch=master)](https://travis-ci.org/mpio-be/rangeMapper)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
