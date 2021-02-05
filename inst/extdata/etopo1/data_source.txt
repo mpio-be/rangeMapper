@@ -1,2 +1,0 @@
-Amante, C. and B. W. Eakins, ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis, National Geophysical Data Center, NESDIS, NOAA, U.S. Department of Commerce, Boulder, CO, August 2008. http://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/docs/ETOPO1.pdf
-Imagery of ETOPO1 Ice Surface by J. Varner and E. Lim, Cooperative Institute for Research in Environmental Sciences, at University of Colorado at Boulder and NOAA National Geophysical Data Center.
