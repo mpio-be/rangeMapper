@@ -22,3 +22,4 @@ vignettes/*.png
 .sublime-workspace
 /README.html
 build.sh
+rangeMapper.sublime-workspace
