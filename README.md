@@ -9,14 +9,16 @@ rmarkdown::render('README.Rmd')
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
 [![cran
 checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
+[![status](https://tinyverse.netlify.com/badge/rangeMapper)](https://CRAN.R-project.org/package=rangeMapper)
+
+[![Coverage
+Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
+
 [![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
-[![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
 
 <!-- badges: end -->
 <h4>
