@@ -28,7 +28,7 @@ Subsets are defined using \code{table_name = "CONDITION"} where \code{CONDITION}
 defined for the given table.
 Here is a summary of the \href{https://www.sqlite.org/lang_expr.html}{SQL operators} relevant in this context:\tabular{ll}{
    Operator \tab Description \cr
-   \code{=} or \verb{⩵} or \code{IS}  or \verb{! =} or \verb{<>} or \verb{IS NOT} \tab Equals or Non-equals. \cr
+   \code{=} or \code{==} or \code{IS}  or \verb{! =} or \verb{<>} or \verb{IS NOT} \tab Equals or Non-equals. \cr
    \code{>} or \code{<}  or \code{>=} or \code{<=} \tab Greater (Less) than (or equal). \cr
    \code{IN} or \verb{NOT IN} \tab multiple given values e.g. \verb{a IN (a,b,c,x,y)}. \cr
    \code{BETWEEN} \tab Between a given range (given values included) e.g. \verb{BETWEEN 1 and 10}. \cr

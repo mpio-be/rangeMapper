@@ -10,7 +10,7 @@
 #' 
 #' |Operator |Description    | 
 #' |---      |---  |
-#' | `=` or `⩵` or `IS`  or `! =` or `<>` or `IS NOT` |  Equals or Non-equals.  |
+#' | `=` or `==` or `IS`  or `! =` or `<>` or `IS NOT` |  Equals or Non-equals.  |
 #' | `>` or `<`  or `>=` or `<=`     |  Greater (Less) than (or equal).  |
 #' | `IN` or `NOT IN`  |  multiple given values e.g. `a IN (a,b,c,x,y)`. |
 #' | `BETWEEN` |  Between a given range (given values included) e.g. `BETWEEN 1 and 10`. |
