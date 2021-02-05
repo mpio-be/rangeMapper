@@ -24,12 +24,12 @@
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-4YKC3Q0W9E"></script><script>
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-P5WDX0W08G"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-4YKC3Q0W9E');
+  gtag('config', 'G-P5WDX0W08G');
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -137,7 +137,7 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <p><img src="Case_studies_Valcu_et_al_2012_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">wrens</span>,<span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">wrens</span>,<span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; Simple feature collection with 3 features and 12 fields</span>
 <span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
 <span class="co">#&gt; dimension:      XY</span>
@@ -180,12 +180,12 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <p>Thresholds are computed using the parameters defined in <strong>1</strong> and the maps saved at <strong>2</strong>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sr</span> <span class="op">=</span> <span class="fu"><a href="../reference/rmap_to_sf.html">rmap_to_sf</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"species_richness"</span><span class="op">)</span>
-<span class="va">sr_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/quantile.html">quantile</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">species_richness</span>, probs <span class="op">=</span> <span class="va">P_richness</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">sr_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">species_richness</span>, probs <span class="op">=</span> <span class="va">P_richness</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">es_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/quantile.html">quantile</a></span><span class="op">(</span><span class="va">wrens</span><span class="op">$</span><span class="va">breeding_range_area</span>, probs <span class="op">=</span> <span class="va">P_endemics</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">es_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">wrens</span><span class="op">$</span><span class="va">breeding_range_area</span>, probs <span class="op">=</span> <span class="va">P_endemics</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">bmr</span> <span class="op">=</span> <span class="fu"><a href="../reference/rmap_to_sf.html">rmap_to_sf</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"CV_Mass"</span><span class="op">)</span>
-<span class="va">bmr_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/quantile.html">quantile</a></span><span class="op">(</span><span class="va">bmr</span><span class="op">$</span><span class="va">V1_body_mass</span>, probs <span class="op">=</span> <span class="va">P_bodymass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="va">bmr_threshold</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">bmr</span><span class="op">$</span><span class="va">V1_body_mass</span>, probs <span class="op">=</span> <span class="va">P_bodymass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="congruence-subsets-and-congruence-maps" class="section level3">
 <h3 class="hasAnchor">
@@ -244,7 +244,7 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">lm_slope</span> <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/scale.html">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">breeding_range_area</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/scale.html">scale</a></span><span class="op">(</span><span class="va">male_tarsus</span><span class="op">)</span>, <span class="va">x</span><span class="op">)</span>  <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">breeding_range_area</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">male_tarsus</span><span class="op">)</span>, <span class="va">x</span><span class="op">)</span>  <span class="op">%&gt;%</span> 
   <span class="va">summary</span> <span class="op">%&gt;%</span> <span class="va">coefficients</span> <span class="op">%&gt;%</span> <span class="va">data.frame</span> <span class="op">%&gt;%</span> <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="op">]</span> 
   <span class="op">}</span>
 
@@ -284,7 +284,7 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
   <span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="../reference/rmap_to_sf.html">rmap_to_sf</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
 
   <span class="co"># lm at assemblage level</span>
-  <span class="va">o</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/scale.html">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">median_male_tarsus</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">species_richness</span><span class="op">)</span>, <span class="va">m</span><span class="op">)</span>  <span class="op">%&gt;%</span> 
+  <span class="va">o</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">median_male_tarsus</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">species_richness</span><span class="op">)</span>, <span class="va">m</span><span class="op">)</span>  <span class="op">%&gt;%</span> 
         <span class="va">summary</span> <span class="op">%&gt;%</span> <span class="va">coefficients</span> <span class="op">%&gt;%</span> <span class="va">data.frame</span> <span class="op">%&gt;%</span> <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="op">]</span>
 
   <span class="va">o</span><span class="op">$</span><span class="va">cell_size</span> <span class="op">=</span> <span class="va">g</span>
@@ -315,10 +315,10 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <a href="#set-parameters-1" class="anchor"></a>1. Set parameters</h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">quant</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">1</span>, <span class="fl">0.1</span><span class="op">)</span> 
-<span class="va">Q</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/quantile.html">quantile</a></span><span class="op">(</span><span class="va">wrens</span><span class="op">$</span><span class="va">breeding_range_area</span>,  probs <span class="op">=</span> <span class="va">quant</span><span class="op">)</span>
+<span class="va">Q</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">wrens</span><span class="op">$</span><span class="va">breeding_range_area</span>,  probs <span class="op">=</span> <span class="va">quant</span><span class="op">)</span>
 <span class="va">range_classes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>area <span class="op">=</span> <span class="va">Q</span>, quant <span class="op">=</span>  <span class="va">quant</span> <span class="op">)</span>
 <span class="va">W</span> <span class="op">=</span> <span class="fl">4</span>   <span class="co"># size of the moving window</span>
-<span class="va">maxn</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">range_classes</span><span class="op">)</span> <span class="op">-</span> <span class="va">W</span>
+<span class="va">maxn</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">range_classes</span><span class="op">)</span> <span class="op">-</span> <span class="va">W</span>
 
 <span class="va">range_classes</span>
 <span class="co">#&gt;                   area quant</span>
@@ -370,7 +370,7 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <span class="va">x</span> <span class="op">=</span> <span class="va">m</span><span class="op">[</span>, <span class="op">{</span> 
       
       <span class="va">fm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">~</span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">species_richness</span><span class="op">)</span> <span class="op">)</span>
-      <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span> Estimate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coefficients</a></span><span class="op">(</span><span class="va">fm</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">fm</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span> <span class="op">)</span>
+      <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span> Estimate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coefficients</a></span><span class="op">(</span><span class="va">fm</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">fm</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span> <span class="op">)</span>
       
       <span class="op">}</span> , by <span class="op">=</span> <span class="va">variable</span><span class="op">]</span>
 
