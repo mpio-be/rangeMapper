@@ -1,4 +1,3 @@
-
 comment: false
 
 coverage:
@@ -13,5 +12,3 @@ coverage:
         target: auto
         threshold: 1%
         informational: true
-
-        

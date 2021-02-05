@@ -14,8 +14,8 @@ rmarkdown::render('README.Rmd')
 checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
 [![status](https://tinyverse.netlify.com/badge/rangeMapper)](https://CRAN.R-project.org/package=rangeMapper)
 
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/mpio-be/rangeMapper/branch/master/graph/badge.svg)](https://codecov.io/gh/mpio-be/rangeMapper?branch=master)
 
 [![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
