@@ -1,0 +1,40 @@
+Package: rangeMapper
+Version: 2.0.0
+Authors@R: c(
+    person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
+    person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
+    person("Joan", "Maspons", role = "ctb")
+    )
+Title: A Platform for the Study of Macro-Ecology of Life History Traits
+Depends:
+    R (>= 4.0.0)
+Imports:
+    graphics,
+    methods,
+    glue,
+    future,
+    future.apply,
+    progressr, 
+    sf,
+    RSQLite,
+    DBI,
+    magrittr,
+    data.table,
+    raster,
+    exactextractr
+Suggests:
+    testthat,
+    knitr,
+    ggplot2,
+    viridis,
+    rmarkdown,
+    pkgdown,
+    nlme
+Description: Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids.
+LazyData: true    
+License: GPL(>= 2)
+URL: https://github.com/mpio-be/rangeMapper
+BugReports: https://github.com/mpio-be/rangeMapper/issues
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
+Encoding: UTF-8

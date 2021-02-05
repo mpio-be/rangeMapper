@@ -1,0 +1,47 @@
+/*"#00204DFF""#00336FFF""#39486BFF""#575C6DFF""#707173FF""#8A8779FF""#A69D75FF""#C4B56CFF""#E4CF5BFF""#FFEA46FF"*/
+
+@font-face{
+    font-family: 'JetBrainsMono';
+    src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    }
+
+.fu      {color: #00204DFF; } 
+.ch,.st  {color: #00336FFF; } 
+.kw      {color: #39486BFF; } 
+.co      {color: #39486BFF; font-weight: bold;}  
+.message {color: #575C6DFF; font-style: italic;}  
+.version {color: #C4B56CFF; font-style: bold;}  
+
+.examples,.downlit,sourceCode,r {background-color: #f9fcff;}
+
+
+pre, code, .navbar-link {
+  font-family: JetBrainsMono, Consolas, Inconsolata, monospace;
+}
+
+
+.navbar-default {
+    background-color: #39486BFF;
+    border-color: #00204DFF;
+    }
+
+.label-default {
+    background-color: #39486BFF;
+}
+
+
+
+#tocnav ul ul {
+    margin-left: 10px;
+    }
+
+a:link, a:visited,  a:hover, a:active{
+  color: #00204DFF;
+  text-align: center;
+  text-decoration: none;
+}
+

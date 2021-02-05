@@ -1,0 +1,60 @@
+
+
+url: https://mpio-be.github.io/rangeMapper
+
+home:
+  title: rangeMapper
+  description: >
+    A framework for the study of macroecological patterns of life-history traits
+
+
+authors:
+  Mihai Valcu:
+    href: https://github.com/mpio-be
+
+template:
+  params:
+    bootswatch: cosmo
+    ganalytics: G-4YKC3Q0W9E
+    twitter:
+      creator: "@mihai_valcu"
+
+
+development:
+  mode: auto
+
+
+reference:
+- title: Initiate project
+  desc:  Build up a new project file.
+- contents:
+  - rmap_connect
+  - starts_with("rmap_add")
+
+- title: Prepare project
+  desc: Create a canvas - the spatial layout of maps.
+- contents:
+  - rmap_prepare
+
+- title: Create subsets and maps
+  desc: There are two types of rangeMapper tables - subsets and maps.
+- contents:
+  - starts_with("rmap_save")
+
+- title: Retreive maps
+  desc: Retreive maps as sf data.frames.
+- contents:
+  - rmap_to_sf
+
+- title: Datasets
+  desc: Datasets used for examples and vignettes.
+- contents:
+  - has_keyword("datasets")
+
+
+navbar:
+  structure:
+    left:  [home, intro, reference, articles, tutorials, news]
+    right: [github]
+
+

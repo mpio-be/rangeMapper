@@ -1,0 +1,131 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- 
+rmarkdown::render('README.Rmd')
+-->
+
+```{r, echo = FALSE, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+
+# rangeMapper <img src="man/figures/logo.png" align="right" alt="" width="120" />
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
+[![Coverage Status](https://img.shields.io/codecov/c/github/mpio-be/rangeMapper/master.svg)](https://codecov.io/github/mpio-be/rangeMapper?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
+[![cran checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
+[![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper) 
+[![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
+[![status](https://tinyverse.netlify.com/badge/mapview)](https://CRAN.R-project.org/package=mapview)
+
+<!-- badges: end -->
+
+<h4>
+    <a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1466-8238.2011.00739.x" target="_blank">
+A framework for the study of macroecological patterns of life-history traits. </a> 
+</h4>
+
+
+### `rangeMapper` builds upon three types of data:   
+ 1. __Species distribution ranges__   
+ 2. __Life-history datasets__   
+ 3. __Environmental rasters__  
+
+### `rangeMapper` is build on three concepts:  
+ 1. __The canvas__   which is a regular grid of squares or hexagons.   
+ 2. __The subsets__  which are defined by combinations of life-history datasets and map data.   
+ 3. __The maps__     representing one or several variables summarised on the canvas.   
+
+
+```{r, example, echo=FALSE, message=FALSE,  fig.height=5}
+require(rangeMapper)
+require(sf)
+require(data.table)
+require(ggplot2)
+require(patchwork)
+
+
+con = rmap_connect()
+rmap_add_ranges(con, x = wrens, ID = 'sci_name')
+rmap_prepare(con, 'hex', cellsize = 500, chunksize = 1)
+rmap_add_bio(con, wrens, 'sci_name')
+rmap_save_map(con, fun= 'avg', v = 'clutch_size', src='wrens', dst='cs')
+cs = rmap_to_sf(con, 'cs')
+cnv = rmap_to_sf(con, 'wkt_canvas')
+
+thm = theme_bw() +theme(plot.margin = unit(c(0,0,0,0), "cm") )
+
+g1 = 
+ggplot() + 
+  geom_sf(data = wrens, aes(),  alpha= 0.2, size  = 0.3) + 
+   thm +  ggtitle('Distribution ranges') + 
+   scale_y_continuous(position = "right") + ylab('⇧') + theme(axis.title=element_text(size=30, color = "grey60") )
+
+g2 = 
+ggplot() + 
+  geom_sf(data = cnv, aes(),  size  = 0.3) + 
+  thm + ggtitle('Canvas') + 
+  scale_y_continuous(position = "right") + ylab('⇧') + theme(axis.title=element_text(size=30, color = "grey60") )
+
+g3 = 
+ggplot(cs) + 
+  geom_sf(aes(fill = avg_clutch_size),  size= 0.05, color = 'grey90', show.legend = FALSE) + 
+  scale_fill_gradientn(colours = viridis::viridis(10, option = 'E') ) + 
+  thm  + ggtitle('Map')
+
+x = data.frame(Species = c('S1', 'S2', 'S3', '...', 'Si'), Trait = c('t1', 't2', 't3', '...', 'ti'))  
+
+T = ggplot() +
+  ggpmisc::annotate(geom = "table", x = 0, y = 0, size= 5, label = list(x) ) + 
+  scale_x_continuous(position = "top") + xlab('⇧') + 
+  guides(x = "none", y = "none") + ylab(NULL) +
+  theme_minimal() + theme(axis.title=element_text(size=30, color = "grey60") ) 
+
+(g1 + g2 + g3)/(plot_spacer() +T + plot_spacer()) 
+
+
+```
+
+### File format
+
+`rangeMapper`'s project containers are <a href="https://www.sqlite.org/" target="_blank"> `sqlite` </a> files.
+
+
+
+### Installation
+
+```{r, eval = FALSE}
+# Install release version from CRAN
+install.packages("rangeMapper")
+
+# Install development version from GitHub
+remotes::install_github("rangeMapper")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

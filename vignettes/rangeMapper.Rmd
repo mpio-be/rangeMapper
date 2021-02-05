@@ -1,0 +1,111 @@
+
+
+---
+title: "rangeMapper"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rangeMapper}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE}
+library(knitr)
+opts_chunk$set(
+  warning = FALSE, 
+  message = FALSE, 
+  fig.height = 5,   
+  collapse = TRUE,
+  comment = "#>"
+  )
+```
+
+### Packages and data
+```{r}
+require(rangeMapper)
+require(sf)
+require(data.table)
+require(ggplot2)
+require(viridis)
+
+data(dem)
+data(wrens)
+wrens$breeding_range_area = st_area(wrens)
+
+```
+
+### A bare bone  `rangeMapper` project
+
+The project contains nothing but several system tables.
+
+```{r}
+# path is not specified so an in-memory file is created.
+con = rmap_connect()
+
+```
+
+Wrens breeding ranges are imported. 
+
+```{r}
+rmap_add_ranges(con, x = wrens, ID = 'sci_name')
+rmap_prepare(con, 'hex', cellsize = 500, chunksize = 1)
+rmap_add_bio(con, wrens, 'sci_name')
+```
+
+### Do larger wren species have smaller clutches ?
+
+```{r}
+lm(clutch_size~log(body_mass), wrens)  %>%  summary
+```
+
+### Does the slope `clutch size ~ body mass` vary spatially? 
+
+First we save a species richness map.
+
+```{r}
+rmap_save_map(con)
+```
+
+Then we construct a `subset` table with all assemblages with a richness of at least 10 species.
+
+```{r}
+rmap_save_subset(con,'sset1', species_richness = 'species_richness > 10')
+```
+
+Now we can construct a `clutch size ~ body mass` map with assemblages containing at least 10 species.
+
+```{r}
+linmod = function(x) {
+  lm(clutch_size ~ log(body_mass), x) %>% 
+    summary %>% coefficients %>% data.table %>% .[-1] }
+
+rmap_save_map(con, fun= linmod, subset= 'sset1', src='wrens', dst='slope_clutch_size')
+```
+
+We get the map as a `sf data.frame`  and plot it with `ggplot`.
+
+```{r}
+x = rmap_to_sf(con)
+
+ggplot() + 
+  geom_sf(data = x, aes(fill = Estimate),  size= 0.05) + 
+  scale_fill_gradientn(colours =  viridis(10, option = 'E'), na.value= 'grey80') + 
+  theme_bw()
+```
+
+Here is the "answer" to the question above. 
+
+```{r}
+xy = st_centroid(x)  %>% st_coordinates
+x = cbind(x, xy )
+
+ggplot(x , aes(y = Estimate, x = Y) ) + 
+  geom_point() + 
+  geom_smooth() +
+  theme_bw() + 
+  ylab('Clutch size ~ Body mass slope') + 
+  xlab('Distance from equator (km)')
+
+```
+
+
