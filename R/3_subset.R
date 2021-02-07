@@ -31,15 +31,14 @@
 #' con = rmap_connect()
 #' data(wrens)
 #' rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-#' rmap_prepare(con, 'hex', cellsize = 500, chunksize = 1)
+#' rmap_prepare(con, 'hex', cellsize = 500)
 #' rmap_add_bio(con, wrens, 'sci_name')
 #' rmap_save_map(con) 
 #' rmap_save_subset(con,'s1', 
 #'    species_richness = 'species_richness > 10', 
 #'    wrens = 'body_mass > 19 AND clutch_size > 3')
 #' 
-
-#' DBI::dbDisconnect(con)
+#' dbDisconnect(con)
 #' 
 setGeneric("rmap_save_subset", function(con, dst, ...)   standardGeneric("rmap_save_subset") )
 

@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rangeMapper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="../reference/rmap_connect.html">rmap_connect</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/rmap_add_ranges.html">rmap_add_ranges</a></span><span class="op">(</span><span class="va">con</span>, x <span class="op">=</span> <span class="va">wrens</span>, ID <span class="op">=</span> <span class="st">'sci_name'</span><span class="op">)</span>
-<span class="fu"><a href="../reference/rmap_prepare.html">rmap_prepare</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'hex'</span>, cellsize <span class="op">=</span> <span class="fl">500</span>, chunksize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="../reference/rmap_prepare.html">rmap_prepare</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'hex'</span>, cellsize <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
 <span class="fu"><a href="../reference/rmap_add_bio.html">rmap_add_bio</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">wrens</span>, <span class="st">'sci_name'</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="raw-data-wrens-breeding-range-distribution-and-life-history" class="section level3">
@@ -275,9 +275,11 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
 <span class="va">cellSizes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">700</span>, to <span class="op">=</span> <span class="fl">1500</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 
 <span class="va">FUN</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>rmap.verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+  
   <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="../reference/rmap_connect.html">rmap_connect</a></span><span class="op">(</span><span class="op">)</span>
   <span class="fu"><a href="../reference/rmap_add_ranges.html">rmap_add_ranges</a></span><span class="op">(</span><span class="va">con</span>, x <span class="op">=</span> <span class="va">wrens</span>, ID <span class="op">=</span> <span class="st">'sci_name'</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/rmap_prepare.html">rmap_prepare</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'hex'</span>, cellsize<span class="op">=</span><span class="va">g</span>, chunksize <span class="op">=</span> <span class="fl">1</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/rmap_prepare.html">rmap_prepare</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'hex'</span>, cellsize<span class="op">=</span><span class="va">g</span><span class="op">)</span>
   <span class="fu"><a href="../reference/rmap_add_bio.html">rmap_add_bio</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">wrens</span>, <span class="st">'sci_name'</span><span class="op">)</span>
   <span class="fu"><a href="../reference/rmap_save_map.html">rmap_save_map</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
   <span class="fu"><a href="../reference/rmap_save_map.html">rmap_save_map</a></span><span class="op">(</span><span class="va">con</span>, fun <span class="op">=</span> <span class="st">'median'</span>, src<span class="op">=</span><span class="st">'wrens'</span>, v <span class="op">=</span> <span class="st">'male_tarsus'</span>, dst<span class="op">=</span><span class="st">'median_male_tarsus'</span><span class="op">)</span>
@@ -288,6 +290,9 @@ We’ll use the <code>wrens</code> dataset which is part of the package.</p>
         <span class="va">summary</span> <span class="op">%&gt;%</span> <span class="va">coefficients</span> <span class="op">%&gt;%</span> <span class="va">data.frame</span> <span class="op">%&gt;%</span> <span class="va">.</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="op">]</span>
 
   <span class="va">o</span><span class="op">$</span><span class="va">cell_size</span> <span class="op">=</span> <span class="va">g</span>
+
+  <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>rmap.verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
   <span class="va">o</span>
 
   <span class="op">}</span>

@@ -6,7 +6,6 @@ inst/doc
 *.utf8.md
 .httr-oauth
 .Rapp.history
-.Rbuildignore
 .RData
 .Rhistory
 .Rproj

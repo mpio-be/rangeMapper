@@ -71,7 +71,7 @@ require(data.table)
 con = rmap_connect()
 data(wrens)
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize=500, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize=500)
 rmap_save_map(con) # default is a species_richness map.
 
 rmap_add_bio(con, wrens, 'sci_name')

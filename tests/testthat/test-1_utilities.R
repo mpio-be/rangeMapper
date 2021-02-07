@@ -75,7 +75,7 @@ context(" -> Utilities <- ")
 
         con = rmap_connect()
         rmap_add_ranges(con, wrens, 'sci_name')
-        rmap_prepare(con, 'hex', 500, chunksize=1)
+        rmap_prepare(con, 'hex', 500)
 
 
         expect_is(rmap_to_sf(con, 'wkt_ranges'), 'sf')

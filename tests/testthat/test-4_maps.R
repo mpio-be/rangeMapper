@@ -1,7 +1,7 @@
 con = rmap_connect()
 on.exit(dbDisconnect(con))
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize=5000, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize=5000)
 rmap_add_bio(con, wrens, 'sci_name')
 rmap_save_subset(con,'s1', wrens = 'clutch_size > 2')  
 rmap_save_map(con)

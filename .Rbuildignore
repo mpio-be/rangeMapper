@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^docs$
+^_pkgdown\.yml$
+^README\.Rmd$
+^README\.html$
+^pkgdown$
+^codecov\.yml$
+^cran-comments\.md$
+^CRAN-RELEASE$
+^\.github$
+^.*\.sublime-project$
+^.*\.sublime-workspace$
+raw

@@ -25,8 +25,8 @@ context(" -> Prepare <- ")
         con = rmap_connect()
         rmap_add_ranges(con, wrens, 'sci_name') 
 
-        # because 'in-memory' does not support parallel processing hence chunksize > 1
-        expect_warning( rmap_prepare(con, 'hex', 5000)  )
+        # 'in-memory' should not support parallel processing 
+        expect_error( rmap_prepare(con, 'hex', 5000, chunksize = 1/2)  )
         dbDisconnect(con)    
         })
 
@@ -39,7 +39,11 @@ context(" -> Prepare <- ")
         con = rmap_connect(tempfile() )
         rmap_add_ranges(con, wrens, 'sci_name') 
 
-        rmap_prepare(con, 'hex', 5000)
+        expect_error(rmap_prepare(con, 'hex', 5000, chunksize =0) )
+        expect_error(rmap_prepare(con, 'hex', 5000, chunksize =1) )
+
+
+        rmap_prepare(con, 'hex', 5000, chunksize = 1/2)
         dbDisconnect(con)    
 
         })

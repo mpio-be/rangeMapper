@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rangeMapper</title>
+<title>A Platform for the Study of Macro-Ecology of Life History Traits. — rangeMapper • rangeMapper</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -48,7 +48,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="A Platform for the Study of Macro-Ecology of Life History Traits. — rangeMapper" />
+<meta property="og:description" content="
+Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids." />
 <meta property="og:image" content="https://mpio-be.github.io/rangeMapper/logo.png" />
 
 
@@ -80,7 +82,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -139,142 +141,52 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>A Platform for the Study of Macro-Ecology of Life History Traits.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mpio-be/rangeMapper/blob/master/R/zzz.R'><code>R/zzz.R</code></a></small>
+    <div class="hidden name"><code>rangeMapper.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p><img src='figures/logo.png' align='right' alt='logo' width='120' /></p>
+<p>Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-initiate-project" class="hasAnchor"><a href="#section-initiate-project" class="anchor"></a>Initiate project</h2>
-          <p class="section-desc"><p>Build up a new project file.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="rmap_connect.html">rmap_connect()</a></code> </p>
-        </td>
-        <td><p>rangeMapper connect</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rmap_add_bio.html">rmap_add_bio()</a></code> </p>
-        </td>
-        <td><p>Add non-spatial tables to a rangeMapper project</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rmap_add_ranges.html">rmap_add_ranges()</a></code> </p>
-        </td>
-        <td><p>Add polygons to a rangeMapper project</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-prepare-project" class="hasAnchor"><a href="#section-prepare-project" class="anchor"></a>Prepare project</h2>
-          <p class="section-desc"><p>Create a canvas - the spatial layout of maps.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="rmap_prepare.html">rmap_prepare()</a></code> </p>
-        </td>
-        <td><p>Define a canvas and process ranges</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-create-subsets-and-maps" class="hasAnchor"><a href="#section-create-subsets-and-maps" class="anchor"></a>Create subsets and maps</h2>
-          <p class="section-desc"><p>There are two types of rangeMapper tables - subsets and maps.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="rmap_save_map.html">rmap_save_map()</a></code> </p>
-        </td>
-        <td><p>Save maps</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rmap_save_subset.html">rmap_save_subset()</a></code> </p>
-        </td>
-        <td><p>Save subsets</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-retreive-maps" class="hasAnchor"><a href="#section-retreive-maps" class="anchor"></a>Retreive maps</h2>
-          <p class="section-desc"><p>Retreive maps as sf data.frames.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="rmap_to_sf.html">rmap_to_sf()</a></code> </p>
-        </td>
-        <td><p>Get <code>sf</code> data.frame-s.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-datasets" class="hasAnchor"><a href="#section-datasets" class="anchor"></a>Datasets</h2>
-          <p class="section-desc"><p>Datasets used for examples and vignettes.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="dem.html">dem</a></code> </p>
-        </td>
-        <td><p>dem</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wrens.html">wrens</a></code> </p>
-        </td>
-        <td><p>Wrens Life history.</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="package-options"><a class="anchor" href="#package-options"></a>Package options</h2>
+
+    
+
+
+<p>rangeMapper global options can be changed with options(name = value):</p>
+<ul>
+<li><p>`rmap.verbose`: default to TRUE. Setting this option to FALSE will shut up all custom messages.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Useful links:</p><ul>
+<li><p><a href='https://github.com/mpio-be/rangeMapper'>https://github.com/mpio-be/rangeMapper</a></p></li>
+<li><p>Report bugs at <a href='https://github.com/mpio-be/rangeMapper/issues'>https://github.com/mpio-be/rangeMapper/issues</a></p></li>
+</ul>
+
+</div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p><strong>Maintainer</strong>: Mihai Valcu <a href='mailto:valcu@orn.mpg.de'>valcu@orn.mpg.de</a> (<a href='https://orcid.org/0000-0002-6907-7802'>ORCID</a>)</p>
+<p>Authors:</p><ul>
+<li><p>James Dale <a href='mailto:J.Dale@massey.ac.nz'>J.Dale@massey.ac.nz</a> (<a href='https://orcid.org/0000-0001-5950-5829'>ORCID</a>)</p></li>
+</ul>
+
+<p>Other contributors:</p><ul>
+<li><p>Joan Maspons [contributor]</p></li>
+</ul>
+
+
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

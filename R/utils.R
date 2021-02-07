@@ -61,8 +61,10 @@ drop_table_or_view <- function(x, con) {
         dbExecute(con, glue("DROP {this} IF EXISTS {x}") )
 
         }
-
-
 }
 
+
+talk <- function() {
+    getOption('rmap.verbose')
+}
 

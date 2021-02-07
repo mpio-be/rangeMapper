@@ -10,8 +10,6 @@ rmarkdown::render('README.Rmd')
 
 [![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
-[![cran
-checks](https://cranchecks.info/badges/worst/rangeMapper)](https://cran.r-project.org/web/checks/check_results_rangeMapper.html)
 [![status](https://tinyverse.netlify.com/badge/rangeMapper)](https://CRAN.R-project.org/package=rangeMapper)
 
 [![Codecov test

@@ -49,6 +49,32 @@ utils::globalVariables(c(
 .onAttach <- function(libname, pkgname) {
     dcf <- read.dcf(file=system.file("DESCRIPTION", package=pkgname) )
     packageStartupMessage(paste(pkgname, dcf[, "Version"] ))
+
     }
+
+
+#'  A Platform for the Study of Macro-Ecology of Life History Traits.
+#'
+#' @section Package options:
+#'
+#' rangeMapper global options can be changed with options(name = value):
+#'
+#' \itemize{
+#'   \item `rmap.verbose`: defaults to TRUE. Setting this option to FALSE will shut up all custom messages.
+#' }
+#' @docType package
+#' @keywords internal
+#' @name rangeMapper
+"_PACKAGE"
+
+
+.onLoad <- function(libname, pkgname) {
+
+    options(rmap.verbose = TRUE)
+
+
+    invisible()
+    }   
+
 
 

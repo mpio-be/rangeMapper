@@ -1,6 +1,6 @@
 con = rmap_connect(); on.exit(dbDisconnect(con))
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize=1000, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize=1000)
 rmap_save_map(con) 
 rmap_save_subset(con, dst = 'ss1', species_richness = 'species_richness > 10')
 rmap_save_map(con, subset = 'ss1', dst = 'species_richness_min5')

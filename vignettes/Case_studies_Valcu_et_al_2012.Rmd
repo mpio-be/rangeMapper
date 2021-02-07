@@ -49,7 +49,7 @@ wrens$breeding_range_area = st_area(wrens)
 con = rmap_connect()
 
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize = 500, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize = 500)
 rmap_add_bio(con, wrens, 'sci_name')
 
 ```
@@ -196,9 +196,11 @@ ggplot(m) +
 cellSizes = seq(from = 700, to = 1500, length.out = 5)
 
 FUN = function(g) {
+  options(rmap.verbose = FALSE)
+  
   con = rmap_connect()
   rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-  rmap_prepare(con, 'hex', cellsize=g, chunksize = 1, verbose = FALSE)
+  rmap_prepare(con, 'hex', cellsize=g)
   rmap_add_bio(con, wrens, 'sci_name')
   rmap_save_map(con)
   rmap_save_map(con, fun = 'median', src='wrens', v = 'male_tarsus', dst='median_male_tarsus')
@@ -209,6 +211,9 @@ FUN = function(g) {
         summary %>% coefficients %>% data.frame %>% .[-1, ]
 
   o$cell_size = g
+
+  options(rmap.verbose = TRUE)
+
   o
 
   }
