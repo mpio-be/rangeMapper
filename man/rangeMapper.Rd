@@ -16,7 +16,7 @@ Tools for generation of (life-history) traits and diversity maps on hexagonal or
 rangeMapper global options can be changed with options(name = value):
 
 \itemize{
-  \item `rmap.verbose`: default to TRUE. Setting this option to FALSE will shut up all custom messages.
+  \item `rmap.verbose`: defaults to TRUE. Setting this option to FALSE will shut up all custom messages.
 }
 }
 

@@ -27,7 +27,7 @@ rmap_prepare(con, grid_type, cellsize, chunksize, ...)
 TRUE when the table is written to the project file, FALSE otherwise.
 }
 \description{
-\code{rmap_prepare} updates a 'raw' project containing ranges( \code{\link[=rmap_add_ranges]{rmap_add_ranges()}} ) to a ready to use project.
+\code{rmap_prepare} updates a 'raw' unprepared project to a ready to use project.
 \code{rmap_prepare} creates the project's canvas and assign each range to its corresponding canvas cells by
 performing a spatial intersection between the ranges and the canvas. The canvas is a regular grid
 of squares or hexagons.
@@ -71,4 +71,7 @@ plan(sequential)
 \references{
 Birch, C. P., Oom, S. P., & Beecham, J. A. (2007). Rectangular and hexagonal grids used for observation,
 experiment and simulation in ecology. Ecological modelling, 206(3-4), 347-359.
+}
+\seealso{
+\code{\link[=rmap_add_ranges]{rmap_add_ranges()}}
 }

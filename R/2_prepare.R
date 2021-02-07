@@ -1,7 +1,7 @@
 
 #' Define a canvas and process ranges
 #' 
-#' `rmap_prepare` updates a 'raw' project containing ranges( [rmap_add_ranges()] ) to a ready to use project. 
+#' `rmap_prepare` updates a 'raw' unprepared project to a ready to use project. 
 #' `rmap_prepare` creates the project's canvas and assign each range to its corresponding canvas cells by
 #' performing a spatial intersection between the ranges and the canvas. The canvas is a regular grid
 #' of squares or hexagons. 
@@ -27,9 +27,11 @@
 #' Birch, C. P., Oom, S. P., & Beecham, J. A. (2007). Rectangular and hexagonal grids used for observation,
 #' experiment and simulation in ecology. Ecological modelling, 206(3-4), 347-359.
 #' 
+#' @seealso  [rmap_add_ranges()]
+#' 
 #' @examples
 #' 
-#' # SIMPLE IN-MEMORY PROJECT
+#' # IN-MEMORY PROJECT
 #' require(rangeMapper)
 #' con = rmap_connect() 
 #' rmap_add_ranges(con, wrens, 'sci_name')
@@ -61,7 +63,7 @@ setGeneric("rmap_prepare", function(con, grid_type, cellsize, chunksize, ...)   
 
 rmap_refresh <- function(con) {
     if( ! is_empty(con, 'wkt_canvas') ) {
-        message(glue('    (i) The canvas of project { dQuote(dbpath %>% basename) } is overwritten.'))
+        message(glue('    (i) The canvas of project { dQuote(basename(con@dbname)) } is overwritten.'))
 
         dbExecute(con, 'DELETE FROM wkt_canvas')
         dbExecute(con, 'DELETE FROM canvas_ranges')
@@ -79,10 +81,13 @@ rmap_refresh <- function(con) {
         }
 
     dbExecute(con, 'PRAGMA OPTIMIZE')
-    
+
     }
 
+# make_regular_canvas(con, 'hex', 5000)
 make_regular_canvas <- function(con, grid_type, cellsize, ...) {
+    if( talk() ) message(glue(" --> Making {grid_type} canvas ..."), appendLF=FALSE)
+
     bb = rmap_to_sf(con, 'bbox')   
 
     gt = if(grid_type=='square')  TRUE else if(grid_type=='hex') FALSE else 
@@ -90,18 +95,31 @@ make_regular_canvas <- function(con, grid_type, cellsize, ...) {
 
     cnv = st_make_grid(bb, cellsize  = cellsize, square = gt, ...)  %>% st_as_sf 
     cnv$cell_id = 1:nrow(cnv)
+
+    if( talk() ) { 
+    message("done.")
+    message( glue("    (i) The canvas has {nrow(cnv)} cells." ) )
+    }
+
     
     cnv 
     }   
 
 rmap_master_update <- function(con, grid_type, cellsize) {
+
+    if( talk() ) message(" --> Updating rmap_nfo & rmap_master tables ...", appendLF = FALSE)
+
     sql = glue('UPDATE rmap_nfo SET 
                 grid_type = {grid_type %>% shQuote}, 
                 cell_size = {cellsize}')
     oi   = dbExecute(con, sql)
-    oii  =write_master(con, 'wkt',    'wkt_canvas',    'rangeMapper::rmap_prepare()')
+    oii  = write_master(con, 'wkt',    'wkt_canvas',    'rangeMapper::rmap_prepare()')
     oiii = write_master(con, 'canvas', 'canvas_ranges', 'rangeMapper::rmap_prepare()')
-    all(oi, oii, oiii)            
+    
+    if( talk() ) message( 'done.')
+
+    all(oi, oii, oiii)
+
 
     }
 
@@ -109,8 +127,9 @@ sequential_process_ranges  <- function(con, cnv) {
 
     r = dbGetQuery(con, 'select bio_id, geometry from wkt_ranges' )
 
-    r = st_as_sf(r)
+    if( talk() ) message(glue(" --> Processing {nrow(r)} ranges ..."), appendLF=FALSE)
 
+    r = st_as_sf(r)
     st_crs(r) <- st_crs(cnv)
 
     o = st_intersects(r, cnv)  %>% as.data.frame  %>% setDT
@@ -121,7 +140,11 @@ sequential_process_ranges  <- function(con, cnv) {
     cara = merge(o, r, by.x = 'row.id', by.y = 'k',sort = FALSE)
     cara[, row.id := NULL]
     setnames(cara, 'col.id', 'cell_id')
-    cara
+
+    return(cara)
+
+    if( talk() ) message('done.')
+
     }   
 
 parallel_process_ranges <- function(con, chunksize,cnv) {
@@ -175,8 +198,10 @@ parallel_process_ranges <- function(con, chunksize,cnv) {
             }, future.seed = TRUE) 
 
         })   
-                            
-    rbindlist(CARA)
+    
+    return(rbindlist(CARA))
+
+    if( talk() ) message('done.')                           
     }
 
 
@@ -194,40 +219,24 @@ definition = function(con, grid_type = 'hex',cellsize, ...) {
     rmap_refresh(con)
 
     # make canvas
-        if( talk() ) message(glue(" --> Making {grid_type} canvas ..."), appendLF=FALSE)
-        
         cnv = make_regular_canvas(con, grid_type, cellsize, ...)
         x = data.table(cnv)
         setnames(x, 'x', 'geometry')
         x[, geometry := st_as_binary(geometry)]  
 
-
         o1 = dbWriteTable(con, 'wkt_canvas', x, row.names = FALSE, append =  TRUE)
-        
-        if( talk() ) { 
-            message("done.")
-            message( glue("    (i) The canvas has {nrow(x)} cells." ) )
-            }
 
     # process ranges (ranges over canvas)
-        if( talk() ) message(glue(" --> Processing {nrow(x)} ranges ..."), appendLF=FALSE)
-
-
         CARA =   sequential_process_ranges(con, cnv)  
 
         o2 = dbWriteTable(con, 'canvas_ranges', CARA, row.names = FALSE, append =  TRUE)
-
-        if( talk() ) message('done.')
+       
 
     # update rmap_nfo
-       if( talk() ) message(" --> Updating rmap_nfo & rmap_master tables ...", appendLF = FALSE)
-
        o3 = rmap_master_update(con, grid_type, cellsize)
        
-       if( talk() ) {
-        message( 'done.')
-        message ( glue('    (i) Finished in {timetaken(tic)}')  )
-        }
+       if( talk() ) message ( glue('    (i) Finished in {timetaken(tic)}')  )
+
 
 
     invisible(all(o1, o2, o3))
@@ -250,46 +259,30 @@ definition = function(con, grid_type = 'hex',cellsize, chunksize = 1/10, ...) {
         }
 
     if(chunksize <= 0 | chunksize >= 1) {
-        stop('chunksize should larger than 0 and smaller than 1')
+        stop('chunksize should be in the (0,1) interval.')
         }
 
     rmap_refresh(con)
 
 
     # make canvas
-        if( talk() ) message(glue(" --> Making {grid_type} canvas ..."), appendLF=FALSE)
-        
         cnv = make_regular_canvas(con, grid_type, cellsize, ...)
         x = data.table(cnv)
         setnames(x, 'x', 'geometry')
         x[, geometry := st_as_binary(geometry)]  
-
-
         o1 = dbWriteTable(con, 'wkt_canvas', x, row.names = FALSE, append =  TRUE)
-        
-        if( talk() ) { 
-            message("done.")
-            message( glue("    (i) The canvas has {nrow(x)} cells." ) )
-            }
-
 
 
     # process ranges (ranges over canvas)
         CARA = parallel_process_ranges(con, chunksize,cnv)
-
         o2 = dbWriteTable(con, 'canvas_ranges', CARA, row.names = FALSE, append =  TRUE)
 
-        if( talk() ) message('done.')
 
     # update rmap_nfo
-       if( talk() ) message(" --> Updating rmap_nfo & rmap_master tables ...", appendLF = FALSE)
-
        o3 = rmap_master_update(con, grid_type, cellsize)
        
-       if( talk() ) {
-        message( 'done.')
-        message ( glue('    (i) Finished in {timetaken(tic)}')  )
-        }
+       if( talk() ) message ( glue('    (i) Finished in {timetaken(tic)}')  )
+
 
 
     invisible(all(o1, o2, o3))
