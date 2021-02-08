@@ -53,5 +53,5 @@ traits. </a>
 install.packages("rangeMapper")
 
 # Install development version from GitHub
-remotes::install_github("rangeMapper")
+remotes::install_github("mpio-be/rangeMapper")
 ```
