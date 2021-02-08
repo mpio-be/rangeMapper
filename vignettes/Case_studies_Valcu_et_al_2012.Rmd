@@ -14,6 +14,7 @@ library(knitr)
 opts_chunk$set(
   warning = FALSE, 
   message = FALSE, 
+  fig.width = 4,   
   fig.height = 5,   
   collapse = TRUE,
   comment = "#>"
@@ -137,7 +138,7 @@ rmap_save_map(con, subset = 'cumul_congruence_threshold', dst = 'Cumul_congruenc
 ### 4. Maps: load and display
 
 
-```{r, fig.height = 10}
+```{r, fig.height = 10, fig.width = 8}
 study_area = rmap_to_sf(con, 'species_richness')  %>% st_union
 bmr = rmap_to_sf(con, pattern = 'hotspots')  %>% 
       melt(id.vars = c('geometry', 'cell_id') )  %>% 
@@ -228,7 +229,7 @@ o = lapply(cellSizes, FUN)   %>% rbindlist
 Most of the variation here is due to spatial autocorrelation, a proper analysis requires a spatial model. 
 
 
-```{r, , fig.height = 4}
+```{r}
 
 ggplot(o, aes(x = cell_size, y = Estimate)) +
     geom_point() +
@@ -302,7 +303,7 @@ x[, Quantiles :=  quant[1:maxn]  ]
 ### 4. Plot regression slope for different quantile-based range size intervals
 
 
-```{r, fig.height = 4}
+```{r}
 ggplot(x, aes(x = Quantiles, y = Estimate) ) +
     geom_errorbar(aes(ymin = `2.5 %`, ymax = `97.5 %`), width= 0) +
     geom_line() +

@@ -41,7 +41,7 @@ Additionally, you can keep track of of the computations using \code{\link[progre
 }
 \examples{
 
-# SIMPLE IN-MEMORY PROJECT
+# IN-MEMORY PROJECT
 require(rangeMapper)
 con = rmap_connect() 
 rmap_add_ranges(con, wrens, 'sci_name')
