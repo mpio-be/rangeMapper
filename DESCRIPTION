@@ -7,7 +7,7 @@ Authors@R: c(
     )
 Title: A Platform for the Study of Macro-Ecology of Life History Traits
 Depends:
-    R (>= 4.0.0)
+    R (>= 3.5.0)
 Imports:
     graphics,
     methods,

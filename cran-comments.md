@@ -14,5 +14,8 @@
 N/A
 
 ## CRAN team comments
-N/A
+One of the tests failed under r-patched-solaris-x86 because
+the test was too strict and failed under small numeric differences. 
+The test is relaxed now and it should work on all OS-s. 
+
 

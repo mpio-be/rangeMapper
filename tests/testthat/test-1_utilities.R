@@ -66,7 +66,7 @@ context(" -> Utilities <- ")
 
         expect_identical( sf::st_geometry(wrens)[[1]], sf::st_geometry(x)[[1]] )
         
-        expect_true( st_crs(wrens) == st_crs(x) )
+        expect_equal( st_crs(wrens) , st_crs(x) )
         
 
         })
