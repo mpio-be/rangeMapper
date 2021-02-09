@@ -12,7 +12,6 @@ context(" -> Add ranges <- ")
 
         })
 
-
 context(" -> Prepare: un-exported functions <- ")
     
     test_that("rmap_refresh works", {
@@ -26,7 +25,6 @@ context(" -> Prepare: un-exported functions <- ")
         
         })
 
-
     test_that("make_regular_canvas works", {
         con = rmap_connect()
         rmap_add_ranges(con, wrens, 'sci_name') 
@@ -37,12 +35,6 @@ context(" -> Prepare: un-exported functions <- ")
         dbDisconnect(con)    
         
         })
-
-
-
-
-
-
 
 context(" -> Prepare <- ")
 
