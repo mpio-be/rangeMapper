@@ -14,8 +14,6 @@
 N/A
 
 ## CRAN team comments
-One of the tests failed under r-patched-solaris-x86 because
-the test was too strict and failed under small numeric differences. 
-The test is relaxed now and it should work on all OS-s. 
-
+As requested an invalid URL was fixed in README.md.
+As suggested an Authors (year) <doi:.....> reference was added to Description.
 

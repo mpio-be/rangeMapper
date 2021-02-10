@@ -9,14 +9,10 @@ rmarkdown::render('README.Rmd')
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/mpio-be/rangeMapper/workflows/R-CMD-check/badge.svg)](https://github.com/mpio-be/rangeMapper/actions)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](http://cran.r-project.org/package=rangeMapper)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/rangeMapper)](https://CRAN.R-project.org/package=rangeMapper)
 [![status](https://tinyverse.netlify.com/badge/rangeMapper)](https://CRAN.R-project.org/package=rangeMapper)
-
 [![Codecov test
 coverage](https://codecov.io/gh/mpio-be/rangeMapper/branch/master/graph/badge.svg)](https://codecov.io/gh/mpio-be/rangeMapper?branch=master)
-
-[![monthly](https://cranlogs.r-pkg.org/badges/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
-[![total](https://cranlogs.r-pkg.org/badges/grand-total/rangeMapper)](https://www.rpackages.io/package/rangeMapper)
 
 <!-- badges: end -->
 <h4>
