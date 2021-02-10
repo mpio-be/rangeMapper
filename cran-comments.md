@@ -14,6 +14,5 @@
 N/A
 
 ## CRAN team comments
-As requested an invalid URL was fixed in README.md.
-As suggested an Authors (year) <doi:.....> reference was added to Description.
+Fixed the trailing slash in doi in Description. Sorry!
 
