@@ -3,7 +3,7 @@
 #' @import     graphics
 #' @importFrom glue glue 
 #' @import     RSQLite
-#' @importFrom data.table data.table setDT setnames setcolorder rbindlist timetaken
+#' @importFrom data.table data.table setorder setDT setnames setcolorder rbindlist timetaken
 #' @importFrom future   plan  multisession multicore sequential
 #' @importFrom future.apply future_lapply
 #' @importFrom progressr handlers progressor with_progress
@@ -27,6 +27,7 @@ utils::globalVariables(c(
     '.N',
     'N',
     ':=',
+    'con',
     'geometry',
     'bio_id',
     'cell_id', 

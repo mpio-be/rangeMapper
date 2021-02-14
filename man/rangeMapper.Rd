@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids. Valcu et al.(2012) <doi:/10.1111/j.1466-8238.2011.00739.x>.
+Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids. Valcu et al.(2012) <doi:10.1111/j.1466-8238.2011.00739.x>.
 }
 \section{Package options}{
 

@@ -31,6 +31,7 @@ context(" -> Get: all maps <- ")
     test_that("rmap_to_sf gets all maps when src is missing", {
       m = rmap_to_sf(con)  
       expect_is(m , 'sf')
+      skip_on_os('solaris')
       expect_equal(ncol(m), 4)
      
       }) 

@@ -32,6 +32,7 @@ mapped on the canvas.
 If any of system tables is changed or missing then the file is considered corrupted and cannot be open with \code{rmap_connect()}.
 }
 \examples{
+require(rangeMapper)
 con = rmap_connect()
 class(con)
 dbDisconnect(con)

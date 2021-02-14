@@ -56,6 +56,28 @@ setValidity("rmapConnection",
         }
         })
 
+setMethod("summary", "rmapConnection" , function(object) {
+    
+    get_master(con)
+    
+    })
+
+setMethod("show", "rmapConnection" , function(object) {
+    
+     o = get_master(con) 
+     setorder(o, rmap_type)  
+     o[, pk := NULL]
+
+     if(nrow(o) == 0) cat( basename(con@dbname), 'empty project.', '\n')
+     if(nrow(o) > 0) { 
+        cat( basename(con@dbname), ' > ', '\n')
+        print(o)
+        }
+
+    
+    })
+
+
 #' rangeMapper connect
 #' 
 #' Connect to a new or an existing rangeMapper project. 
@@ -78,6 +100,7 @@ setValidity("rmapConnection",
 #' @export
 #'
 #' @examples
+#' require(rangeMapper)
 #' con = rmap_connect()
 #' class(con)
 #' dbDisconnect(con)
@@ -238,7 +261,8 @@ setMethod("rmap_add_bio",signature  = c(con = "rmapConnection", x= "data.table",
         warning( glue("Partial ID match: There are {nrow(wr)-nrow(z)} more ID-s in {dQuote('wkt_ranges')} than in  {dQuote(name)}.") )
 
 
-    o1 = dbWriteTable(con, name, x, row.names = FALSE, append = TRUE)    
+    o1 = dbWriteTable(con, name, x, row.names = FALSE, append = TRUE)
+    if(o1)    
     o2 = write_master(con, 'bio', name, 'rangeMapper::rmap_add_bio()')
 
     invisible(all(o1, o2) )
