@@ -1,70 +1,105 @@
-# ==========================================================================
-# Unexported functions
-# ==========================================================================
 
 
-# is a db table empty?
-# return logical vector of length 1.
-is_empty <- function(con, tab) {
-    o = dbGetQuery(con, glue('SELECT count(*) FROM (select 1 from {tab} limit 1)') ) %>% 
-        as.logical  
-    !o    
-    }
+#' Thinning of polygonal grids
+#'
+#' Nearest neighbours spatial thinning of polygonal grids
+#'
+#' @param  x  an sf data.frame
+#' @param lag lag order. 
+#' @export
+#' 
+#' @note
+#' This function is still under developement. 
+#'
+#' @references 
+#' Based on SO answer: https://stackoverflow.com/questions/65907022/
+#' 
+#' @return what type of object does it return. 
+#' 
+#' @examples
+#' require(rangeMapper)
+#' require(data.table)
+#' con = rmap_connect()
+#' data(wrens)
+#' rmap_add_ranges(con, x = wrens, ID = 'sci_name')
+#' rmap_prepare(con, 'hex', cellsize=250)
+#' rmap_save_map(con) 
+#' x = rmap_to_sf(con)[, 'cell_id']
+#' 
+#' x = x[x$cell_id != 356, ]
+#' ggplot(x) + geom_sf() + geom_sf_label( aes(label = cell_id))
+#' 
+#' plot( st_thin(x,5) %>% st_geometry )
+#' 
 
+st_thin <- function(x, order) UseMethod("st_thin")
 
-# write to rmap_master table; overwrite when type and name exists
-write_master <- function(con, type, name, source) {
-    e = dbGetQuery(con, glue('SELECT type, name FROM rmap_master 
-                            WHERE type = {shQuote(type)} AND name = {shQuote(name)}') )
-    if(nrow(e)>0)
-        dbExecute(con, glue('DELETE FROM rmap_master
-                            WHERE type = {shQuote(type)} AND name = {shQuote(name)}') )
+thin_contiguous <- function(x, order = 2) {
 
-    x = data.frame(type, name, source)
-    dbWriteTable(con, 'rmap_master', x, row.names = FALSE, append = TRUE)
+    if(order < 2) stop('order must be larger than 1')
 
-    }
+    x = x[sample(nrow(x)),]
 
-# does table exists in rmap_master?
-exists_in_master <- function(con, nam) {
-    exists = DBI::dbGetQuery(con, 
-    glue::glue("SELECT name FROM rmap_master WHERE name='{nam}';") )  %>% 
-    nrow  %>% 
-    is_greater_than(0)   
-    
-    }
+    xgraph = spdep::poly2nb(x)  %>%  graph_from_adj_list
 
-# get rmap_master joined with sqlite_master
-get_master <- function(con) {
-    x = dbGetQuery(con, 
-        'SELECT m.pk, m.name, m.type rmap_type, s.type sqlite_type 
-            FROM rmap_master m JOIN sqlite_master s on m.name = s.name')
-    data.table(x)   
-    }
+    rm_ids    = ego(xgraph, order = 1, nodes = 1)[[1]]
+    higher_nb = ego(xgraph, order = 2, nodes = 1)[[1]]
+    out       = difference(higher_nb, rm_ids)
 
-# strip down string so sql does not complain
-make_sql_nams <- function(s) {
-    s  %>% 
-    make.names %>%  
-    gsub('\\W+','_', .)  %>% 
-    gsub('^_|_$', '', .)
-    }
+    i = 1
+    while (TRUE) {
+        if (i > length(out)) break
 
-drop_table_or_view <- function(x, con) {
+        id  = out[[i]]
 
-    m = RSQLite::dbGetQuery(con, 
-            glue('SELECT type, name FROM sqlite_master WHERE name = {shQuote(x)}')
-        )
-
-    if(nrow(m) > 0) {
-        this = m$type 
-        dbExecute(con, glue("DROP {this} IF EXISTS {x}") )
-
+        idi         = ego(xgraph, order = order-1, nodes = id)[[1]]
+        diffi       = difference(idi, V(xgraph)[id])
+        rm_ids      = union(rm_ids, diffi  )
+        higher_idi  = ego(xgraph, order = order, nodes = id)[[1]] 
+        higher_diff = difference(higher_idi ,  idi )
+        out         = difference(union(out, higher_diff), rm_ids)
+        
+        i = i + 1
         }
-}
+
+    x[ c(1, out) , ]    
+    }
+
+find_contiguous <- function(x) {
+    u = st_union(x)  %>% 
+        st_cast("POLYGON")  %>% 
+        st_as_sf
+    u$gid = 1:nrow(u)    
+
+    st_agr(u) = "constant"
+    st_agr(x) = "constant"
+
+    st_intersection(x, u)
+
+    }
+
+#' @export
+st_thin.sf <- function(x, lag) {
+
+    z = find_contiguous(x)  %>% setDT
+    z[, n := .N, gid]
+
+    xs = z[n > lag ]
+
+    o = xs[, st_as_sf(.SD)  %>% thin_contiguous(order = lag), by = gid]
+
+    o = rbind(o,  z[n <= lag]  )
+
+    st_as_sf(o)
 
 
-talk <- function() {
-    getOption('rmap.verbose')
-}
+}    
+
+
+
+
+
+
+
+
 
