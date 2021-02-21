@@ -4,34 +4,39 @@
 \alias{st_thin}
 \title{Thinning of polygonal grids}
 \usage{
-st_thin(x, order)
+st_thin(x, lag)
 }
 \arguments{
-\item{x}{an sf data.frame}
+\item{x}{an sf data.frame.}
 
 \item{lag}{lag order.}
 }
 \value{
-what type of object does it return.
+a thinned \code{\link[sf:st_as_sf]{sf::st_as_sf()}} object.
 }
 \description{
 Nearest neighbours spatial thinning of polygonal grids
 }
+\note{
+This function is still under development.
+}
 \examples{
+\dontrun{
 require(rangeMapper)
-require(data.table)
 con = rmap_connect()
 data(wrens)
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize=250)
+rmap_prepare(con, 'hex', cellsize=500)
 rmap_save_map(con) 
 x = rmap_to_sf(con)[, 'cell_id']
 
+plot( st_thin(x,2) )
+
 x = x[x$cell_id != 356, ]
-ggplot(x) + geom_sf() + geom_sf_label( aes(label = cell_id))
 
-plot( st_thin(x,5) \%>\% st_geometry )
+plot( st_thin(x,3) )
 
+}
 }
 \references{
 Based on SO answer: https://stackoverflow.com/questions/65907022/

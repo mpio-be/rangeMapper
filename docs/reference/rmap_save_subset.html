@@ -95,7 +95,7 @@ several bio tables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rangeMapper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -118,9 +118,6 @@ several bio tables." />
       <a href="../articles/Case_studies_Valcu_et_al_2012.html">Case studies (GEB_739_sm_AppendixS2-S5)</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -200,7 +197,7 @@ Here is a summary of the <a href='https://www.sqlite.org/lang_expr.html'>SQL ope
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>wrens</span><span class='op'>)</span>
 <span class='fu'><a href='rmap_add_ranges.html'>rmap_add_ranges</a></span><span class='op'>(</span><span class='va'>con</span>, x <span class='op'>=</span> <span class='va'>wrens</span>, ID <span class='op'>=</span> <span class='st'>'sci_name'</span><span class='op'>)</span>
 <span class='fu'><a href='rmap_prepare.html'>rmap_prepare</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>'hex'</span>, cellsize <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'> --&gt; Making hex canvas ...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>    (i) The canvas has 660 cells.</span></div><div class='output co'>#&gt; <span class='message'> --&gt; Processing 84 ranges ...</span></div><div class='output co'>#&gt; <span class='message'> --&gt; Updating rmap_nfo &amp; rmap_master tables ...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>    (i) Finished in 0.156s elapsed (0.142s cpu)</span></div><div class='input'><span class='fu'><a href='rmap_add_bio.html'>rmap_add_bio</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>wrens</span>, <span class='st'>'sci_name'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'> --&gt; Making hex canvas ...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>    (i) The canvas has 660 cells.</span></div><div class='output co'>#&gt; <span class='message'> --&gt; Processing 84 ranges ...</span></div><div class='output co'>#&gt; <span class='message'> --&gt; Updating rmap_nfo &amp; rmap_master tables ...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>    (i) Finished in 0.200s elapsed (0.173s cpu)</span></div><div class='input'><span class='fu'><a href='rmap_add_bio.html'>rmap_add_bio</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>wrens</span>, <span class='st'>'sci_name'</span><span class='op'>)</span>
 <span class='fu'><a href='rmap_save_map.html'>rmap_save_map</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span> 
 <span class='fu'>rmap_save_subset</span><span class='op'>(</span><span class='va'>con</span>,<span class='st'>'s1'</span>, 
    species_richness <span class='op'>=</span> <span class='st'>'species_richness &gt; 10'</span>, 

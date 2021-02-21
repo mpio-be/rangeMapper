@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 2.0.1
+Version: 2.0.2
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre"), comment = c(ORCID = '0000-0002-6907-7802') ),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut", comment = c(ORCID = '0000-0001-5950-5829') ),
@@ -29,7 +29,9 @@ Suggests:
     viridis,
     rmarkdown,
     pkgdown,
-    nlme
+    nlme,
+    igraph,
+    spdep
 Description: Tools for generation of (life-history) traits and diversity maps on hexagonal or square grids. Valcu et al.(2012) <doi:10.1111/j.1466-8238.2011.00739.x>.
 LazyData: true    
 License: GPL(>= 2)

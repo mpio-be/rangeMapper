@@ -46,6 +46,11 @@ reference:
 - contents:
   - rmap_to_sf
 
+- title: Utils 
+  desc: Various utilities. 
+- contents:
+  - st_thin
+
 - title: Datasets
   desc: Datasets used for examples and vignettes.
 - contents:

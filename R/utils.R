@@ -4,35 +4,39 @@
 #'
 #' Nearest neighbours spatial thinning of polygonal grids
 #'
-#' @param  x  an sf data.frame
+#' @param  x   an sf data.frame.
 #' @param lag lag order. 
+#' 
+#' @return a thinned [sf::st_as_sf()] object.
+#' 
 #' @export
+#' @md
 #' 
 #' @note
-#' This function is still under developement. 
+#' This function is still under development. 
 #'
 #' @references 
 #' Based on SO answer: https://stackoverflow.com/questions/65907022/
 #' 
-#' @return what type of object does it return. 
-#' 
 #' @examples
+#'\dontrun{
 #' require(rangeMapper)
-#' require(data.table)
 #' con = rmap_connect()
 #' data(wrens)
 #' rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-#' rmap_prepare(con, 'hex', cellsize=250)
+#' rmap_prepare(con, 'hex', cellsize=500)
 #' rmap_save_map(con) 
 #' x = rmap_to_sf(con)[, 'cell_id']
 #' 
+#' plot( st_thin(x,2) )
+#' 
 #' x = x[x$cell_id != 356, ]
-#' ggplot(x) + geom_sf() + geom_sf_label( aes(label = cell_id))
 #' 
-#' plot( st_thin(x,5) %>% st_geometry )
+#' plot( st_thin(x,3) )
 #' 
+#' }
 
-st_thin <- function(x, order) UseMethod("st_thin")
+st_thin <- function(x, lag) UseMethod("st_thin")
 
 thin_contiguous <- function(x, order = 2) {
 
@@ -40,11 +44,12 @@ thin_contiguous <- function(x, order = 2) {
 
     x = x[sample(nrow(x)),]
 
-    xgraph = spdep::poly2nb(x)  %>%  graph_from_adj_list
+    xgraph = spdep::poly2nb(x)  
+    xgraph = igraph::graph_from_adj_list(xgraph)
 
-    rm_ids    = ego(xgraph, order = 1, nodes = 1)[[1]]
-    higher_nb = ego(xgraph, order = 2, nodes = 1)[[1]]
-    out       = difference(higher_nb, rm_ids)
+    rm_ids    = igraph::ego(xgraph, order = 1, nodes = 1)[[1]]
+    higher_nb = igraph::ego(xgraph, order = 2, nodes = 1)[[1]]
+    out       = igraph::difference(higher_nb, rm_ids)
 
     i = 1
     while (TRUE) {
@@ -52,12 +57,12 @@ thin_contiguous <- function(x, order = 2) {
 
         id  = out[[i]]
 
-        idi         = ego(xgraph, order = order-1, nodes = id)[[1]]
-        diffi       = difference(idi, V(xgraph)[id])
-        rm_ids      = union(rm_ids, diffi  )
-        higher_idi  = ego(xgraph, order = order, nodes = id)[[1]] 
-        higher_diff = difference(higher_idi ,  idi )
-        out         = difference(union(out, higher_diff), rm_ids)
+        idi         = igraph::ego(xgraph, order = order-1, nodes = id)[[1]]
+        diffi       = igraph::difference(idi, igraph::V(xgraph)[id])
+        rm_ids      = igraph::union(rm_ids, diffi  )
+        higher_idi  = igraph::ego(xgraph, order = order, nodes = id)[[1]] 
+        higher_diff = igraph::difference(higher_idi ,  idi )
+        out         = igraph::difference(igraph::union(out, higher_diff), rm_ids)
         
         i = i + 1
         }
@@ -81,25 +86,24 @@ find_contiguous <- function(x) {
 #' @export
 st_thin.sf <- function(x, lag) {
 
-    z = find_contiguous(x)  %>% setDT
-    z[, n := .N, gid]
+    z = find_contiguous(x)  
+    z = split(z, z$gid)
 
-    xs = z[n > lag ]
+    # large blocks
+    z_large = z[sapply(z, nrow) > lag]
 
-    o = xs[, st_as_sf(.SD)  %>% thin_contiguous(order = lag), by = gid]
+    o1 = lapply(z_large, thin_contiguous, order = lag)
+    o1 = do.call(rbind, o1)
 
-    o = rbind(o,  z[n <= lag]  )
+    o2 =  z[sapply(z, nrow) <= lag]
+    o2 = do.call(rbind, o2)
 
-    st_as_sf(o)
-
-
-}    
-
-
+    o = rbind(o1, o2)    
 
 
+    o$gid = NULL
 
+    o
 
-
-
+    }    
 
