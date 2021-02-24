@@ -5,13 +5,13 @@
   'ggplot2', 'sf', 'openxlsx', 'dplyr', 'raster', 'rnaturalearth'), 
   require, character.only = TRUE, quietly = TRUE)
 
-  CRS = '+proj=eck4 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=km +no_defs'
+  CRS = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
 
 # wrens
-  x = read.xlsx('./data_raw/wrens.xlsx') %>% setDT
+  x = read.xlsx('./raw/data/wrens.xlsx') %>% setDT
 
-  s = st_read('./data_raw/wrens.shp')  
-  s = select(s, -c(com_name, data_src))
+  s = st_read('./raw/data/wrens.shp')  
+  s = dplyr::select(s, -c(com_name, data_src))
 
   s = st_transform(s, CRS)
 

@@ -14,5 +14,6 @@
 N/A
 
 ## CRAN team comments
-Fixed the trailing slash in doi in Description. Sorry!
+Re-submit after package failed a test on r-patched-solaris-x86  and was silently removed from CRAN.
+Hopefully all is fixed now. 
 

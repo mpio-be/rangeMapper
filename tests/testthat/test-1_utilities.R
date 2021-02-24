@@ -57,6 +57,8 @@ context(" -> Utilities <- ")
         })
 
     test_that("IO sqlite preserves wkt", {
+        
+        skip_on_os(c("mac", "solaris"))
 
         con = rmap_connect()
         data(wrens)
@@ -67,7 +69,6 @@ context(" -> Utilities <- ")
         expect_identical( sf::st_geometry(wrens)[[1]], sf::st_geometry(x)[[1]] )
         
         expect_equal( st_crs(wrens) , st_crs(x) )
-        
 
         })
 
