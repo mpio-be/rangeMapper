@@ -14,6 +14,6 @@
 N/A
 
 ## CRAN team comments
-Re-submit after package failed a test on r-patched-solaris-x86  and was silently removed from CRAN.
+Re-submit after package failed a test on r-patched-solaris-x86  and was silently removed from CRAN :( .
 Hopefully all is fixed now. 
 

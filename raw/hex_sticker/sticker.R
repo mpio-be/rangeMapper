@@ -13,7 +13,7 @@
 
 # data
     rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-    rmap_prepare(con, 'hex', cellsize=650, chunksize = 1)
+    rmap_prepare(con, 'hex', cellsize=650)
     rmap_add_bio(con, wrens, 'sci_name')
     rmap_save_map(con)
     x = rmap_to_sf(con, 'species_richness')

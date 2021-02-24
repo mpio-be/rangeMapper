@@ -5,7 +5,7 @@
   'ggplot2', 'sf', 'openxlsx', 'dplyr', 'raster', 'rnaturalearth'), 
   require, character.only = TRUE, quietly = TRUE)
 
-  CRS = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+  CRS = "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=km +no_defs"
 
 # wrens
   x = read.xlsx('./raw/data/wrens.xlsx') %>% setDT
