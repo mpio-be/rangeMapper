@@ -44,7 +44,7 @@ require(glue)
 require(ggplot2)
 require(viridis)
 
-data(wrens)
+wrens = read_wrens()
 wrens$breeding_range_area = st_area(wrens)
 
 con = rmap_connect()

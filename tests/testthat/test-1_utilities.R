@@ -1,8 +1,9 @@
+wrens = read_wrens()
+
 
 context(" -> Wrens <- ")
 
     test_that("wrens is in place and well defined. ", {
-      data(wrens)
       expect_equal(nrow(wrens), 84)
       expect_equal(ncol(wrens), 12)
       expect_s3_class(wrens, 'sf')
@@ -61,7 +62,6 @@ context(" -> Utilities <- ")
         skip_on_os(c("mac", "solaris"))
 
         con = rmap_connect()
-        data(wrens)
         rmap_add_ranges(con, wrens, 'sci_name')
         x = rmap_to_sf(con, 'wkt_ranges')
         dbDisconnect(con)

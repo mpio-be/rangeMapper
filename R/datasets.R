@@ -1,7 +1,8 @@
 #' Wrens Life history.
 #' 
-#' Life history data of 84 wren species. The variables are as follows:
+#' Life history data of 84 wren species. 
 #' 
+#' @format A GeoJSON file with with 84 entries and 12 variables. The variables are as follows:
 #' \itemize{
 #'   \item ID. Entry order as in ref. 1
 #'   \item sci_name. Scientific name, character vector
@@ -27,19 +28,33 @@
 #' \strong{2.} Kroodsma, D. E., and D. Brewer. "Family Troglodytidae (Wrens)." Lynx Edicions, Barcelona (2005). \cr 
 #' \strong{3.} Dunning Jr, John B. CRC handbook of avian body masses. CRC press, 2007.  
 
-#' @docType data
 #' @keywords datasets
 #' @name wrens
-#' @usage data(wrens)
-#' @format A data frame with 84 rows and 12 variables.
 #' @examples
 #'
 #' require(rangeMapper)
-#' data(wrens)
+#' require(sf)
+#' wrens = system.file('extdata','wrens.GeoJSON',package = 'rangeMapper') %>% st_read
+#' 
+#' # or simpler
+#' wrens = read_wrens()
+#' 
 #' plot(male_wing ~ female_wing, wrens)
 #' plot(sf::st_geometry(wrens))
 #'
 NULL
+
+
+
+#' @rdname wrens
+#' @note The function read_wrens() reads the 'wrens.GeoJSON' data as a projected sf object.
+#' @export
+read_wrens <- function() {
+    system.file('extdata','wrens.GeoJSON',package = 'rangeMapper') %>%
+    st_read(quiet = TRUE)  %>% 
+    st_transform("+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=km +no_defs") 
+    }
+
 
 
 

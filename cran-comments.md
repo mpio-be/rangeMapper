@@ -1,6 +1,7 @@
 ## Test environments
 
 * local Ubuntu 20.04, R 4.0.3
+* rhub::check_on_solaris()
 * Github Actions "windows-latest (release)"
 * Github Actions "macOS-latest (release)"
 * Github Actions "ubuntu-20.04-latest (release)"
@@ -14,6 +15,6 @@
 N/A
 
 ## CRAN team comments
-Re-submit after package failed a test on r-patched-solaris-x86  and was silently removed from CRAN :( .
-Hopefully all is fixed now. 
-
+Fixed failed tests on r-patched-solaris-x86. It seems sf data.frames cannot be
+included as datasets because of back-compatibility issues 
+(https://github.com/r-spatial/sf/issues/1419#issuecomment-640610745).

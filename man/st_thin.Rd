@@ -24,7 +24,7 @@ This function is still under development.
 \dontrun{
 require(rangeMapper)
 con = rmap_connect()
-data(wrens)
+wrens = read_wrens()
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
 rmap_prepare(con, 'hex', cellsize=500)
 rmap_save_map(con) 
@@ -32,7 +32,7 @@ x = rmap_to_sf(con)[, 'cell_id']
 
 plot( st_thin(x,2) )
 
-x = x[x$cell_id != 356, ]
+x = x[ ! x$cell_id  \%in\%  c(282,265) , ]
 
 plot( st_thin(x,3) )
 

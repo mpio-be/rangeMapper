@@ -35,6 +35,7 @@ Convert \code{rangeMapper} to \code{sf}.
 \examples{
 
 con = rmap_connect()
+wrens = read_wrens()
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
 rmap_prepare(con, 'hex', cellsize = 500)
 rmap_save_map(con) # default is a species_richness map.

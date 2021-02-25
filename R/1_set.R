@@ -150,6 +150,7 @@ rmap_connect <- function(path = ":memory:" , overwrite = FALSE) {
 #'
 #' @examples
 #' con = rmap_connect()
+#' wrens = read_wrens()
 #' rmap_add_ranges(con, x = wrens, ID = 'sci_name')
 #' dbDisconnect(con)
 #' 
@@ -226,6 +227,7 @@ definition = function(con, x, ID) {
 #' @examples
 #' 
 #' con = rmap_connect()
+#' wrens = read_wrens()
 #' rmap_add_ranges(con, wrens, 'sci_name')
 #' rmap_add_bio(con, wrens, 'sci_name')
 #' dbDisconnect(con)

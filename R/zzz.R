@@ -9,6 +9,7 @@
 #' @importFrom progressr handlers progressor with_progress
 #' @importFrom sf st_as_sf  st_as_sfc st_as_binary st_crs st_crs<- st_make_grid st_bbox 
 #'             st_intersects st_intersection st_drop_geometry st_union st_cast st_agr<-
+#'             st_read st_transform
 #' @importFrom exactextractr exact_extract
 #' @importFrom raster raster 
 #' 

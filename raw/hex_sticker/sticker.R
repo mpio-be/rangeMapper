@@ -12,6 +12,8 @@
     showtext_auto()
 
 # data
+    wrens = data_wrens()
+
     rmap_add_ranges(con, x = wrens, ID = 'sci_name')
     rmap_prepare(con, 'hex', cellsize=650)
     rmap_add_bio(con, wrens, 'sci_name')

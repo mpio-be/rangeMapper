@@ -27,6 +27,7 @@ Polygons are saved as WKB (see \code{\link[sf:st_as_binary]{sf::st_as_binary()}}
 }
 \examples{
 con = rmap_connect()
+wrens = read_wrens()
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
 dbDisconnect(con)
 

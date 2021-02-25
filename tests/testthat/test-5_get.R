@@ -1,4 +1,5 @@
 con = rmap_connect(); on.exit(dbDisconnect(con))
+wrens = read_wrens()
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
 rmap_prepare(con, 'hex', cellsize=1000)
 rmap_save_map(con) 

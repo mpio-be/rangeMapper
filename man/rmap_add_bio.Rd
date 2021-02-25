@@ -43,6 +43,7 @@ data are imported.
 \examples{
 
 con = rmap_connect()
+wrens = read_wrens()
 rmap_add_ranges(con, wrens, 'sci_name')
 rmap_add_bio(con, wrens, 'sci_name')
 dbDisconnect(con)

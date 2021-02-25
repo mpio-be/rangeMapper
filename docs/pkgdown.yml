@@ -1,10 +1,10 @@
-pandoc: 2.11.1.1
+pandoc: 2.11.2
 pkgdown: 1.6.1.9000
 pkgdown_sha: 84f234cf19153ce99bf1bcf875dc56248ddf0cbe
 articles:
   Case_studies_Valcu_et_al_2012: Case_studies_Valcu_et_al_2012.html
   rangeMapper: rangeMapper.html
-last_built: 2021-02-24T16:28Z
+last_built: 2021-02-25T17:27Z
 urls:
   reference: https://mpio-be.github.io/rangeMapper/reference
   article: https://mpio-be.github.io/rangeMapper/articles

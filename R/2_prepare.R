@@ -33,6 +33,7 @@
 #' 
 #' # IN-MEMORY PROJECT
 #' require(rangeMapper)
+#' wrens = read_wrens()
 #' con = rmap_connect() 
 #' rmap_add_ranges(con, wrens, 'sci_name')
 #' rmap_prepare(con, 'hex', cellsize=500)
