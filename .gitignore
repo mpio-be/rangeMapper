@@ -21,3 +21,4 @@ vignettes/*.png
 /README.html
 build.sh
 rangeMapper.sublime-workspace
+.vscode/settings.json
