@@ -1,7 +1,0 @@
-{
-    "folders":[{
-        "name": "package: rangeMapper",
-        "path": "./",
-        "folder_exclude_patterns": ["*_cache", "cache", "figure", "*_files", ".Rproj.user"]
-        }]
-}
