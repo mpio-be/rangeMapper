@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 2.0.2
+Version: 2.0.3
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre"), comment = c(ORCID = '0000-0002-6907-7802') ),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut", comment = c( ORCID = '0000-0001-5950-5829') ),
@@ -7,7 +7,7 @@ Authors@R: c(
     )
 Title: A Platform for the Study of Macro-Ecology of Life History Traits
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.0.0)
 Imports:
     graphics,
     methods,

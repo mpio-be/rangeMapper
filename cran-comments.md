@@ -1,11 +1,11 @@
 ## Test environments
 
-* local Ubuntu 20.04, R 4.0.3
-* rhub::check_on_solaris()
+* local Ubuntu 22.04, R 4.2.1
+* rhub::check_for_cran()
 * Github Actions "windows-latest (release)"
 * Github Actions "macOS-latest (release)"
-* Github Actions "ubuntu-20.04-latest (release)"
-* Github Actions "ubuntu-20.04-latest (devel)"
+* Github Actions "ubuntu-22.04-latest (release)"
+* Github Actions "ubuntu-22.04-latest (devel)"
 
 ## R CMD check results
 
