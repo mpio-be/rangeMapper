@@ -96,7 +96,7 @@ T = ggplot() +
 
 ### File format
 
-`rangeMapper`'s project containers are <a href="https://www.sqlite.org/" target="_blank"> `sqlite` </a> files.
+`rangeMapper`'s project containers are `sqlite` files.
 
 
 
@@ -109,21 +109,3 @@ install.packages("rangeMapper")
 # Install development version from GitHub
 remotes::install_github("mpio-be/rangeMapper")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
